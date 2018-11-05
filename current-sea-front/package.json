@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "moment": "^2.22.2",
     "react": "^16.6.0",
     "react-burger-menu": "^2.5.4",
+    "react-datepicker": "^1.8.0",
     "react-dom": "^16.6.0",
     "react-native-drawer": "^2.5.1",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.0"
   },
   "scripts": {

@@ -3,6 +3,23 @@
     background: #E5E5E5;
 }
 
+.dot{
+    height: 25px;
+    width: 25px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+div.transaction-table, div.quick { float: left;}
+
+div.container {overflow: hidden;}
+
+/*
+
+All of this is legacy code cause we had to completely change how the transactions page looked....
+
+
 .Transaction-header {
     background-color: #282c34;
     min-height: 40vh;
@@ -116,3 +133,5 @@
     position: relative;
     left: 400px;
 }
+*/
+
