@@ -62,11 +62,43 @@ function router(){
             // Render respective html, ejs, or pug
         });
 
+    //Event Flows
+    pageRouter.route('/create_event')
+        .post((req, res) => {
+            // Render respective html, ejs, or pug
+        });
+
+    pageRouter.route('/edit_event')
+        .post((req, res) => {
+            // Render respective html, ejs, or pug
+        });
+
+    pageRouter.route('/delete_event')
+        .post((req, res) => {
+            // Render respective html, ejs, or pug
+        });
+
+    pageRouter.route('/archive_event')
+        .get((req, res) => {
+            // Render respective html, ejs, or pug
+        });
+
+    //Statement Flows
+    pageRouter.route('/balance')
+        .get((req, res) => {
+            // Render respective html, ejs, or pug
+        });
+
+    pageRouter.route('/statement')
+        .get((req, res) => {
+            // Render respective html, ejs, or pug
+        });
+
     //Favorite Currency Flows
     pageRouter.route('/add_fav_curr')
         .post((req, res) =>{
             // Render respective html, ejs, or pug
-        })
+        });
     return pageRouter;
 }
 
