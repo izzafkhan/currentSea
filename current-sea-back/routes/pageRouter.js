@@ -46,7 +46,7 @@ function router(){
             // Render respective html, ejs, or pug
         });
 
-    //transaction Flows
+    //Transaction Flows
     pageRouter.route('/add_transactions')
         .post((req, res) => {
             // Render respective html, ejs, or pug
@@ -62,6 +62,7 @@ function router(){
             // Render respective html, ejs, or pug
         });
 
+    //Favorite Currency Flows
     pageRouter.route('/add_fav_curr')
         .post((req, res) =>{
             // Render respective html, ejs, or pug
