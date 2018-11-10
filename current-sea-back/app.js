@@ -11,7 +11,9 @@ const port = process.env.PORT;
 app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, '/static/'))); // Serve static files from static folder
 
+const pageRouter = require('./src/routes/pageRouter.js');
 
+app.use('/', pageRouter);
 app.get('/', (req, res) => {
   res.send('Test message');
 });
