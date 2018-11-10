@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
-import logo from './logo.svg';
-import Header from './components/Header.js';
+import Header from './Header.js';
 import './Login.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 
-export class Login extends Component{
+export default class Login extends Component{
   render() {
       return(
         <div>
@@ -39,6 +36,3 @@ const style={
     margin:15,textAlign:'center'
     
 };
-
-
-export default Login;
