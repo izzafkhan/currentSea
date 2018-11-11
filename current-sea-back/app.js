@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 4000;
 
 app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, '/static/'))); // Serve static files from static folder
