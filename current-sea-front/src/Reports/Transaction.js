@@ -1,11 +1,13 @@
 import React from 'react';
 import './Transaction.css';
+import ReactTable from 'react-table';
 import CurrencyMenu from '../Currencies/CurrencyMenu';
 
 class Transaction extends React.Component{
     constructor(){
         super();
         this.state = {
+            showIncome : true,
             income1 : "Income 1",
             income2 : "Income 2",
             income3 : "Income 3",
@@ -20,6 +22,8 @@ class Transaction extends React.Component{
             conversion: "0.00"
         }
         this.get = this.get.bind(this);
+        this.income = this.income.bind(this);
+        this.expenses = this.expenses.bind(this);
     }
 
     get(event){
@@ -33,78 +37,96 @@ class Transaction extends React.Component{
         })
     }
 
+    income(event){
+        this.setState({
+            showIncome: true
+        })
+    }
+
+    expenses(event){
+        this.setState({
+            showIncome : false
+        })
+    }
+
     render(){
+        var columns = [{
+                Header: 'Number',
+                Accessor: 'number',
+                Cell: props => <span className='number'>{props.value}</span>
+            }, {
+                Header: 'Date',
+                Accessor : 'date',
+                Cell: props => <span className='date'>{props.value}</span>
+            }
+        ]
         return(
             <div class="container">
-                <div class="transaction-table">
-                    <table className="Transaction-table">
-                        <thead>
-                            <tr>
-                                <th id="header-number">
-                                    <div className="Transaction-number"> Number </div>
-                                </th>
-                                <th id="header-date">    
-                                    <div className="Transaction-date"> Date </div>
-                                </th>
-                                <th id="header-description">
-                                    <div className="Transaction-description"> Description </div>
-                                </th>
-                                <th id="header-balance">
-                                    <div className="Transaction-balance"> Balance </div>
-                                </th>
-                                <th id="header-df">
-                                    <div className="Transaction-df"> DF </div>
-                                </th>
-                                <th id="header-category">
-                                    <div className="Transaction-category"> Category </div>
-                                </th>
-                                <th id="header-add">
-                                    <div className="Transaction-add"> <button id="addButton"></button> </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="Transaction-body">
-                        {/*
-                        
-                                Below is a demo of what entries will look like
-                                when they are added to the table. Remove the 
-                                comments to preview.
-                        -----------------------------------------------------------
-                            <tr>
-                                <td className="Transaction-entryLeft">Books</td>
-                                <td className="Transaction-entryRight">$400</td>
-                            </tr>
-                            <tr>
-                                <td className="Transaction-entryLeft">Books</td>
-                                <td className="Transaction-entryRight">$400</td>
-                            </tr>
-                        */}
-                        </tbody>
-                    </table>
-                </div>
+                <table class="transaction-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="header-name"> Number </div>
+                            </th>
+                            <th>    
+                                <div class="header-name"> Date </div>
+                            </th>
+                            <th>
+                                <div class="header-name"> Description </div>
+                            </th>
+                            <th>
+                                <div class="header-name"> Balance </div>
+                            </th>
+                            <th>
+                                <div class="header-name"> DF </div>
+                            </th>
+                            <th>
+                                <div class="header-name"> Category </div>
+                            </th>
+                            <th>
+                                <div class="header-name"> <button id="addButton">+</button> </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody className="Transaction-body">
+                    </tbody>
+                </table>
                 <div class="quick">
                     <div class="summary">
                         <h2>Summary</h2>
-                        <button>Income</button>
-                        <button>Expenses</button>
-                        <div>
-                            <span class="dot"></span>
-                            <p>{this.state.income1}</p>
-                            <p>{this.state.expense1}</p>
+                        <button onClick={this.income} >Income</button>
+                        <button onClick={this.expenses}>Expenses</button>
+                        <div class="row1">
+                            <div class="summary1">
+                                <span class="dot"></span>
+                                <span class="text">
+                                    {this.state.showIncome ?
+                                    <p>{this.state.income1}</p> :
+                                    <p>{this.state.expense1}</p> }
+                                </span>
+                            </div>
+                            <div class="summary2">
+                                <span class="dot"></span>
+                                <span class="text">
+                                    {this.state.showIncome ?
+                                    <p>{this.state.income2}</p> :
+                                    <p>{this.state.expense2}</p> }
+                                </span>
+                            </div>
                         </div>
-                        <div>
-                            <span class="dot"></span>
-                            <p>{this.state.income2}</p>
-                            <p>{this.state.expense2}</p>
-                        </div>
-                        <div>
-                            <span class="dot"></span>
-                            <p>{this.state.income3}</p>
-                            <p>{this.state.expense3}</p>
-                        </div>
-                        <div>
-                            <span class="dot"></span>
-                            <p>{this.state.other}</p>
+                        <div class="row2">
+                            <div class="summary3">
+                                <span class="dot"></span>
+                                <span class="text">
+                                    {this.state.showIncome ?
+                                    <p>{this.state.income3}</p> :
+                                    <p>{this.state.expense3}</p> }
+                                </span>
+                            </div>
+                            <div class="other">
+                                <span class="dot"></span>
+                                <span class="text"><p>{this.state.other}</p> </span>
+                            </div>
                         </div>
                     </div>
 

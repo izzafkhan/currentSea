@@ -1,19 +1,50 @@
-.Transaction{
-    text-align: center;
-    background: #E5E5E5;
+div.container{
+    margin-block-start: 16px;
+}
+
+table.transaction-table{
+    margin-inline-end: 16px;
+}
+
+.header-name{
+    margin-inline-start: 8px;
+    margin-inline-end: 8px;
 }
 
 .dot{
-    height: 25px;
-    width: 25px;
+    height: 24px;
+    width: 24px;
     background-color: #bbb;
     border-radius: 50%;
     display: inline-block;
+    margin-inline-end: 8px;
 }
 
-div.transaction-table, div.quick { float: left;}
+div.summary1{
+    margin: 8px;
+}
+div.summary2{
+    margin: 8px;
+}
+div.summary3{
+    margin: 8px;
+}
+div.other{
+    margin: 8px;
+}
+
+table.transaction-table, div.quick { float: left;}
+div.summary1, div.summary2 {float: left;}
+div.summary3, div.other {float: left;}
+span.dot, span.text {float:left;}
 
 div.container {overflow: hidden;}
+div.row1 {overflow: hidden;}
+div.row2 {overflow: hidden;}
+div.summary1 {overflow: hidden;}
+div.summary2 {overflow: hidden;}
+div.summary3 {overflow: hidden;}
+div.other {overflow: hidden;}
 
 /*
 
