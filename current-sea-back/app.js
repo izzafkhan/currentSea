@@ -11,9 +11,20 @@ const port = process.env.PORT;
 app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, '/static/'))); // Serve static files from static folder
 
-const pageRouter = require('./src/routes/pageRouter.js');
+const userAccountRouter = require('./src/routes/userAccountRoutes.js');
+const bkAccountRouter = require('./src/routes/bkAccountRoutes.js');
+const transactionsRouter = require('./src/routes/transactionsRoutes.js');
+const eventRouter = require('./src/routes/eventRoutes.js');
+const statementRouter = require('./src/routes/statementRoutes.js');
+const favCurRouter = require('./src/routes/favCurRoutes.js');
 
-app.use('/', pageRouter);
+app.use('/user', userAccountRouter);
+app.use('/bookkeeping', bkAccountRouter);
+app.use('/transactions', transactionsRouter);
+app.use('/event', eventRouter);
+app.use('/statement', statementRouter);
+app.use('/favcur', favCurRouter);
+
 app.get('/', (req, res) => {
   res.send('Test message');
 });
