@@ -4,14 +4,11 @@ const db = require('../db');
 const bkAccountRouter = express.Router();
 
 module.exports = function router() {
-
-  //BKAccount Flows
   bkAccountRouter.route('/add_account')
     .post((req, res) => {
       const { userId } = req.params;
       const { accountName } = req.params;
-      const q = `INSERT INTO account_table(at_account_name, at_account_id, at_user_id)VALUES WHERE at_user_id = ${userId} AND at_account_name = ${accountName}`;
-      db.query(q, (err, result) => {
+      db.query('INSERT INTO account_table(at_account_name, at_account_id, at_user_id) VALUES WHERE at_user_id = ? AND at_account_name = ?', [userId, accountName], (err) => {
         if (err) {
           throw err;
         }
@@ -28,14 +25,11 @@ module.exports = function router() {
       const { userId } = req.params;
       const { accountName } = req.params;
       const { accountId } = req.params;
-      const q = `DELETE FROM account_table WHERE at_user_id = ${userId} AND at_account_name = ${accountName} AND at_account_id = ${accountId}`;
-      db.query(q, (err, result) => {
-        debug(result);
+      db.query('DELETE FROM account_table WHERE at_user_id = ? AND at_account_name = ? AND at_account_id = ?', [userId, accountName, accountId], (err) => {
         if (err) {
           throw err;
         }
       });
     });
   return bkAccountRouter;
-}
-
+};
