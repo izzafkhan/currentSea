@@ -5,7 +5,8 @@ import Home from './Home';
 import Report from './Reports/Report';
 import Currencies from './Currencies/Currencies';
 import Help from './Help';
-import Login from './Login';
+import Login from './Login/Login';
+import SignUpForm from './Login/SignupForm'
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Route } from "react-router-dom";
 
@@ -19,6 +20,8 @@ class App extends React.Component{
               <Route path="/Currencies/Currencies" exact component={Currencies}/>
               <Route path="/Help" exact component={Help}/>
               <Route path="/Login" exact component={Login}/>
+              <Route path= "/Register" exact component = {SignUpForm}/>
+      
             </div>
           </BrowserRouter>
         );
