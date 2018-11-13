@@ -1,5 +1,6 @@
 const express = require('express');
 const debug = require('debug')('app:userAccountsRoutes');
+const passport = require('passport');
 const db = require('../db');
 
 const userAccountRouter = express.Router();
@@ -22,9 +23,10 @@ module.exports = function router() {
     });
 
   userAccountRouter.route('/login')
-    .post((req, res) => {
-      // Render respective html, ejs, or pug
-    });
+    .post(passport.authenticate('local', {
+      successRedirect: '/auth/profile',
+      failureRedirect: '/'
+    }));
 
   userAccountRouter.route('/logout')
     .get((req, res) => {
