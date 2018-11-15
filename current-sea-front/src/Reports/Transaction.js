@@ -1,11 +1,12 @@
 import React from 'react';
 import './Transaction.css';
 import ReactTable from 'react-table';
+import 'react-table/react-table.css'
 import CurrencyMenu from '../Currencies/CurrencyMenu';
 
 class Transaction extends React.Component{
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             showIncome : true,
             income1 : "Income 1",
@@ -19,7 +20,7 @@ class Transaction extends React.Component{
             other : "Other",
 
             original: "0.00",
-            conversion: "0.00"
+            conversion: "0.00",
         }
         this.get = this.get.bind(this);
         this.income = this.income.bind(this);
@@ -50,18 +51,40 @@ class Transaction extends React.Component{
     }
 
     render(){
+        var { data = [] } = this.props;
         var columns = [{
                 Header: 'Number',
-                Accessor: 'number',
-                Cell: props => <span className='number'>{props.value}</span>
+                accessor: 'number'
             }, {
                 Header: 'Date',
-                Accessor : 'date',
-                Cell: props => <span className='date'>{props.value}</span>
+                accessor : 'date'
+            }, {
+                Header: 'Description',
+                accessor: 'description'
+            }, {
+                Header: 'Balance',
+                accessor: 'balance'
+            }, {
+                Header: 'DF',
+                accessor: 'df'
+            }, {
+                Header: 'Category',
+                accessor: 'category'
+            }, {
+                Header: 'Add',
+                accessor: 'add'
             }
         ]
         return(
             <div class="container">
+                <div className="transaction-table">
+                    <ReactTable
+                        data = {[]}
+                        noDataText="Add a new Transaction"
+                        columns = {columns}
+                    />
+                </div>
+                {/*
                 <table class="transaction-table">
                     <thead>
                         <tr>
@@ -90,7 +113,7 @@ class Transaction extends React.Component{
                     </thead>
                     <tbody className="Transaction-body">
                     </tbody>
-                </table>
+                </table>*/}
                 <div class="quick">
                     <div class="summary">
                         <h2>Summary</h2>

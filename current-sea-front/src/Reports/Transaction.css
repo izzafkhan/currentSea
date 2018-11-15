@@ -2,8 +2,8 @@ div.container{
     margin-block-start: 16px;
 }
 
-table.transaction-table{
-    margin-inline-end: 16px;
+div.transaction-table{
+    margin-inline-end: 40px;
 }
 
 .header-name{
@@ -33,7 +33,7 @@ div.other{
     margin: 8px;
 }
 
-table.transaction-table, div.quick { float: left;}
+div.transaction-table, div.quick { float: left;}
 div.summary1, div.summary2 {float: left;}
 div.summary3, div.other {float: left;}
 span.dot, span.text {float:left;}
