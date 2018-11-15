@@ -1,9 +1,43 @@
 import React, {Component} from 'react';
 import './IncomeStatement.css';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css'
 
 class IncomeStatement extends Component{
+    constructor(props){
+        super(props);
+
+    }
     render(){
+        var { data = [] } = this.props
+        var columns = [{
+            Header: '#',
+            accessor: 'number'
+        }, {
+            Header: 'Category',
+            accessor: 'category'
+        }, {
+            Header: 'Account',
+            accessor: 'account'
+        }, {
+            Header: 'Change',
+            accessor: 'change'
+        }]
         return(
+            <div className="IncomeStatement-table">
+                <ReactTable
+                        data = {data}
+                        noDataText="Your income and expenses will appear here"
+                        columns = {columns}
+                    />
+            </div>
+        );
+    }
+}
+
+export default IncomeStatement
+
+{/*}
             <table className="IncomeStatement-table">
                 <thead>
                     <tr>
@@ -21,9 +55,4 @@ class IncomeStatement extends Component{
                         </th>
                     </tr>
                 </thead>
-            </table>
-        );
-    }
-}
-
-export default IncomeStatement
+            </table>*/}

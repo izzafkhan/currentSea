@@ -25,6 +25,11 @@ class Transaction extends React.Component{
         this.get = this.get.bind(this);
         this.income = this.income.bind(this);
         this.expenses = this.expenses.bind(this);
+        this.showPopup = this.showPopup.bind(this);
+    }
+
+    showPopup(event){
+
     }
 
     get(event){
@@ -51,7 +56,7 @@ class Transaction extends React.Component{
     }
 
     render(){
-        var { data = [] } = this.props;
+        var { data = [] } = this.props
         var columns = [{
                 Header: 'Number',
                 accessor: 'number'
@@ -71,7 +76,7 @@ class Transaction extends React.Component{
                 Header: 'Category',
                 accessor: 'category'
             }, {
-                Header: 'Add',
+                Header: <button onClick={this.showPopup}>Add</button>,
                 accessor: 'add'
             }
         ]
@@ -79,41 +84,11 @@ class Transaction extends React.Component{
             <div class="container">
                 <div className="transaction-table">
                     <ReactTable
-                        data = {[]}
+                        data = {data}
                         noDataText="Add a new Transaction"
                         columns = {columns}
                     />
                 </div>
-                {/*
-                <table class="transaction-table">
-                    <thead>
-                        <tr>
-                            <th>
-                                <div class="header-name"> Number </div>
-                            </th>
-                            <th>    
-                                <div class="header-name"> Date </div>
-                            </th>
-                            <th>
-                                <div class="header-name"> Description </div>
-                            </th>
-                            <th>
-                                <div class="header-name"> Balance </div>
-                            </th>
-                            <th>
-                                <div class="header-name"> DF </div>
-                            </th>
-                            <th>
-                                <div class="header-name"> Category </div>
-                            </th>
-                            <th>
-                                <div class="header-name"> <button id="addButton">+</button> </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="Transaction-body">
-                    </tbody>
-                </table>*/}
                 <div class="quick">
                     <div class="summary">
                         <h2>Summary</h2>
@@ -168,3 +143,35 @@ class Transaction extends React.Component{
 }
 
 export default Transaction;
+
+
+{/*
+                <table class="transaction-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="header-name"> Number </div>
+                            </th>
+                            <th>    
+                                <div class="header-name"> Date </div>
+                            </th>
+                            <th>
+                                <div class="header-name"> Description </div>
+                            </th>
+                            <th>
+                                <div class="header-name"> Balance </div>
+                            </th>
+                            <th>
+                                <div class="header-name"> DF </div>
+                            </th>
+                            <th>
+                                <div class="header-name"> Category </div>
+                            </th>
+                            <th>
+                                <div class="header-name"> <button id="addButton">+</button> </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody className="Transaction-body">
+                    </tbody>
+                </table>*/}
