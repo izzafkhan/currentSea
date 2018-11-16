@@ -2,7 +2,7 @@ const express = require('express');
 const debug = require('debug')('app:userAccountsRoutes');
 const passport = require('passport');
 const db = require('./db');
-const { validateEmail, usernameDoesNotExist, emailDoesNotExist } = require('./validationHelperMethods/account');
+const { validateEmail, MD5 } = require('./validationHelperMethods/account');
 
 const userAccountRouter = express.Router();
 
@@ -38,7 +38,7 @@ module.exports = function router() {
             db.query('SELECT ut_user_id FROM user_table WHERE ut_user_id=?', [username], (err, results2, fields) => {
               if (results2.length === 0) {
                 db.query('INSERT INTO user_table (ut_user_id, ut_password, ut_first_name, ut_last_name, ut_email) VALUES (?, ?, ?, ?, ?)',
-                  [username, password, firstName, lastName, emailID], (err, results3, fields) => {
+                  [username, MD5(username + password), firstName, lastName, emailID], (err, results3, fields) => {
                     res.status(201).send({ userID: username });
                   });
               } else {
@@ -64,7 +64,7 @@ module.exports = function router() {
             // eslint-disable-next-line camelcase
             if (id === ut_user_id || id === ut_email) {
               // eslint-disable-next-line camelcase
-              if (password == ut_password) {
+              if (MD5(ut_user_id + password) === ut_password) {
                 res.status(200).json({ message: 'User succesfully logged in' });
               } else {
                 res.status(401).json({ message: 'Invalid password' });
