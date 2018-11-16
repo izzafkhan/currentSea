@@ -53,10 +53,31 @@ module.exports = function router() {
     });
 
   userAccountRouter.route('/login')
-    .post(passport.authenticate('local', {
-      successRedirect: '/auth/profile',
-      failureRedirect: '/',
-    }));
+    .post((req, res) => {
+      const { id, password } = req.body;
+      db.query('SELECT * FROM user_table where ut_user_id=? or ut_email=?', [id, id],
+        (err, results, fields) => {
+          if (results.length !== 0) {
+            const user = JSON.parse(JSON.stringify(results[0]));
+            // eslint-disable-next-line camelcase
+            const { ut_user_id, ut_email, ut_password } = user;
+            // eslint-disable-next-line camelcase
+            if (id === ut_user_id || id === ut_email) {
+              // eslint-disable-next-line camelcase
+              if (password == ut_password) {
+                res.status(200).json({ message: 'User succesfully logged in' });
+              } else {
+                res.status(401).json({ message: 'Invalid password' });
+              }
+            } else {
+              res.status(401).json({ message: 'Wrong username or email' });
+            }
+            debug(user);
+          } else {
+            res.status(401).json({ message: 'Wrong username or email' });
+          }
+        });
+    });
 
   userAccountRouter.route('/logout')
     .get((req, res) => {
