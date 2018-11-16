@@ -1,6 +1,6 @@
 const express = require('express');
 const debug = require('debug')('app:bkAccountsRoutes');
-const db = require('../db');
+//const db = require('../db');
 const bkAccountRouter = express.Router();
 
 module.exports = function router() {

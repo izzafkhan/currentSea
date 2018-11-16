@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Header from '../Header.js';
 import './LoginForm.css';
 import { Link } from "react-router-dom";
+import { type } from 'os';
+import $ from 'jquery';
 
 
 
@@ -16,13 +18,24 @@ export default class LoginForm extends Component{
       
         }
 
-    onChange = e =>{
+    onChange = e => {
         this.setState({
             [e.target.id]: e.target.value
         });
     }
-    onSubmit = e =>{
+    onSubmit = e => {
         e.preventDefault();
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "http://localhost:4000/profile/login",
+            data: {
+                emailid: this.state.email,
+                password: this.state.password
+            }
+        }
+        );
+
        
     }
 
