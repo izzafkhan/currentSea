@@ -15,7 +15,7 @@ export class Header extends Component{
         <nav>
         <div className = "navWide">
           <div className = "wideDiv">
-          <Link to="/">My Account</Link>
+          <Link to="/Accounts">My Accounts</Link>
           <Link to="/Reports/Report">View Reports</Link>
           <Link to="/Currencies/Currencies">My Currencies</Link>
           <Link to="/Login">Login/Signup</Link>
