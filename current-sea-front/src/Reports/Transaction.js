@@ -1,11 +1,12 @@
 import React from 'react';
 import './Transaction.css';
 import ReactTable from 'react-table';
+import 'react-table/react-table.css'
 import CurrencyMenu from '../Currencies/CurrencyMenu';
 
 class Transaction extends React.Component{
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             showIncome : true,
             income1 : "Income 1",
@@ -19,11 +20,16 @@ class Transaction extends React.Component{
             other : "Other",
 
             original: "0.00",
-            conversion: "0.00"
+            conversion: "0.00",
         }
         this.get = this.get.bind(this);
         this.income = this.income.bind(this);
         this.expenses = this.expenses.bind(this);
+        this.showPopup = this.showPopup.bind(this);
+    }
+
+    showPopup(event){
+
     }
 
     get(event){
@@ -50,47 +56,39 @@ class Transaction extends React.Component{
     }
 
     render(){
+        var { data = [] } = this.props
         var columns = [{
                 Header: 'Number',
-                Accessor: 'number',
-                Cell: props => <span className='number'>{props.value}</span>
+                accessor: 'number'
             }, {
                 Header: 'Date',
-                Accessor : 'date',
-                Cell: props => <span className='date'>{props.value}</span>
+                accessor : 'date'
+            }, {
+                Header: 'Description',
+                accessor: 'description'
+            }, {
+                Header: 'Balance',
+                accessor: 'balance'
+            }, {
+                Header: 'DF',
+                accessor: 'df'
+            }, {
+                Header: 'Category',
+                accessor: 'category'
+            }, {
+                Header: <button onClick={this.showPopup}>Add</button>,
+                accessor: 'add'
             }
         ]
         return(
             <div class="container">
-                <table class="transaction-table">
-                    <thead>
-                        <tr>
-                            <th>
-                                <div class="header-name"> Number </div>
-                            </th>
-                            <th>    
-                                <div class="header-name"> Date </div>
-                            </th>
-                            <th>
-                                <div class="header-name"> Description </div>
-                            </th>
-                            <th>
-                                <div class="header-name"> Balance </div>
-                            </th>
-                            <th>
-                                <div class="header-name"> DF </div>
-                            </th>
-                            <th>
-                                <div class="header-name"> Category </div>
-                            </th>
-                            <th>
-                                <div class="header-name"> <button id="addButton">+</button> </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="Transaction-body">
-                    </tbody>
-                </table>
+                <div className="transaction-table">
+                    <ReactTable
+                        data = {data}
+                        noDataText="Add a new Transaction"
+                        columns = {columns}
+                    />
+                </div>
                 <div class="quick">
                     <div class="summary">
                         <h2>Summary</h2>
@@ -145,3 +143,35 @@ class Transaction extends React.Component{
 }
 
 export default Transaction;
+
+
+{/*
+                <table class="transaction-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="header-name"> Number </div>
+                            </th>
+                            <th>    
+                                <div class="header-name"> Date </div>
+                            </th>
+                            <th>
+                                <div class="header-name"> Description </div>
+                            </th>
+                            <th>
+                                <div class="header-name"> Balance </div>
+                            </th>
+                            <th>
+                                <div class="header-name"> DF </div>
+                            </th>
+                            <th>
+                                <div class="header-name"> Category </div>
+                            </th>
+                            <th>
+                                <div class="header-name"> <button id="addButton">+</button> </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody className="Transaction-body">
+                    </tbody>
+                </table>*/}

@@ -6,17 +6,25 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 4000;
 
 app.use(morgan('tiny'));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({ secret: 'BTC' }));
 
 require('./authentication/passport.js');
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
 app.use(express.static(path.join(__dirname, '/static/'))); // Serve static files from static folder
 
@@ -27,8 +35,8 @@ const eventRouter = require('./routes/eventRoutes.js')();
 const statementRouter = require('./routes/statementRoutes.js')();
 const favCurRouter = require('./routes/favCurRoutes.js')();
 
-app.use('/accounts', userAccountRouter);
-app.use('/bookkeeping', bkAccountRouter);
+app.use('/profile', userAccountRouter);
+app.use('/accounts', bkAccountRouter);
 app.use('/transactions', transactionsRouter);
 app.use('/event', eventRouter);
 app.use('/statement', statementRouter);
