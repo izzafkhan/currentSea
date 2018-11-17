@@ -47,7 +47,7 @@ module.exports = function router() {
               }));
             }
           } else if (newAccountId === '' || newAccountName === '') {
-            res.status(401).json({ message: 'Attempted changes cannot be blank..' });
+            res.status(401).json({ message: 'Attempted changes cannot be blank.' });
           } else {
             res.status(401).json({ message: 'Account name and id are not changed.' });
           }
