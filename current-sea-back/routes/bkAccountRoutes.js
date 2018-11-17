@@ -30,7 +30,9 @@ module.exports = function router() {
 
   bkAccountRouter.route('/edit_account')
     .post((req, res) => {
-      const { userId, accountId, accountName, newAccountId, newAccountName } = req.body;
+      const {
+        userId, accountId, accountName, newAccountId, newAccountName,
+      } = req.body;
       db.query('SELECT account_name from account_table where at_user_id = ? AND at_account_name = ? AND at_account_id = ?', [userId, accountName, accountId], (err, results) => {
         if (results.length !== 0) {
           if (newAccountId !== accountId || newAccountName !== accountName) {
