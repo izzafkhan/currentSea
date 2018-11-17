@@ -91,9 +91,10 @@ module.exports = function router() {
         if (results.length !== 0) {
           const user = JSON.parse(JSON.stringify(results[0]));
           const { ut_user_id, ut_email, ut_password } = user;
-          if ((id === ut_user_id || id === ut_email) && (MD5(ut_user_id + password) === ut_password)) {
+          if ((id === ut_user_id || id === ut_email)
+          && (MD5(ut_user_id + password) === ut_password)) {
             db.query('UPDATE user_table SET ut_password = ? WHERE ut_password = ? AND ut_user_id = ?', [MD5(ut_user_id + newPassword),
-               MD5(ut_user_id + password), ut_user_id], (results) => {
+              MD5(ut_user_id + password), ut_user_id], (results) => {
               debug(results);
             });
           } else {
@@ -103,5 +104,6 @@ module.exports = function router() {
           res.status(401).json({ message: 'Id not found.' });
         }
       });
-      return userAccountRouter;
-    };
+    });
+  return userAccountRouter;
+};
