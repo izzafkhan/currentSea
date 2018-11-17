@@ -15,7 +15,7 @@ export class Header extends Component{
         <nav>
           <div className = "navWide">
             <div className = "wideDiv">
-              <Link to="/">{this.state.loggedIn ? 'My Account': ' '}</Link>
+              <Link to="/Accounts">{this.state.loggedIn ? 'My Accounts': ' '}</Link>
               <Link to="/Reports/Report">{this.state.loggedIn ? 'View Reports' : ' '}</Link>
               <Link to="/Currencies/Currencies">{this.state.loggedIn ? 'My Currencies' : ' '}</Link>
               <Link to="/Help">?</Link>
