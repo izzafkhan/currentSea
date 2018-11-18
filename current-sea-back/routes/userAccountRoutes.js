@@ -72,13 +72,18 @@ module.exports = function router() {
       db.query('SELECT * FROM user_table where ut_user_id=? or ut_email=?', [id, id], (err, results, fields) => {
         if (results.length !== 0) {
           const user = JSON.parse(JSON.stringify(results[0]));
-          const { ut_user_id, ut_email, ut_password } = user;
-          if ((id === ut_user_id || id === ut_email)
-            && (MD5(ut_user_id + password) === ut_password)) {
-            db.query('UPDATE user_table SET ut_password = ? WHERE ut_password = ? AND ut_user_id = ?', [MD5(ut_user_id + newPassword),
-              MD5(ut_user_id + password), ut_user_id], (results) => {
-              debug(results);
-            });
+          const { utUserId, utEmail, utPassword } = user;
+          if ((id === utUserId || id === utEmail)
+            && (MD5(utUserId + password) === utPassword)) {
+            const { confirmPassword } = req.body;
+            if (confirmPassword === newPassword) {
+              db.query('UPDATE user_table SET ut_password = ? WHERE ut_password = ? AND ut_user_id = ?', [MD5(utUserId + newPassword),
+              MD5(utUserId + password), utUserId], (results) => {
+                debug(results);
+              });
+            } else {
+              res.status(401).json({ message: 'Please ensure that your confirming password matches your new password.' });
+            }
           } else {
             res.status(401).json({ message: 'Invalid id or password.' });
           }
@@ -87,6 +92,7 @@ module.exports = function router() {
         }
       });
     });
+    
   userAccountRouter.route('/loggedin').get((req, res) => {
     if (req.user) {
       res.status(200).json({ message: 'OK' });

@@ -66,9 +66,9 @@ module.exports = function router() {
   bkAccountRouter.route('/delete_account')
     .post((req, res) => {
       const { userId, accountId, accountName } = req.body;
-      db.query('SELECT account_name from account_table where at_user_id = ? AND at_account_name = ? AND at_account_id = ?', [userId, accountName, accountId], (err, results) => {
+      db.query('SELECT account_name from account_table where at_user_id = ? AND at_account_name = ? OR at_account_id = ?', [userId, accountName, accountId], (err, results) => {
         if (results.length !== 0) {
-          db.query('DELETE FROM account_table WHERE at_user_id = ? AND at_account_name = ? AND at_account_id = ?', [userId, accountName, accountId], () => {
+          db.query('DELETE FROM account_table WHERE at_user_id = ? AND at_account_name = ? OR at_account_id = ?', [userId, accountName, accountId], () => {
             if (err) {
               throw err;
             }
