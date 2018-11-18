@@ -67,32 +67,21 @@ module.exports = function router() {
     });
 
   userAccountRouter.route('/change_password')
-    .post((req, res) => {
-      const { id, password, newPassword } = req.body;
-      db.query('SELECT * FROM user_table where ut_user_id=? or ut_email=?', [id, id], (err, results, fields) => {
-        if (results.length !== 0) {
-          const user = JSON.parse(JSON.stringify(results[0]));
-          const { utUserId, utEmail, utPassword } = user;
-          if ((id === utUserId || id === utEmail)
-            && (MD5(utUserId + password) === utPassword)) {
-            const { confirmPassword } = req.body;
-            if (confirmPassword === newPassword) {
-              db.query('UPDATE user_table SET ut_password = ? WHERE ut_password = ? AND ut_user_id = ?', [MD5(utUserId + newPassword),
-              MD5(utUserId + password), utUserId], (results) => {
-                debug(results);
-              });
-            } else {
-              res.status(401).json({ message: 'Please ensure that your confirming password matches your new password.' });
-            }
-          } else {
-            res.status(401).json({ message: 'Invalid id or password.' });
-          }
+    .post((req, res, next) => {
+      passport.authenticate('local', (err, user, info) => {
+        if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+        const { utEmail, newPassword, confirmPassword } = req.body;
+        if (confirmPassword === newPassword) {
+          db.query('UPDATE user_table SET ut_password = ? WHERE ut_email = ? AND ut_user_id = ?', [
+            MD5(user.utUserId + user.newPassword), utEmail, user.utUserId], (results) => {
+            debug(results);
+          });
         } else {
-          res.status(401).json({ message: 'Id not found.' });
+          res.status(401).json({ message: 'Please ensure that your confirming password matches your new password.' });
         }
-      });
+      })(req, res, next);
     });
-    
+
   userAccountRouter.route('/loggedin').get((req, res) => {
     if (req.user) {
       res.status(200).json({ message: 'OK' });

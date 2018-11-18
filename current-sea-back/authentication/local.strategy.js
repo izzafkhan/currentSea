@@ -13,14 +13,11 @@ module.exports = function localStrategy(passport) {
         (err, results, fields) => {
           if (results.length !== 0) {
             const userJSON = JSON.parse(JSON.stringify(results[0]));
-            // eslint-disable-next-line camelcase
-            const { ut_user_id, ut_email, ut_password } = userJSON;
-            // eslint-disable-next-line camelcase
-            if (id === ut_user_id || id === ut_email) {
-              // eslint-disable-next-line camelcase
-              if (MD5(ut_user_id + password) === ut_password) {
+            const { utUserId, utEmail, utPassword } = userJSON;
+            if (id === utUserId || id === utEmail) {
+              if (MD5(utUserId + password) === utPassword) {
                 const user = {
-                  ut_user_id, ut_password,
+                  utUserId, utPassword,
                 };
                 done(err, user);
               } else {
