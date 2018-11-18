@@ -4,12 +4,27 @@ import './LoginForm.css';
 import { Link, Redirect } from "react-router-dom";
 import { type } from 'os';
 import $ from 'jquery';
+import {Form,Text,BasicText,asField} from 'informed';
 
-
+const ErrorText = asField(({ fieldState, ...props }) => (
+    <React.Fragment>
+      <BasicText
+        fieldState={fieldState}
+        {...props}
+        
+        style={fieldState.error ? { border: 'solid 1px red' } : null}
+      />
+      {fieldState.error ? (
+        <small style={{ color: 'red' }}>{fieldState.error}</small>
+      ) : null}
+    </React.Fragment>
+  ));
 
 export default class LoginForm extends Component{
+    
     constructor(props){
         super(props);
+       
         this.state= {
             email: "",
             password: "",
@@ -24,16 +39,18 @@ export default class LoginForm extends Component{
             [e.target.id]: e.target.value
         });
     }
+    
     onSubmit = e => {
         e.preventDefault();
         const loginData = {
             id: this.state.email,
             password: this.state.password
         }
-        $.ajax({
+          $.ajax({
             url: "http://localhost:4000/profile/login",
             type: "POST",
             contentType: "application/json; charset=utf-8",
+            crossDomain: true,
             dataType: 'json',
             data: JSON.stringify(loginData),
             success: (data) => {
@@ -41,11 +58,12 @@ export default class LoginForm extends Component{
             },
             error: (data) => {
                 this.setState({ password: '' });
-                alert(data.responseJSON.message);
+                //alert('Invalid credentials');
             }
         }
-        );
-
+      
+    ); 
+ 
        
     }
 
@@ -61,7 +79,14 @@ export default class LoginForm extends Component{
             
             
     }
+
+    validateEmail= value=>{
+        return !value ? 'Enter username or email' : null;
+    }
     
+    validatePassword = value=>{
+        return !value ? 'Enter password' : null;
+    }
 
   render() {
       return(
@@ -71,30 +96,30 @@ export default class LoginForm extends Component{
             
             <h1 align = "center">Login</h1>
             <div class= "inputContainer">
-            <input
-                
-                id = "email"
-                placeholder = "Email or Username"
-                value = {this.state.email}
-                onChange = {e => this.onChange(e)}
-                />
-                <br/>
-             
-             <input 
-                id = "password"
-                placeholder = "Password"
-                type= "password"
-                value = {this.state.password}
-                onChange = {e => this.onChange(e)}
-                />
-                <br/>
-                <br/>
-                <button class="loginBtn" onClick = {e => this.onSubmit(e)}> Log In </button>
-                <br/>
-                <h6 class="registerLink"> Not registered? </h6>
-                <Link to="/Register">
-                    <button class ="registerBtn" id="toRegister"> Click here. </button>
-                </Link>
+                <Form id= "Login">
+                    <ErrorText placeholder="Email/UserName"
+                        field="email" 
+                        id="emailLabel"
+                        validateOnBlur
+                        validateOnChange
+                        validate={this.validateEmail}
+                        onChange = {e=> this.onChange(e)}/>
+         
+                    <br/>
+                    <ErrorText placeholder="Password" 
+                        field="password" 
+                        id="passwordLabel"
+                        validateOnBlur
+                        validateOnChange
+                        validate= {this.validatePassword}
+                        onChange = {e => this.onChange(e)}
+                        />
+                    <button class="loginBtn" onClick = {e => this.onSubmit(e)}> Log In </button>
+                    <h6 class="registerLink"> Not registered? </h6>
+                         <Link to="/Register">
+                        <button class ="registerBtn" id="toRegister"> Click here. </button>
+                        </Link>
+                </Form>    
                 </div>
         </div>
   
