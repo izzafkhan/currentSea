@@ -34,6 +34,7 @@ export default class LoginForm extends Component{
             url: "http://localhost:4000/profile/login",
             type: "POST",
             contentType: "application/json; charset=utf-8",
+            crossDomain: true,
             dataType: 'json',
             data: JSON.stringify(loginData),
             success: (data) => {
@@ -41,7 +42,7 @@ export default class LoginForm extends Component{
             },
             error: (data) => {
                 this.setState({ password: '' });
-                alert(data.responseJSON.message);
+                alert('Invalid credentials');
             }
         }
         );
