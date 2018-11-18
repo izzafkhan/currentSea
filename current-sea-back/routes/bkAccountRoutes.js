@@ -12,12 +12,16 @@ module.exports = function router() {
       } = req.body;
       db.query('SELECT at_account_name from account_table where at_user_id = ? and at_account_name = ? and at_account_id = ?', [userId, accountName, accountId], (err, result) => {
         if (result.length === 0) {
-          db.query('INSERT INTO account_table(at_account_name, at_account_id, at_user_id) VALUES (?, ?, ?);', [accountName, accountId, userId], (results) => {
-            if (err) {
-              throw err;
-            }
-            debug(results);
-          });
+          if (accountId === '' || accountName === '') {
+            res.status(401).json({ message: 'Please fill in the blank spaces of the parameters.' });
+          } else {
+            db.query('INSERT INTO account_table(at_account_name, at_account_id, at_user_id) VALUES (?, ?, ?);', [accountName, accountId, userId], (results) => {
+              if (err) {
+                throw err;
+              }
+              debug(results);
+            });
+          }
         } else {
           res.status(401).json({ message: 'Account already exists.' });
         }
@@ -26,7 +30,9 @@ module.exports = function router() {
 
   bkAccountRouter.route('/edit_account')
     .post((req, res) => {
-      const { userId, accountId, accountName, newAccountId, newAccountName } = req.body;
+      const {
+        userId, accountId, accountName, newAccountId, newAccountName,
+      } = req.body;
       db.query('SELECT account_name from account_table where at_user_id = ? AND at_account_name = ? AND at_account_id = ?', [userId, accountName, accountId], (err, results) => {
         if (results.length !== 0) {
           if (newAccountId !== accountId || newAccountName !== accountName) {
