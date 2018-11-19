@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import Header from '../Header.js';
 import './LoginForm.css';
 import { Link, Redirect } from "react-router-dom";
-import { type } from 'os';
 import $ from 'jquery';
 import {Form,Text,BasicText,asField} from 'informed';
 

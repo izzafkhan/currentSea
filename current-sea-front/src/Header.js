@@ -10,7 +10,7 @@ export class Header extends Component{
       loggedIn : true // set to true by default for testing purposes
     };
   }
-  /*componentWillMount = () => {
+  componentWillMount = () => {
     $.ajax({
       url: 'http://localhost:4000/profile/loggedin',
       type: 'GET',
@@ -24,7 +24,7 @@ export class Header extends Component{
         }
       }
     });
-  }*/
+  }
 
   logout = () => {
     console.log('Test');
@@ -35,7 +35,7 @@ export class Header extends Component{
         <nav>
           <div className = "navWide">
             <div className = "wideDiv">
-              <Link to="/">{this.state.loggedIn ? 'My Account': ' '}</Link>
+              <Link to="/Accounts">{this.state.loggedIn ? 'My Accounts': ' '}</Link>
               <Link to="/Reports/Report">{this.state.loggedIn ? 'View Reports' : ' '}</Link>
               <Link to="/Currencies/Currencies">{this.state.loggedIn ? 'My Currencies' : ' '}</Link>
               <Link to="/Help">?</Link>
