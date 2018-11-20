@@ -18,6 +18,6 @@ module.exports = function router() {
           res.status(401).json({ message: 'Currency already favorited.' });
         }
       });
-      return favCurRouter;
     });
-}
+  return favCurRouter;
+};

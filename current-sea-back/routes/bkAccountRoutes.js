@@ -1,5 +1,5 @@
 const express = require('express');
-const debug = require('debug')('app:bkAccountsRoutes');
+const debug = require('debug')('app:bkAccountRoutes');
 const db = require('./db');
 
 const bkAccountRouter = express.Router();

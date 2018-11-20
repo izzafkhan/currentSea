@@ -50,6 +50,7 @@ export default class LoginForm extends Component{
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
             dataType: 'json',
+            xhrFields: { withCredentials: true },
             data: JSON.stringify(loginData),
             success: (data) => {
                 this.setState({ loginSuccess: true });
@@ -107,6 +108,7 @@ export default class LoginForm extends Component{
                     <ErrorText placeholder="Password" 
                         field="password" 
                         id="passwordLabel"
+                        type="password"
                         validateOnBlur
                         validateOnChange
                         validate= {this.validatePassword}
