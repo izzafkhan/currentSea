@@ -5,6 +5,14 @@ const db = require('./db');
 const transactionsRouter = express.Router();
 
 module.exports = function router() {
+  transactionsRouter.use((err, req, res, next) => {
+    if (!req.user) {
+      res.status(500).send('User does not appear to exist.');
+    } else {
+      next();
+    }
+  });
+
   transactionsRouter.route('/add_transactions')
     .post((req, res) => {
       const {
@@ -15,7 +23,7 @@ module.exports = function router() {
       db.query('INSERT INTO tt_transaction_table(',
         'tt_user_id, tt_account_id, tt_date, tt_event_id, ',
         'tt_debit_amount, tt_credit_amount, tt_currency_abv) VALUES (?, ?, ?, ?, ?, ?, ?, ?);',
-        [userId, accountId, date, eventId, debitAmt, creditAmt, currencyId], (results) => {
+        [userId, accountId, date, eventId, debitAmt, creditAmt, currencyId], (results, err) => {
           if (err) {
             throw err;
           }
