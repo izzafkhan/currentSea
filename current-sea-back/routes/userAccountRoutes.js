@@ -55,8 +55,10 @@ module.exports = function router() {
   userAccountRouter.route('/login')
     .post((req, res, next) => {
       passport.authenticate('local', (err, user, info) => {
+        if (err) return res.status(500).json({ message: 'Server error' });
         if (!user) return res.status(401).json({ message: 'Invalid credentials' });
-        req.login(user, (err) => {
+        req.login(user, (err2) => {
+          if (err2) return res.status(500).json({ message: 'Server error' });
           return res.status(200).json({ message: 'user authenticated' });
         });
       })(req, res, next);
@@ -83,6 +85,7 @@ module.exports = function router() {
     });
 
   userAccountRouter.route('/loggedin').get((req, res) => {
+    debug(req.user);
     if (req.user) {
       res.status(200).json({ message: 'OK' });
     } else {

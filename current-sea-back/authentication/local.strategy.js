@@ -11,6 +11,7 @@ module.exports = function localStrategy(passport) {
     }, (id, password, done) => {
       db.query('SELECT * FROM user_table where ut_user_id=? or ut_email=?', [id, id],
         (err, results, fields) => {
+          if (err) debug(err);
           if (results.length !== 0) {
             const userJSON = JSON.parse(JSON.stringify(results[0]));
             const { ut_user_id, ut_email, ut_password } = userJSON;

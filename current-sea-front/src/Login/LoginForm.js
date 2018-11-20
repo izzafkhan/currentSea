@@ -80,10 +80,12 @@ export default class LoginForm extends Component{
     }
 
     validateEmail= value=>{
+        this.setState({email: value});
         return !value ? 'Enter username or email' : null;
     }
     
     validatePassword = value=>{
+        this.setState({password: value});
         return !value ? 'Enter password' : null;
     }
 
@@ -99,6 +101,7 @@ export default class LoginForm extends Component{
                     <ErrorText placeholder="Email/UserName"
                         field="email" 
                         id="emailLabel"
+                        value={this.state.email}
                         validateOnBlur
                         validateOnChange
                         validate={this.validateEmail}
@@ -109,6 +112,7 @@ export default class LoginForm extends Component{
                         field="password" 
                         id="passwordLabel"
                         type="password"
+                        value={this.state.password}
                         validateOnBlur
                         validateOnChange
                         validate= {this.validatePassword}

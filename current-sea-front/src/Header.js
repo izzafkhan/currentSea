@@ -14,6 +14,8 @@ export class Header extends Component{
     $.ajax({
       url: 'http://localhost:4000/profile/loggedin',
       type: 'GET',
+      crossDomain: true,
+      xhrFields: { withCredentials: true },
       success: (data) => {
         if (data.message === 'OK') {
           console.log(data.message);
