@@ -32,10 +32,10 @@ module.exports = function router() {
         if (results.length === 0) {
           res.status(401).json({ message: 'Transaction id does not exist.' });
         } else {
-          db.query('INSERT INTO tt_transaction_table(tt_transaction_id, ',
-            'tt_user_id, tt_account_id, tt_date, tt_event_id, ',
-            'tt_debit_amount, tt_credit_amount, tt_currency_abv) VALUES (?, ?, ?, ?, ?, ?, ?, ?);',
-            [userId, accountId, date, eventId, debitAmt, creditAmt, currencyId], (err) => {
+          db.query('UPDATE tt_transaction_table SET ',
+            'tt_user_id = ?, tt_account_id = ?, tt_date = ?, tt_event_id = ?, ',
+            'tt_debit_amount = ?, tt_credit_amount = ?, tt_currency_abv = ? WHERE tt_transaction_id = ?;',
+            [userId, accountId, date, eventId, debitAmt, creditAmt, currencyId, transactionId], (err) => {
               if (err) {
                 throw err;
               }
