@@ -10,7 +10,7 @@ module.exports = function router() {
             // Render respective html, ejs, or pug
         });
 
-        statementRouter.route('/statement')
+    statementRouter.route('/statement')
         .get((req, res) => {
             // Render respective html, ejs, or pug
         });

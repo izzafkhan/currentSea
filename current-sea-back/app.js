@@ -27,6 +27,14 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((err, req, res, next) => {
+  if (!req.user) {
+    res.status(401).send('User does not appear to exist.');
+  } else {
+    next();
+  }
+});
+
 app.use(express.static(path.join(__dirname, '/static/'))); // Serve static files from static folder
 
 const userAccountRouter = require('./routes/userAccountRoutes.js')();
