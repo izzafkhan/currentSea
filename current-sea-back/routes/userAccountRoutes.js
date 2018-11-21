@@ -64,8 +64,12 @@ module.exports = function router() {
 
   userAccountRouter.route('/logout')
     .get((req, res) => {
-      req.logout();
-      res.redirect('/');
+      if (req.user){
+        req.logout();
+        res.status(200).json({message: 'User succesfully logged out'});
+      } else {
+        res.status(401).json({message: 'User not logged in'});
+      }
     });
 
   userAccountRouter.route('/change_password')

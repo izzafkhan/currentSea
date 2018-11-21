@@ -29,7 +29,18 @@ export class Header extends Component{
   }
 
   logout = () => {
-    console.log('Test');
+    $.ajax({
+      url:'http://localhost:4000/profile/logout',
+      type: 'GET',
+      crossDomain: true,
+      xhrFields: { withCredentials: true },
+      success: (data) => {
+        this.setState({ loggedIn: false });
+      },
+      error: (data) => {
+        this.setState({ loggedIn: false });
+      }
+    });
   }
 
   render() {
@@ -42,7 +53,7 @@ export class Header extends Component{
               <Link to="/Currencies/Currencies">{this.state.loggedIn ? 'My Currencies' : ' '}</Link>
               <Link to="/Help">?</Link>
               <Link to="/Login">
-                <button onClick={this.logout()} class="loginButton">{this.state.loggedIn ? 'Logout' : 'Login/Signup'}
+                <button onClick={this.logout} class="loginButton">{this.state.loggedIn ? 'Logout' : 'Login/Signup'}
                 </button>
               </Link>
               {/* deprecated
