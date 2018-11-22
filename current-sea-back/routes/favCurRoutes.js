@@ -4,6 +4,12 @@ const db = require('./db');
 const favCurRouter = express.Router();
 
 module.exports = function router() {
+  favCurRouter.use((err, req, res) => {
+    if (!req.user) {
+      res.status(401).send('User does not appear to exist.');
+    }
+  });
+
   favCurRouter.route('/add_fav_curr')
     .post((req, res) => {
       const { userId, currencyAbv } = req.body;

@@ -5,6 +5,12 @@ const db = require('./db');
 const bkAccountRouter = express.Router();
 
 module.exports = function router() {
+  bkAccountRouter.use((err, req, res) => {
+    if (!req.user) {
+      res.status(401).send('User does not appear to exist.');
+    }
+  });
+
   bkAccountRouter.route('/add_account')
     .post((req, res) => {
       const {
