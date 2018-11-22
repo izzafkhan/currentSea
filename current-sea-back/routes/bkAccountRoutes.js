@@ -12,17 +12,19 @@ module.exports = function router() {
           accountName, accountId,
         } = req.body;
         db.query('SELECT at_account_name from account_table where at_user_id = ? and at_account_name = ? and at_account_id = ?',
-          [req.user.username, accountName, accountId], (err, result) => {
+          [req.user.username, accountName, accountId], (err, result, fields) => {
+            if (err) res.status(500).json({ message: 'Some error occurred' });
             if (result.length === 0) {
               if (accountId === '' || accountName === '') {
                 res.status(401).json({ message: 'Please fill in the blank spaces of the parameters.' });
               } else {
-                db.query('INSERT INTO account_table(at_account_name, at_account_id, at_user_id) VALUES (?, ?, ?);', [accountName, accountId, userId], (results) => {
-                  if (err) {
-                    res.status(500).json({ message: 'Some error occurred' });
-                  }
-                  res.status(201).json({ message: 'Account created' });
-                });
+                db.query('INSERT INTO account_table(at_account_name, at_account_id, at_user_id) VALUES (?, ?, ?);', [accountName, accountId, req.user.username],
+                  (err2, results, fields) => {
+                    if (err2) {
+                      res.status(500).json({ message: 'Some error occurred' });
+                    }
+                    res.status(201).json({ message: 'Account created' });
+                  });
               }
             } else {
               res.status(401).json({ message: 'Account already exists.' });
