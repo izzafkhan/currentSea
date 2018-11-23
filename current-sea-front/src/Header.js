@@ -10,10 +10,12 @@ export class Header extends Component{
       loggedIn : true // set to true by default for testing purposes
     };
   }
-  /*componentWillMount = () => {
+  componentWillMount = () => {
     $.ajax({
       url: 'http://localhost:4000/profile/loggedin',
       type: 'GET',
+      crossDomain: true,
+      xhrFields: { withCredentials: true },
       success: (data) => {
         if (data.message === 'OK') {
           console.log(data.message);
@@ -24,10 +26,21 @@ export class Header extends Component{
         }
       }
     });
-  }*/
+  }
 
   logout = () => {
-    console.log('Test');
+    $.ajax({
+      url:'http://localhost:4000/profile/logout',
+      type: 'GET',
+      crossDomain: true,
+      xhrFields: { withCredentials: true },
+      success: (data) => {
+        this.setState({ loggedIn: false });
+      },
+      error: (data) => {
+        this.setState({ loggedIn: false });
+      }
+    });
   }
 
   render() {
@@ -40,7 +53,7 @@ export class Header extends Component{
               {this.state.loggedIn ? <Link to="/Currencies/Currencies">My Currencies</Link> : <span></span>}
               {this.state.loggedIn ? <Link to="/Help">?</Link> : <span></span>}
               <Link to="/Login">
-                <button onClick={this.logout()} class="loginButton">{this.state.loggedIn ? 'Logout' : 'Login/Signup'}
+                <button onClick={this.logout} class="loginButton">{this.state.loggedIn ? 'Logout' : 'Login/Signup'}
                 </button>
               </Link>
               {/* deprecated

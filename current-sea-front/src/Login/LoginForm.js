@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import Header from '../Header.js';
 import './LoginForm.css';
 import { Link, Redirect } from "react-router-dom";
-import { type } from 'os';
 import $ from 'jquery';
 import {Form,Text,BasicText,asField} from 'informed';
 
@@ -52,6 +50,7 @@ export default class LoginForm extends Component{
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
             dataType: 'json',
+            xhrFields: { withCredentials: true },
             data: JSON.stringify(loginData),
             success: (data) => {
                 this.setState({ loginSuccess: true });
@@ -81,10 +80,12 @@ export default class LoginForm extends Component{
     }
 
     validateEmail= value=>{
+        this.setState({email: value});
         return !value ? 'Enter username or email' : null;
     }
     
     validatePassword = value=>{
+        this.setState({password: value});
         return !value ? 'Enter password' : null;
     }
 
@@ -100,6 +101,7 @@ export default class LoginForm extends Component{
                     <ErrorText placeholder="Email/UserName"
                         field="email" 
                         id="emailLabel"
+                        value={this.state.email}
                         validateOnBlur
                         validateOnChange
                         validate={this.validateEmail}
@@ -109,6 +111,8 @@ export default class LoginForm extends Component{
                     <ErrorText placeholder="Password" 
                         field="password" 
                         id="passwordLabel"
+                        type="password"
+                        value={this.state.password}
                         validateOnBlur
                         validateOnChange
                         validate= {this.validatePassword}
