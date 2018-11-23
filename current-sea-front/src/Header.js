@@ -35,10 +35,10 @@ export class Header extends Component{
         <nav>
           <div className = "navWide">
             <div className = "wideDiv">
-              <Link to="/">{this.state.loggedIn ? 'My Account': ' '}</Link>
-              <Link to="/Reports/Report">{this.state.loggedIn ? 'View Reports' : ' '}</Link>
-              <Link to="/Currencies/Currencies">{this.state.loggedIn ? 'My Currencies' : ' '}</Link>
-              <Link to="/Help">?</Link>
+              {this.state.loggedIn ? <Link to="/">My Account</Link>: <span></span>}
+              {this.state.loggedIn ? <Link to="/Reports/Report"> View Reports</Link> : <span></span>} 
+              {this.state.loggedIn ? <Link to="/Currencies/Currencies">My Currencies</Link> : <span></span>}
+              {this.state.loggedIn ? <Link to="/Help">?</Link> : <span></span>}
               <Link to="/Login">
                 <button onClick={this.logout()} class="loginButton">{this.state.loggedIn ? 'Logout' : 'Login/Signup'}
                 </button>

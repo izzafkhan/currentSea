@@ -1,10 +1,14 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import './Transaction.css';
-import ReactTable from 'react-table';
-import 'react-table/react-table.css'
+import BootstrapTable from 'react-bootstrap-table-next';
 import CurrencyMenu from '../Currencies/CurrencyMenu';
+import AddEntry from './Transactions/AddEntry';
+import EditEntry from './Transactions/EditEntry';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import { EditorFormatStrikethrough } from 'material-ui/svg-icons';
 
-class Transaction extends React.Component{
+export default class Transaction extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -21,15 +25,50 @@ class Transaction extends React.Component{
 
             original: "0.00",
             conversion: "0.00",
+
+            showAddEntry: false,
+
+            data: [{
+                'id': '0',
+                'edit' : false
+            },
+                {
+                'id': '1',
+                'date': '11/21/2018',
+                'description': 'Test Entry',
+                'balance' : '100.00',
+                'df' : '$',
+                'category': 'Side Expense',
+                'edit' : false
+            }]
+            
         }
         this.get = this.get.bind(this);
         this.income = this.income.bind(this);
         this.expenses = this.expenses.bind(this);
-        this.showPopup = this.showPopup.bind(this);
+        this.addRow = this.addRow.bind(this);
+        this.editRow = this.editRow.bind(this);
+        this.renderTable = this.renderTable.bind(this);
     }
 
-    showPopup(event){
+    addRow(){
+        this.setState( {
+            showAddEntry : true
+        })
+    }
 
+    finishRow(){
+        this.setState({
+            showAddEntry: false
+        })
+    }
+
+    renderTable(){
+                return(
+                    <tr>
+                        <td>Hello</td>
+                    </tr>
+                );
     }
 
     get(event){
@@ -43,51 +82,69 @@ class Transaction extends React.Component{
         })
     }
 
-    income(event){
+    income(){
         this.setState({
             showIncome: true
         })
     }
 
-    expenses(event){
+    expenses(){
         this.setState({
             showIncome : false
         })
     }
 
     render(){
-        var { data = [] } = this.props
-        var columns = [{
-                Header: 'Number',
-                accessor: 'number'
-            }, {
-                Header: 'Date',
-                accessor : 'date'
-            }, {
-                Header: 'Description',
-                accessor: 'description'
-            }, {
-                Header: 'Balance',
-                accessor: 'balance'
-            }, {
-                Header: 'DF',
-                accessor: 'df'
-            }, {
-                Header: 'Category',
-                accessor: 'category'
-            }, {
-                Header: <button onClick={this.showPopup}>Add</button>,
-                accessor: 'add'
-            }
-        ]
+      
         return(
             <div class="container">
                 <div className="transaction-table">
-                    <ReactTable
-                        data = {data}
-                        noDataText="Add a new Transaction"
-                        columns = {columns}
-                    />
+                    <table id='dataTable' width="600">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Balance</th>
+                                <th>DF</th>
+                                <th>Category</th>
+                            </tr>
+                            <tr>
+                                <th colSpan='6'>
+                                    <button onClick={this.addRow}>+</button>
+                                    {this.state.showAddEntry ? <div><AddEntry /></div> : <span></span> }
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.data.map(row => {
+                                return(
+                                    <tr key={`row-${row.id}`}>
+                                        <td colSpan='6'>
+                                            <table id='nested'>
+                                                <tbody>
+                                                    <tr onClick={this.editRow(row)}>
+                                                        <td>{row.id}</td>
+                                                        <td>{row.date}</td>
+                                                        <td>{row.description}</td>
+                                                        <td>{row.balance}</td>
+                                                        <td>{row.df}</td>
+                                                        <td>{row.category}</td>
+                                                    </tr>
+                                                    {row.edit ?
+                                                    <tr>
+                                                        <td colSpan='6'>
+                                                            <EditEntry />
+                                                        </td> 
+                                                    </tr> : <span></span>}
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
                 </div>
                 <div class="quick">
                     <div class="summary">
@@ -141,37 +198,111 @@ class Transaction extends React.Component{
         );
     }
 }
+{/*
+<table class="transaction-table">
+    <thead>
+        <tr>
+            <th>
+                <div class="header-name"> Number </div>
+            </th>
+            <th>    
+                <div class="header-name"> Date </div>
+            </th>
+            <th>
+                <div class="header-name"> Description </div>
+            </th>
+            <th>
+                <div class="header-name"> Balance </div>
+            </th>
+            <th>
+                <div class="header-name"> DF </div>
+            </th>
+            <th>
+                <div class="header-name"> Category </div>
+            </th>
+            <th>
+                <div class="header-name"> <button id="addButton">+</button> </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody className="Transaction-body">
+    </tbody>
+</table>*/}
 
-export default Transaction;
 
+{/*<ReactTable
+        data = {data}
+        noDataText="Add a new Transaction"
+        columns = {columns}
+    />*/}
 
 {/*
-                <table class="transaction-table">
-                    <thead>
-                        <tr>
-                            <th>
-                                <div class="header-name"> Number </div>
-                            </th>
-                            <th>    
-                                <div class="header-name"> Date </div>
-                            </th>
-                            <th>
-                                <div class="header-name"> Description </div>
-                            </th>
-                            <th>
-                                <div class="header-name"> Balance </div>
-                            </th>
-                            <th>
-                                <div class="header-name"> DF </div>
-                            </th>
-                            <th>
-                                <div class="header-name"> Category </div>
-                            </th>
-                            <th>
-                                <div class="header-name"> <button id="addButton">+</button> </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="Transaction-body">
-                    </tbody>
-                </table>*/}
+        var { data = [] } = this.props
+        var columns = [{
+                Header: 'Number',
+                accessor: 'number'
+            }, {
+                Header: 'Date',
+                accessor : 'date'
+            }, {
+                Header: 'Description',
+                accessor: 'description'
+            }, {
+                Header: 'Balance',
+                accessor: 'balance'
+            }, {
+                Header: 'DF',
+                accessor: 'df'
+            }, {
+                Header: 'Category',
+                accessor: 'category'
+            }
+        ]*/}
+{/*
+<BootstrapTable 
+                        keyField='id'
+                        data={data}
+                        columns = {columns}
+                        expandRow={expandRow}
+                    />
+*/}
+{/*
+var data = [{
+            'id': '0'
+        },
+            {
+            'id': '1',
+            'date': '11/21/2018',
+            'description': 'Test Entry',
+            'balance' : '100.00',
+            'df' : '$',
+            'category': 'Side Expense'
+        }];
+        const columns = [{
+            dataField: 'id',
+            text: ' '
+        }, {
+            dataField: 'date',
+            text: 'Date'
+        }, {
+            dataField: 'description',
+            text: 'Description'
+        }, {
+            dataField: 'balance',
+            text: 'Balance'
+        }, {
+            dataField: 'df',
+            text: 'DF'
+        }, {
+            dataField: 'category',
+            text: 'Category'
+        }];
+
+        const expandRow = {
+            renderer: row => (
+                <div>
+                    <EditEntry></EditEntry>
+                </div>
+            )
+        };
+    */}
