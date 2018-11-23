@@ -35,7 +35,7 @@ const transactionsRouter = require('./routes/transactionsRoutes.js')();
 const eventRouter = require('./routes/eventRoutes.js')();
 const statementRouter = require('./routes/statementRoutes.js')();
 const favCurRouter = require('./routes/favCurRoutes.js')();
-const currencyAPIUpdate = require('./routes/currencyAPI')();
+const currencyAPIUpdate = require('./routes/currencyAPI.js')();
 
 app.use('/profile', userAccountRouter);
 app.use('/accounts', bkAccountRouter);
