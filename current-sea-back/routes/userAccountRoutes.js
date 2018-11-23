@@ -58,14 +58,16 @@ module.exports = function router() {
   userAccountRouter.route('/login')
     .post((req, res, next) => {
       if (req.user) res.status(200).json({ message: 'User already logged in' });
-      passport.authenticate('local', (err, user, info) => {
-        if (err) return res.status(500).json({ message: 'Server error' });
-        if (!user) return res.status(401).json({ message: 'Invalid credentials' });
-        req.login(user, (err2) => {
-          if (err2) return res.status(500).json({ message: 'Server error' });
-          return res.status(200).json({ message: 'user authenticated' });
-        });
-      })(req, res, next);
+      else {
+        passport.authenticate('local', (err, user, info) => {
+          if (err) return res.status(500).json({ message: 'Server error' });
+          if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+          req.login(user, (err2) => {
+            if (err2) return res.status(500).json({ message: 'Server error' });
+            return res.status(200).json({ message: 'user authenticated' });
+          });
+        })(req, res, next);
+      }
     });
 
   userAccountRouter.route('/logout')
@@ -86,8 +88,8 @@ module.exports = function router() {
         if (confirmPassword === newPassword) {
           db.query('UPDATE user_table SET ut_password = ? WHERE ut_email = ? AND ut_user_id = ?', [
             MD5(user.utUserId + user.newPassword), utEmail, user.utUserId], (results) => {
-            debug(results);
-          });
+              debug(results);
+            });
         } else {
           res.status(401).json({ message: 'Please ensure that your confirming password matches your new password.' });
         }
