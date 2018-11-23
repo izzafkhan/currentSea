@@ -141,7 +141,7 @@ export default class Transaction extends React.Component{
                                             </table>
                                         </td>
                                     </tr>
-                                )
+                                )    
                             })}
                         </tbody>
                     </table>
