@@ -10,6 +10,7 @@ module.exports = function router() {
   statementRouter.route('/balance')
     .get((req, res) => {
       if (req.user) {
+        // bt_userID must be created in the database for this to work
         db.query('SELECT * FROM balance_sheet_table where bt_userID = ?', [req.user.username],
           (err, results, fields) => {
             if (err) {
