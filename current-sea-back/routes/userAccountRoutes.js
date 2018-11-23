@@ -34,12 +34,18 @@ module.exports = function router() {
         res.status(401).json({ message: 'Invalid email' });
       } else {
         db.query('SELECT ut_user_id FROM user_table WHERE ut_email=? OR ut_user_id=?', [emailID], username, (err, results, fields) => {
-          if (err) res.status(500).json({ message: 'Server error' });
+          if (err) {
+            debug(err);
+            res.status(500).json({ message: 'Server error' });
+          }
           if (results.length === 0) {
             db.query('INSERT INTO user_table (ut_user_id, ut_password, ut_first_name, ut_last_name, ut_email) VALUES (?, ?, ?, ?, ?)',
               [username, MD5(username + password), firstName, lastName, emailID],
               (err, results3, fields) => {
-                if (err) res.status(500).json({ message: 'Server error' });
+                if (err) {
+                  debug(err);
+                  res.status(500).json({ message: 'Server error' });
+                }
                 res.status(201).send({ userID: username });
               });
           } else {
@@ -51,7 +57,7 @@ module.exports = function router() {
 
   userAccountRouter.route('/login')
     .post((req, res, next) => {
-      if (req.user) res.status(200).json({message: 'User already logged in' });
+      if (req.user) res.status(200).json({ message: 'User already logged in' });
       passport.authenticate('local', (err, user, info) => {
         if (err) return res.status(500).json({ message: 'Server error' });
         if (!user) return res.status(401).json({ message: 'Invalid credentials' });
@@ -64,11 +70,11 @@ module.exports = function router() {
 
   userAccountRouter.route('/logout')
     .get((req, res) => {
-      if (req.user){
+      if (req.user) {
         req.logout();
-        res.status(200).json({message: 'User succesfully logged out'});
+        res.status(200).json({ message: 'User succesfully logged out' });
       } else {
-        res.status(401).json({message: 'User not logged in'});
+        res.status(401).json({ message: 'User not logged in' });
       }
     });
 
@@ -80,8 +86,8 @@ module.exports = function router() {
         if (confirmPassword === newPassword) {
           db.query('UPDATE user_table SET ut_password = ? WHERE ut_email = ? AND ut_user_id = ?', [
             MD5(user.utUserId + user.newPassword), utEmail, user.utUserId], (results) => {
-              debug(results);
-            });
+            debug(results);
+          });
         } else {
           res.status(401).json({ message: 'Please ensure that your confirming password matches your new password.' });
         }

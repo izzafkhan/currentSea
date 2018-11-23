@@ -35,6 +35,7 @@ const transactionsRouter = require('./routes/transactionsRoutes.js')();
 const eventRouter = require('./routes/eventRoutes.js')();
 const statementRouter = require('./routes/statementRoutes.js')();
 const favCurRouter = require('./routes/favCurRoutes.js')();
+const currencyAPIUpdate = require('./routes/currencyAPI.js')();
 
 app.use('/profile', userAccountRouter);
 app.use('/accounts', bkAccountRouter);
@@ -42,6 +43,7 @@ app.use('/transactions', transactionsRouter);
 app.use('/event', eventRouter);
 app.use('/statement', statementRouter);
 app.use('/currencies', favCurRouter);
+app.use('/currencyUpdate', currencyAPIUpdate);
 
 app.get('/', (req, res) => {
   res.send('Test message');
