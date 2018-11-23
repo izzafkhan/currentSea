@@ -72,6 +72,23 @@ Styling to make the table readable
     width: 100px;
 }
 
+#nested button {
+    width: 100px;
+    background-color: white;
+    border-color: white;
+    border-style: solid;
+    text-align: left;
+}
+
+#addEntryButton {
+    width: 600px;
+    text-align: center;
+    color: white;
+    background-color: rgb(2, 228, 115);
+    border-color: rgb(2, 228, 115);
+    border-style: solid;
+}
+
 
 
 

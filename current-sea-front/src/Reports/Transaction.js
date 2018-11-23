@@ -49,6 +49,7 @@ export default class Transaction extends React.Component {
         this.addRow = this.addRow.bind(this);
         this.editRow = this.editRow.bind(this);
         this.renderTable = this.renderTable.bind(this);
+        this.addData = this.addData.bind(this);
     }
 
     addRow = () => {
@@ -74,10 +75,17 @@ export default class Transaction extends React.Component {
         }
     }
 
-    finishRow() {
+    addData(newData) {
+        var indexedData = newData;
+        indexedData.id = this.state.data.length;
+        indexedData.balance = newData.debit;
         this.setState({
             showAddEntry: false
+            
         })
+        this.setState( prev => ({
+            data: [...prev.data, indexedData]
+        }))
     }
 
     renderTable() {
@@ -128,8 +136,8 @@ export default class Transaction extends React.Component {
                             </tr>
                             <tr>
                                 <th colSpan='6'>
-                                    <button onClick={ e => this.addRow()}>+</button>
-                                    {this.state.showAddEntry ? <div><AddEntry /></div> : <span></span>}
+                                    <button id='addEntryButton' onClick={ e => this.addRow()}>+</button>
+                                    {this.state.showAddEntry ? <div><AddEntry addData={this.addData.bind(this)}/></div> : <span></span>}
                                 </th>
                             </tr>
                         </thead>
@@ -138,22 +146,22 @@ export default class Transaction extends React.Component {
                                 return (
                                     <tr key={`row-${row.id}`}>
                                         <td colSpan='6'>
-                                            <table id='nested'>
+                                            <table>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>{row.id}</td>
-                                                        <td>{row.date}</td>
+                                                    <tr id='nested'>
+                                                        <td><button onClick={e => this.editRow(row.id)}>{row.id}</button></td>
+                                                        <td><button onClick={e => this.editRow(row.id)}>{row.date}</button></td>
                                                         <td><button onClick={e => this.editRow(row.id)}>{row.description}</button></td>
-                                                        <td>{row.balance}</td>
-                                                        <td>{row.df}</td>
-                                                        <td>{row.category}</td>
+                                                        <td><button onClick={e => this.editRow(row.id)}>{row.balance}</button></td>
+                                                        <td><button onClick={e => this.editRow(row.id)}>{row.df}</button></td>
+                                                        <td><button onClick={e => this.editRow(row.id)}>{row.category}</button></td>
                                                     </tr>
                                                     {row.edit ?
                                                         <tr>
                                                             <td colSpan='6'>
                                                                 <EditEntry />
                                                             </td>
-                                                        </tr> : <span></span>}
+                                                        </tr> : <tr></tr>}
                                                 </tbody>
                                             </table>
                                         </td>

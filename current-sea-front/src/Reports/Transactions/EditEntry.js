@@ -1,5 +1,6 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
+import './EditEntry.css';
 
 export default class EditEntry extends React.Component{
     constructor(props){
@@ -27,7 +28,7 @@ export default class EditEntry extends React.Component{
         return(
             <div>
                 <table>
-                    <thead>
+                    <thead id='headEntry'>
                         <tr>
                             <th>No.</th>
                             <th>Account</th>
@@ -38,7 +39,7 @@ export default class EditEntry extends React.Component{
                             <th>Currency</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id='bodyEntry'>
                         {this.state.data.map(row => {
                             return(
                                 <tr key={`row-${row.id}`}>
@@ -56,7 +57,7 @@ export default class EditEntry extends React.Component{
                         })}
                     </tbody>
                 </table>
-                <button>Delete</button>
+                <button id='entryButton'>Delete</button>
             </div>
             
         );

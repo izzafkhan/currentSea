@@ -6,23 +6,29 @@ export default class AddEntry extends React.Component{
         super(props);
 
         this.state = {
-            description: '',
-            debit: '',
-            credit: '',
-            category: '',
-            currency: ''
+            newData : {
+            'description': '',
+            'debit': '',
+            'credit': '',
+            'category': '',
+            'currency': '' }
         }
-    };
+        this.addData = this.props.addData;
+    }
+
+    handleChange(stateName, e) {
+        this.setState({ [stateName]: e.target.value });
+    }
 
     render(){
         return(
             <div>
-                <input type="text" placeholder="Description" value={this.state.description}></input>
-                <input type="text" placeholder="Debit" value={this.state.debit}></input>
-                <input type="text" placeholder="Credit" value={this.state.credit}></input>
-                <input type="text" placeholder="Category" value={this.state.category}></input>
-                <input type="text" placeholder="Currency" value={this.state.currency}></input>
-                <button>Submit</button>
+                <input type="text" placeholder="Description" defaultValue={this.state.newData.description} onChange={this.handleChange.bind(this, 'description')} />
+                <input type="text" placeholder="Debit" defaultValue={this.state.newData.debit} onChange={this.handleChange.bind(this, 'debit')} />
+                <input type="text" placeholder="Credit" defaultValue={this.state.newData.credit} onChange={this.handleChange.bind(this, 'credit')}/>
+                <input type="text" placeholder="Category" defaultValue={this.state.newData.category} onChange={this.handleChange.bind(this, 'category')}/>
+                <input type="text" placeholder="Currency" defaultValue={this.state.newData.currency} onChange={this.handleChange.bind(this, 'currency')} />
+                <button onClick={() => this.addData(this.state.newData)}>Submit</button>
             </div>
         );
     }
