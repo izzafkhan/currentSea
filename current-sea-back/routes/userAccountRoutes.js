@@ -33,7 +33,7 @@ module.exports = function router() {
       if (!validateEmail(emailID)) {
         res.status(401).json({ message: 'Invalid email' });
       } else {
-        db.query('SELECT ut_user_id FROM user_table WHERE ut_email=? OR ut_user_id=?', [emailID], username, (err, results, fields) => {
+        db.query('SELECT ut_user_id FROM user_table WHERE ut_email=? OR ut_user_id=?', [emailID, username], (err, results, fields) => {
           if (err) {
             debug(err);
             res.status(500).json({ message: 'Server error' });
