@@ -75,7 +75,7 @@ export default class Transaction extends React.Component {
         }
     }
 
-    addData(newData) {
+    addData = (newData) => {
         var indexedData = newData;
         indexedData.id = this.state.data.length;
         indexedData.balance = newData.debit;
@@ -137,7 +137,7 @@ export default class Transaction extends React.Component {
                             <tr>
                                 <th colSpan='6'>
                                     <button id='addEntryButton' onClick={ e => this.addRow()}>+</button>
-                                    {this.state.showAddEntry ? <div><AddEntry addData={this.addData.bind(this)}/></div> : <span></span>}
+                                    {this.state.showAddEntry ? <div><AddEntry onAddData={this.addData}/></div> : <span></span>}
                                 </th>
                             </tr>
                         </thead>

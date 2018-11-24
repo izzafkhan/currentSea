@@ -11,13 +11,21 @@ export default class AddEntry extends React.Component{
             'debit': '',
             'credit': '',
             'category': '',
-            'currency': '' }
+            'df': '' }
         }
-        this.addData = this.props.addData;
+        this.handleChange = this.handleChange.bind(this);
+        this.submitData = this.submitData.bind(this);
     }
 
-    handleChange(stateName, e) {
-        this.setState({ [stateName]: e.target.value });
+    handleChange = (stateName, e) => {
+        var property = {...this.state.newData}
+        property[stateName] = e.target.value;
+        this.setState({ newData : property})
+    }
+
+    submitData = () => {
+        var submission = this.state.newData;
+        this.props.onAddData(submission);
     }
 
     render(){
@@ -27,8 +35,8 @@ export default class AddEntry extends React.Component{
                 <input type="text" placeholder="Debit" defaultValue={this.state.newData.debit} onChange={this.handleChange.bind(this, 'debit')} />
                 <input type="text" placeholder="Credit" defaultValue={this.state.newData.credit} onChange={this.handleChange.bind(this, 'credit')}/>
                 <input type="text" placeholder="Category" defaultValue={this.state.newData.category} onChange={this.handleChange.bind(this, 'category')}/>
-                <input type="text" placeholder="Currency" defaultValue={this.state.newData.currency} onChange={this.handleChange.bind(this, 'currency')} />
-                <button onClick={() => this.addData(this.state.newData)}>Submit</button>
+                <input type="text" placeholder="Currency" defaultValue={this.state.newData.currency} onChange={this.handleChange.bind(this, 'df')} />
+                <button onClick={this.submitData}>Submit</button>
             </div>
         );
     }
