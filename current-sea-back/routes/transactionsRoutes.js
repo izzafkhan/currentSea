@@ -7,10 +7,9 @@ const transactionsRouter = express.Router();
 module.exports = function router() {
   transactionsRouter.use((err, req, res, next) => {
       if (!req.user) {
-          res.status(401).send('User not logged in');
-      } else {
-          next();
+          res.status(401).json({message: 'User not logged in'});
       }
+      next();
   });
 
   transactionsRouter.route('/add_transactions')
