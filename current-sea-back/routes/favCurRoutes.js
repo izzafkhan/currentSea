@@ -80,7 +80,7 @@ module.exports = function router() {
       }
     });
 
-  favCurRouter.route('/get_historic_rate').get((req, res) => {
+  favCurRouter.route('/gethistoricrate').get((req, res) => {
     const { from, to, date } = req.query;
     db.query('SELECT ct_rate FROM currency_table WHERE ct_from = ? AND ct_to = ? AND ct_date = ?',
       [from, to, date], (err, results, fields) => {
@@ -92,6 +92,22 @@ module.exports = function router() {
           res.status(200).json({ rate: results[0].ct_rate });
         } else {
           res.status(200).json({ message: 'No rates for these currencies and this day' });
+        }
+      });
+  });
+
+  favCurRouter.route('/getrate').get((req, res) => {
+    const { from, to } = req.query;
+    db.query('select * from currency_table where ct_from = ? AND ct_to = ? order by ct_date desc LIMIT 1;',
+      [from, to], (err, results, fields) => {
+        if (err) {
+          debug(err);
+          res.status(500).json({ message: 'Some error occurred' });
+        }
+        if (results.length > 0) {
+          res.status(200).json({ rate: results[0].ct_rate });
+        } else {
+          res.status(200).json({ message: 'No current rate for these currencies.' });
         }
       });
   });
