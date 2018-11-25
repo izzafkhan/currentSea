@@ -14,12 +14,10 @@ module.exports = function router() {
         } = req.body;
 
         // tt_transaction_id should be able to auto_increment itself without user input
-        db.query('INSERT INTO tt_transaction_table(',
-          'tt_user_id, tt_account_id, tt_date, tt_event_id, ',
-          'tt_debit_amount, tt_credit_amount, tt_currency_abv) VALUES (?, ?, ?, ?, ?, ?, ?, ?);',
+        db.query('INSERT INTO transaction_table(tt_user_id, tt_account_id, tt_date, tt_event_id, tt_debit_amount, tt_credit_amount, tt_currency_abv_changed) VALUES (?, ?, ?, ?, ?, ?, ?);',
           [userId, accountId, date, eventId, debitAmt, creditAmt, currencyId], (results, err) => {
             if (err) {
-              throw err;
+              debug('Error has occurred(add)');
             }
             debug(results);
           });
@@ -43,7 +41,7 @@ module.exports = function router() {
               'tt_debit_amount = ?, tt_credit_amount = ?, tt_currency_abv = ? WHERE tt_transaction_id = ?;',
               [userId, accountId, date, eventId, debitAmt, creditAmt, currencyId, transactionId], (err) => {
                 if (err) {
-                  throw err;
+                  debug('Error has occurred(edit)');
                 }
                 debug(results);
               });
@@ -65,7 +63,7 @@ module.exports = function router() {
             db.query('DELETE FROM tt_transaction_table WHERE tt_transaction_id = ?;',
               [transactionId], (results) => {
                 if (err) {
-                  throw err;
+                  debug('Error has occurred(delete)');
                 }
                 debug(results);
               });
