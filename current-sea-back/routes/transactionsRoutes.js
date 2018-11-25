@@ -5,11 +5,11 @@ const db = require('./db');
 const transactionsRouter = express.Router();
 
 module.exports = function router() {
-  transactionsRouter.use((err, req, res, next) => {
-    if (!req.user) {
-      res.status(500).send('User does not appear to exist.');
-    } else {
+  transactionsRouter.use((req, res, next) => {
+    if (req.user) {
       next();
+    } else {
+      res.status(401).json({ message: 'User does not appear to exist' });
     }
   });
 
