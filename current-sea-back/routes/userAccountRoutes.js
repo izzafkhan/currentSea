@@ -64,6 +64,7 @@ module.exports = function router() {
           if (!user) return res.status(401).json({ message: 'Invalid credentials' });
           req.login(user, (err2) => {
             if (err2) return res.status(500).json({ message: 'Server error' });
+            debug('username login:', req.user.username);
             return res.status(200).json({ message: 'user authenticated' });
           });
         })(req, res, next);
