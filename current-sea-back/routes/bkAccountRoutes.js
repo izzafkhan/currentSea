@@ -8,6 +8,7 @@ module.exports = function router() {
   bkAccountRouter.route('/add_account')
     .post((req, res) => {
       if (req.user) {
+        debug('this is username: ', req.user.username);
         const {
           accountName, accountId,
         } = req.body;
