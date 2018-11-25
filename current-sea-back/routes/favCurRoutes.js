@@ -20,7 +20,7 @@ module.exports = function router() {
     });
   });
 
-  favCurRouter.route('/add_fav_curr')
+  favCurRouter.route('/add_fav_cur')
     .post((req, res) => {
       if (req.user) {
         const { currencyFrom, currencyTo } = req.body;
@@ -62,7 +62,7 @@ module.exports = function router() {
             }
             debug(results);
             if (results.length === 0) {
-              res.status(401).json({ message: 'Currency already unfavorited.' });
+              res.status(401).json({ message: 'Currency not found.' });
             } else {
               db.query('DELETE FROM favorite_currency_table WHERE ft_user_id = ? AND ft_from = ? AND ft_to = ?',
                 [req.user.username, currencyFrom, currencyTo], (err2, results2, fields2) => {
@@ -70,7 +70,7 @@ module.exports = function router() {
                     debug(err2);
                     res.status(500).json({ message: 'Some error occurred' });
                   } else {
-                    res.status(201).json({ message: 'Currencies inserted successfully' });
+                    res.status(201).json({ message: 'Currencies unfavorited.' });
                   }
                 });
             }
