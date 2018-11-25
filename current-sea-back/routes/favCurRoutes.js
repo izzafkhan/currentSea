@@ -81,7 +81,7 @@ module.exports = function router() {
     });
 
   favCurRouter.route('/gethistoricrate').get((req, res) => {
-    const { from, to, date } = req.query;
+    const { from, to, date } = req.body;
     db.query('SELECT ct_rate FROM currency_table WHERE ct_from = ? AND ct_to = ? AND ct_date = ?',
       [from, to, date], (err, results, fields) => {
         if (err) {
@@ -97,7 +97,8 @@ module.exports = function router() {
   });
 
   favCurRouter.route('/getrate').get((req, res) => {
-    const { from, to } = req.query;
+    const { from, to } = req.body;
+    debug('FROM: ', from, ', TO: ', to);
     db.query('select * from currency_table where ct_from = ? AND ct_to = ? order by ct_date desc LIMIT 1;',
       [from, to], (err, results, fields) => {
         if (err) {
