@@ -9,7 +9,7 @@ module.exports = function router() {
     if (req.user) {
       next();
     } else {
-      res.status(401).json({ message: 'User does not appear to exist' });
+      res.status(401).json({ message: 'User is not logged in' });
     }
   });
 
@@ -17,8 +17,8 @@ module.exports = function router() {
     .get((req, res) => {
       db.query('SELECT * FROM transaction_table WHERE tt_user_id=?', [req.user.username], (err, results, fields) => {
         if (err) {
+          debug('Error occurred while getting the transactions from the transactions table', err);
           res.status(500).json({ message: 'Internal SQL server error' });
-          debug(err);
         } else {
           res.status(200).json(results);
         }
@@ -37,10 +37,11 @@ module.exports = function router() {
         [req.user.username, accountId, date, eventId, debitAmt, creditAmt, currencyId],
         (err, results) => {
           if (err) {
-            throw err;
+            debug('An Error occurred while adding a transaction from transactions table', err);
+            res.status(500).json({ message: 'Error occurred adding a transaction' });
+          } else {
+            res.status(201).json({ message: 'Transaction created' });
           }
-          debug(results);
-          res.status(201).json({ message: 'Transaction created' });
         });
     });
 
@@ -57,9 +58,11 @@ module.exports = function router() {
             [req.user.username, accountId, date, eventId, debitAmt, creditAmt, currencyId, transactionId],
             (err, results, fields) => {
               if (err) {
-                throw err;
+                debug('An Error occurred while editing a transaction from transactions table', err);
+                res.status(500).json({ message: 'Error occurred editing a transaction' });
+              } else {
+                res.status(200).json({ message: 'Transaction edited successfully' });
               }
-              res.status(200).json({ message: 'Transaction edited successfully' });
             });
         }
       });
@@ -73,12 +76,14 @@ module.exports = function router() {
           if (result.length === 0) {
             res.status(401).json({ message: 'Transaction id does not exist.' });
           } else {
-            db.query('DELETE FROM transaction_table WHERE tt_transaction_id = ?;',
-              [transactionId], (err, results, fields) => {
+            db.query('DELETE FROM transaction_table WHERE tt_transaction_id = ? AND tt_user_id = ?',
+              [transactionId, req.user.username], (err, results, fields) => {
                 if (err) {
-                  throw err;
+                  debug('An Error occurred while deleting  a transaction from transactions table', err);
+                  res.status(500).json({ message: 'Error occurred deleting a transaction' });
+                } else {
+                  res.status(200).json({ message: 'Transaction deleted succsessfully' });
                 }
-                res.status(200).json({ message: 'Transaction deleted succsessfully' });
               });
           }
         });
