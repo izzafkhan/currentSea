@@ -80,7 +80,7 @@ module.exports = function router() {
       }
     });
 
-  favCurRouter.route('/getrate').get((req, res) => {
+  favCurRouter.route('/get_historic_rate').get((req, res) => {
     const { from, to, date } = req.query;
     db.query('SELECT ct_rate FROM currency_table WHERE ct_from = ? AND ct_to = ? AND ct_date = ?',
       [from, to, date], (err, results, fields) => {
