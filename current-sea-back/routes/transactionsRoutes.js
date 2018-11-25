@@ -82,7 +82,7 @@ module.exports = function router() {
                   debug('An Error occurred while deleting  a transaction from transactions table', err);
                   res.status(500).json({ message: 'Error occurred deleting a transaction' });
                 } else {
-                  res.status(200).json({ message: 'Transaction deleted succsessfully' });
+                  res.status(200).json({ message: 'Transaction deleted successfully' });
                 }
               });
           }
