@@ -13,6 +13,18 @@ module.exports = function router() {
     }
   });
 
+  transactionsRouter.route('/get_transactions')
+    .get((req, res) => {
+      db.query('SELECT * FROM transaction_table WHERE tt_user_id=?', [req.user.username], (err, results, fields) => {
+        if (err) {
+          res.status(500).json({ message: 'Internal SQL server error' });
+          debug(err);
+        } else {
+          res.status(200).json(results);
+        }
+      });
+    });
+
   transactionsRouter.route('/add_transactions')
     .post((req, res) => {
       debug(req.user);
