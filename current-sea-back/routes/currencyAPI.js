@@ -26,6 +26,7 @@ module.exports = function router() {
         }
 
         debug('Database populated');
+        res.status(200).json({ message: 'Database updated' });
       } else {
         res.status(401).json({ message: 'Action not allowed' });
       }
