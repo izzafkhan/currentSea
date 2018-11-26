@@ -87,20 +87,25 @@ module.exports = function router() {
   bkAccountRouter.route('/delete_account')
     .delete((req, res) => {
       const { accountId, accountName } = req.body;
-      db.query('SELECT account_name from account_table where at_user_id = ? AND at_account_name = ? AND at_account_id = ?;', [req.user.username, accountName, accountId], (err, results, fields) => {
-        if (results.length !== 0) {
-          db.query('DELETE FROM account_table WHERE at_user_id = ? AND at_account_name = ? OR at_account_id = ?;', [req.user.username, accountName, accountId], (err, results, fields) => {
-            if (err) {
-              debug('An error occurred while deleting a bank account', err);
-              res.status(500).json({ message: 'Some error occurred deleting a bank account' });
-            } else {
-              res.status(200).json({ message: 'Bank account deleted successfully' });
-            }
-          });
-        } else {
-          res.status(401).json({ message: 'bank account not found.' });
-        }
-      });
+      db.query('SELECT * from account_table where at_user_id = ? AND at_account_name = ? AND at_account_id = ?',
+        [req.user.username, accountName, accountId], (err, results, fields) => {
+          if (err) {
+            debug('Error occurred in /delete_account', err);
+            res.status(500).json({ message: 'Some error occurred' });
+          } else if (results.length > 0) {
+            db.query('DELETE FROM account_table WHERE at_user_id = ? AND at_account_name = ? OR at_account_id = ?',
+              [req.user.username, accountName, accountId], (err2, results2, fields2) => {
+                if (err2) {
+                  debug('An error occurred while deleting a bank account', err2);
+                  res.status(500).json({ message: 'Some error occurred deleting a bank account' });
+                } else {
+                  res.status(200).json({ message: 'Bank account deleted successfully' });
+                }
+              });
+          } else {
+            res.status(404).json({ message: 'bank account not found.' });
+          }
+        });
     });
   return bkAccountRouter;
 };
