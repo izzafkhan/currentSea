@@ -29,16 +29,20 @@ export default class Transaction extends React.Component {
             showAddEntry: false,
 
             data: [{
-                'id': '0',
+                'transactionId': '0',
                 'edit': false
             },
             {
-                'id': '1',
-                'date': '11/21/2018',
+                'accountId' : 'Wells Fargo Bank Account',
+                'userID' : 'user',
+                'transactionId': '1',
+                'date': '2018/11/21',
+                'eventId': 'Side Expense',
                 'description': 'Test Entry',
+                'debitAmt' : '100.00',
+                'creditAmt': '100.00',
                 'balance': '100.00',
-                'df': '$',
-                'category': 'Side Expense',
+                'currencyId': 'USD',
                 'edit': false
             }]
 
@@ -48,7 +52,6 @@ export default class Transaction extends React.Component {
         this.expenses = this.expenses.bind(this);
         this.addRow = this.addRow.bind(this);
         this.editRow = this.editRow.bind(this);
-        this.renderTable = this.renderTable.bind(this);
         this.addData = this.addData.bind(this);
     }
 
@@ -64,36 +67,31 @@ export default class Transaction extends React.Component {
         }
     }
 
-    editRow = (id) => {
+    editRow = (transactionId) => {
         const { data } = this.state
-        if (data[id].edit === false) {
-            data[id].edit = true;
+        if (data[transactionId].edit === false) {
+            data[transactionId].edit = true;
             this.setState({data});
         } else {
-            data[id].edit = false;
+            data[transactionId].edit = false;
             this.setState({data});
         }
     }
 
     addData = (newData) => {
+        var data = this.state.data;
         var indexedData = newData;
-        indexedData.id = this.state.data.length;
-        indexedData.balance = newData.debit;
+        indexedData.transactionID = '0';
+        indexedData.edit = false;
+        indexedData.balance = newData.debitAmt;
         this.setState({
             showAddEntry: false
             
         })
-        this.setState( prev => ({
-            data: [...prev.data, indexedData]
-        }))
-    }
-
-    renderTable() {
-        return (
-            <tr>
-                <td>Hello</td>
-            </tr>
-        );
+        var joined = indexedData + data;
+        this.setState({
+            data: joined
+        })
     }
 
     get(event) {
@@ -144,17 +142,17 @@ export default class Transaction extends React.Component {
                         <tbody>
                             {this.state.data.map(row => {
                                 return (
-                                    <tr key={`row-${row.id}`}>
+                                    <tr key={`row-${row.transactionId}`}>
                                         <td colSpan='6'>
                                             <table>
                                                 <tbody>
                                                     <tr id='nested'>
-                                                        <td><button onClick={e => this.editRow(row.id)}>{row.id}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.id)}>{row.date}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.id)}>{row.description}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.id)}>{row.balance}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.id)}>{row.df}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.id)}>{row.category}</button></td>
+                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.transactionId}</button></td>
+                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.date}</button></td>
+                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.description}</button></td>
+                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.balance}</button></td>
+                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.currencyId}</button></td>
+                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.event}</button></td>
                                                     </tr>
                                                     {row.edit ?
                                                         <tr>
