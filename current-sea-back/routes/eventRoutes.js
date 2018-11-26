@@ -19,7 +19,7 @@ module.exports = function router() {
         });
 
     eventRouter.route('/edit_event')
-        .post((req, res) => {
+        .put((req, res) => {
             const { eventId, eventAbv, transactionId, eventName } = req.body;
             db.query('UPDATE event_table SET et_event_abv = ?, et_transaction_id = ?, et_event_name = ? WHERE et_event_id = ? and et_user_id=?;', [eventAbv, transactionId, eventName, eventId, req.user.username], (err,results) => {
                 if (err) {
