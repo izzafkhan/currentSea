@@ -30,7 +30,6 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, '/static/'))); // Serve static files from static folder
 
 app.use(['/event'], (req, res, next) => {
-    console.log('Inside event middleware');
     if (!req.user) {
         res.status(401).json({message: 'User not logged in'});
     } else {
