@@ -7,9 +7,9 @@ import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css'
 
 var data = [
     {
-         acctNum: '2193', acctName : 'Food'
+         acctNum: '2193', acctName : 'Food', type: 'debit'
     }
-    ,{acctNum: '2348203', acctName : 'Cash'}
+    ,{acctNum: '2348203', acctName : 'Cash', type: 'credit'}
 ];
 function onInsert(row){
     let newRow = '';

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class AccountMenu extends React.Component{
+export default class DebitMenu extends React.Component{
 
 constructor(){
     super();
@@ -8,6 +8,14 @@ constructor(){
         buttonText : "Select Account",
         selectedAccount: "",
         menu : false,
+
+        data : [
+            {
+                acctNum: '2193', 
+                acctName : 'Food', 
+                type: 'debit'
+            }
+        ]
     }
     this.showMenu = this.showMenu.bind(this);
     this.hideMenu = this.hideMenu.bind(this);
@@ -40,12 +48,14 @@ render(){
         <div>
             <button onClick={this.showMenu}>{this.state.buttonText}</button>
             { this.state.menu ? (
-                <div id="currencyHolder">
-                    Placeholder
-                    {/*
-                        Let's use the ajax here to get a database call for
-                        the info in the accounts.
-                    */}
+                <div id="accountHolder">
+                    {this.state.data.map(row => {
+                        return (
+                            <button key={`row-${row.transactionId}`} onClick={() => this.setText(row.acctName)}>
+                                {row.acctNum} : {row.acctName}
+                            </button>
+                        )
+                    })}
                 </div>
             ) : (null) }
         </div>

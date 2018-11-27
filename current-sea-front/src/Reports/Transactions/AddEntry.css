@@ -1,0 +1,7 @@
+#addTable th, #addTable input{
+    width: 120px;
+}
+
+#newEntry td{
+    width: 120px;
+}
