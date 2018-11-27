@@ -27,7 +27,6 @@ module.exports = function router() {
 
   transactionsRouter.route('/add_transactions')
     .post((req, res) => {
-      debug(req.user);
       const {
         accountId, date, eventId, debitAmt, creditAmt, currencyId,
       } = req.body;
@@ -40,7 +39,7 @@ module.exports = function router() {
             debug('An Error occurred while adding a transaction from transactions table', err);
             res.status(500).json({ message: 'Error occurred adding a transaction' });
           } else {
-            res.status(201).json({ message: 'Transaction created' });
+            res.status(201).json({ transactionID: results.insertId });
           }
         });
     });
