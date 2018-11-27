@@ -5,6 +5,18 @@ const db = require('./db');
 const bkAccountRouter = express.Router();
 
 module.exports = function router() {
+  bkAccountRouter.route('/list_accounts')
+    .get((req, res) => {
+      db.query('SELECT at_account_id, at_account_name FROM account_table WHERE at_user_id = ?;', [req.user.username], (err, results, fields) => {
+        if (err) {
+          debug(err);
+          res.status(500).json({ message: 'Some error occurred' });
+        } else {
+          res.status(200).json({ results });
+        }
+      });
+    });
+
   bkAccountRouter.route('/add_account')
     .post((req, res) => {
       if (req.user) {
