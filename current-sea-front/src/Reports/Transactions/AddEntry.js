@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker'
 import moment from "moment"
 import "react-datepicker/dist/react-datepicker.css";
 import './AddEntry.css'
+import $ from 'jquery'
 
 export default class AddEntry extends React.Component{
 
@@ -13,13 +14,12 @@ export default class AddEntry extends React.Component{
 
         this.state = {
             newData : {
-                'description': '',
-                'balance' : 0,
-                'categories' : [],
+                startDate : moment().format('YYYY-MM-DD'),
                 'currencyId': '',
-                startDate : moment()
+                'description': 'Description',
+                'balance' : 0.00,
+                internalEntries : [],
             },
-            internalEntries : [],
             enteringData : false,
         }
         this.setDate = this.setDate.bind(this);
@@ -36,22 +36,22 @@ export default class AddEntry extends React.Component{
     }
 
     addinfo = () => {
-        const internalEntries = this.state.internalEntries.slice(0);
+        var internalEntries = this.state.newData.internalEntries.slice(0);
 
         let newRow = {
-            'id' : this.state.internalEntries.length,
             'account' : '9000 Bank',
             'debit' : 0,
             'credit' : 0,
             'event' : 'Party',
-            'currency' : 'USD' 
+
+            'id' : this.state.newData.internalEntries.length,
         };
 
         internalEntries.push(newRow);
-        this.setState({
-            internalEntries: internalEntries,
-            enteringData : true
-        });
+        
+        this.state.newData.internalEntries = internalEntries;
+        this.state.enteringData = true;
+        this.forceUpdate();
     }
 
     handleDescription(e){
@@ -60,12 +60,18 @@ export default class AddEntry extends React.Component{
         this.setState({newData});
     }
 
+    handleCurrency(e){
+        let newData = Object.assign({}. this.state.newData);
+        newData['currencyId'] = e.target.value;
+        this.setState({newData})
+    }
+
     handleChange(row, entry, event) {
         row[entry] = event.target.value;
     }
 
     submitData(){
-        let internalEntries = Object.assign({}, this.state.internalEntries);
+        let internalEntries = Object.assign({}, this.state.newData.internalEntries);
         var sum = 0;
         var credit = '';
         let newData = Object.assign({}, this.state.newData);
@@ -73,10 +79,6 @@ export default class AddEntry extends React.Component{
             sum += internalEntries[i]['debit'];
             if(internalEntries[i]['credit'] > 0){
                 credit = internalEntries[i]['account'];
-                /*
-                    Currency conversion to the first currency in the list??
-                */
-
             }
             if(newData['categories'].length == 0){
                 newData['categories'].push(internalEntries[i]['event']);
@@ -92,46 +94,60 @@ export default class AddEntry extends React.Component{
             }
         }
         newData['balance'] = sum;
-        newData['accountCredit'] = credit;
-        
+        newData['accountCredit'] = credit;        
         this.setState({
             internalEntries: internalEntries,
             newData : newData,
-            enteringData : false,
         });
 
         /*
             Ajax magic 
             Maybe we should send the internal entries back home instead of newData? We need to avoid losing information one way or another.
         */
+       $.ajax({
+           url: "http://localhost:4000/transactions/add_transations",
+           type: "POST",
+           contentType: "application/json; charset=utf-8",
+           crossDomain: true,
+           dataType:"json",
+           xhrFields: {withCredentials:true},
+           data: JSON.stringify(this.state.newData),
+           success: () => {
+                this.setState({enteringData : false});
+           },
+           error: () => {
+                console.log("Error");
+           }
+       })
     
     }
 
     render(){
         return(
             <div>
-                <DatePicker selected={this.state.newData.startDate} onChange={this.setDate} popperPlacement='left-start'/>
-                <input type="text" placeholder="Description" defaultValue={this.state.newData.description} onChange={this.handleDescription} />
                 <table width='600' id='addTable'>
                     <thead>
+                        <tr>
+                            <th><DatePicker selected={this.state.newData.startDate} onChange={this.setDate} popperPlacement='left-start'/></th>
+                            <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
+                            <th><input type="text" placeholder="Currency"  onChange={this.handleCurrency} /></th>
+                        </tr>
                         <tr>
                             <th>Account</th>
                             <th>Debit</th>
                             <th>Credit</th>
                             <th>Event</th>
-                            <th>Currency</th>
                         </tr>
                     </thead>
                     {this.state.enteringData ? 
                     <tbody>
-                        {this.state.internalEntries.map(row => {
+                        {this.state.newData.internalEntries.map(row => {
                             return (
                                 <tr key={`row-${row.id}`}>
-                                    <td><input type="text" defaultValue='9000 Bank' onChange={(e) => this.handleChange(row, 'account', e)}/></td>
-                                    <td><input type="text" defaultValue={0} onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
-                                    <td><input type="text" defaultValue={0} onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
-                                    <td><input type="text" defaultValue='Party' onChange={(e) => this.handleChange(row, 'event', e)}/></td>
-                                    <td><input type="text" defaultValue='USD' onChange={(e) => this.handleChange(row, 'currency', e)} /></td>
+                                    <td><input type="text" onChange={(e) => this.handleChange(row, 'account', e)}/></td>
+                                    <td><input type="text"  onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
+                                    <td><input type="text" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
+                                    <td><input type="text"  onChange={(e) => this.handleChange(row, 'event', e)}/></td>
                                 </tr>
                             )
                         })}

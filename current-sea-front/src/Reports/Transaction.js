@@ -88,7 +88,7 @@ export default class Transaction extends React.Component {
             showAddEntry: false
             
         })
-        var joined = indexedData + data;
+        var joined = indexedData + data;     
         this.setState({
             data: joined
         })
