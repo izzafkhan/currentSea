@@ -53,7 +53,11 @@ export class Header extends Component{
               <Link to="/Currencies/Currencies">{this.state.loggedIn ? 'My Currencies' : ' '}</Link>
               <Link to="/Help">?</Link>
               <Link to="/Login">
-                <button onClick={this.logout} class="loginButton">{this.state.loggedIn ? 'Logout' : 'Login/Signup'}
+                <button onClick={this.logout} class="loginButton">{this.state.loggedIn ? 'Logout' : 'Login'}
+                </button>
+              </Link>
+              <Link to="/SignupForm">
+                <button onClick={this.logout} class="signupButton">{this.state.loggedIn ? 'Logout' : 'Signup'}
                 </button>
               </Link>
               {/* deprecated
