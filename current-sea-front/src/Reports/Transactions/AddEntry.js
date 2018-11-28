@@ -25,6 +25,7 @@ export default class AddEntry extends React.Component{
         this.setDate = this.setDate.bind(this);
         this.addinfo = this.addinfo.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleCurrency = this.handleCurrency.bind(this);
         this.handleDescription = this.handleDescription.bind(this);
         this.submitData = this.submitData.bind(this);
     }
