@@ -1,12 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './Transaction.css';
-import BootstrapTable from 'react-bootstrap-table-next';
 import CurrencyMenu from '../Currencies/CurrencyMenu';
 import AddEntry from './Transactions/AddEntry';
-import EditEntry from './Transactions/EditEntry';
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import { EditorFormatStrikethrough } from 'material-ui/svg-icons';
+import EditEntry from './Transactions/EditEntry';   
 
 export default class Transaction extends React.Component {
     constructor(props) {
