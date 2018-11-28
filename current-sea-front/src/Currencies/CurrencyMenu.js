@@ -1,11 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class CurrencyMenu extends React.Component{
     
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
-            buttonText : "Currency",
+            buttonText : props.editCurrency,
             menu : false,
         }
         this.showMenu = this.showMenu.bind(this);
@@ -33,17 +34,17 @@ class CurrencyMenu extends React.Component{
             buttonText : currency
         });
     }
-
+    
     render(){
         return(
             <div>
                 <button onClick={this.showMenu}>{this.state.buttonText}</button>
                 { this.state.menu ? (
                     <div id="currencyHolder">
-                        <button onClick={ () => this.setText('$')}>USD</button>
-                        <button onClick={ () => this.setText('\u20ac')}>EUR</button>
-                        <button onClick={ () => this.setText('\u00a3')}>GBP</button>
-                        <button onClick={ () =>this.setText('\u00a5')}>JPY</button>
+                        <button onClick={ () => this.setText('USD')}>USD</button>
+                        <button onClick={ () => this.setText('EUR')}>EUR</button>
+                        <button onClick={ () => this.setText('GBP')}>GBP</button>
+                        <button onClick={ () =>this.setText('JPY')}>JPY</button>
                     </div>
                 ) : (null) }
             </div>
@@ -51,6 +52,14 @@ class CurrencyMenu extends React.Component{
     }
     
 }
+
+CurrencyMenu.propTypes = {
+    buttonText : PropTypes.string
+};
+
+CurrencyMenu.defaultProps = {
+    buttonText : "Currency"
+};
 
 {/* Right now for demo purposes I'm only going to have a few currencies to pick from. 
     The idea is that later on more currencies can be added when we have a better grasp on
