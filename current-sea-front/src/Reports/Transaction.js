@@ -48,7 +48,6 @@ export default class Transaction extends React.Component {
         this.expenses = this.expenses.bind(this);
         this.addRow = this.addRow.bind(this);
         this.editRow = this.editRow.bind(this);
-        this.addData = this.addData.bind(this);
     }
 
     addRow = () => {
@@ -72,22 +71,6 @@ export default class Transaction extends React.Component {
             data[transactionId].edit = false;
             this.setState({data});
         }
-    }
-
-    addData = (newData) => {
-        var data = this.state.data;
-        var indexedData = newData;
-        indexedData.transactionID = '0';
-        indexedData.edit = false;
-        indexedData.balance = newData.debitAmt;
-        this.setState({
-            showAddEntry: false
-            
-        })
-        var joined = indexedData + data;     
-        this.setState({
-            data: joined
-        })
     }
 
     get(event) {
@@ -131,7 +114,7 @@ export default class Transaction extends React.Component {
                             <tr>
                                 <th colSpan='6'>
                                     <button id='addEntryButton' onClick={ e => this.addRow()}>+</button>
-                                    {this.state.showAddEntry ? <div><AddEntry onAddData={this.addData}/></div> : <span></span>}
+                                    {this.state.showAddEntry ? <div><AddEntry/></div> : <span></span>}
                                 </th>
                             </tr>
                         </thead>
