@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './SignupForm.css';
 import Header from '../Header.js';
-import { Link, Redirect } from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import $ from 'jquery';
 
 export default class SignupForm extends Component {
@@ -19,18 +19,63 @@ export default class SignupForm extends Component {
             registered: false
         };
 
+        this.handleChange = this.handleChange.bind(this);
+
     }
 
-    onChange = e => {
-        this.setState({
-            [e.target.id]: e.target.value
-        });
-    }
+
     redirectAfterRegistration = () => {
-        if (this.state.registered) return <Redirect to='/' />;
+        if (this.state.registered) return <Redirect to='/'/>;
     }
+
+    handleChange(e) {
+        this.setState({[e.target.name]: e.target.value});
+    }
+
+    fieldIsEmpty = () => {
+        if (this.state.firstName.length == 0 ||
+            this.state.lastName.length == 0 ||
+            this.state.email.length == 0 ||
+            this.state.password.length == 0 ||
+            this.state.confirmPassword.length == 0) {
+
+            return true
+        }
+        return false
+    }
+
+    passwordIsInvalid = () => {
+        if (this.state.password.length < 6) {
+            return true
+        }
+        return false
+    }
+
+    passwordsMissMatch = () => {
+        if (this.state.password == this.state.confirmPassword) {
+            return false
+        }
+        return true
+    }
+
     onSubmit = e => {
         e.preventDefault();
+
+        if (this.fieldIsEmpty()) {
+            alert("Missing registration data")
+            return
+        }
+
+        if (this.passwordIsInvalid()) {
+            alert("Password must be at least 6 characters long")
+            return
+        }
+
+        if (this.passwordsMissMatch()) {
+            alert("The passwords entered do not match")
+            return
+        }
+
         const formData = {
             username: this.state.username,
             firstName: this.state.firstName,
@@ -39,6 +84,7 @@ export default class SignupForm extends Component {
             password: this.state.password,
             confirmPassword: this.state.confirmPassword
         };
+
 
         $.ajax({
             url: "http://localhost:4000/profile/register",
@@ -51,99 +97,49 @@ export default class SignupForm extends Component {
                 this.setState({registered: true});
             },
             error: (data) => {
-                this.setState({password:'', confirmPassword:''});
+                this.setState({password: '', confirmPassword: ''});
                 return alert(data.responseJSON.message);
             }
         });
 
     }
 
-
-
     render() {
         return (
-            <div>
-                {this.redirectAfterRegistration()}
-                <Header />
 
-                <h1 align="center">Register</h1>
-                <div class="inputContainer">
-                    <input
-                        id="username"
-                        placeholder="Username"
-                        value={this.state.username}
-                        onChange={e => this.onChange(e)}
-                    />
-                    <br />
-                    <input
+            <div class="container">
 
-                        id="firstName"
-                        placeholder="First Name"
-                        value={this.state.firstName}
-                        onChange={e => this.onChange(e)}
-                    />
-                    <br />
-
-                    <input
-
-                        id="lastName"
-                        placeholder="Last Name"
-                        value={this.state.lastName}
-                        onChange={e => this.onChange(e)}
-                    />
-                    <br />
-
-                    <input
-
-                        id="email"
-                        placeholder="Email"
-                        value={this.state.email}
-                        onChange={e => this.onChange(e)}
-                    />
-                    <br />
-
-                    <input
-                        id="password"
-                        placeholder="Password"
-                        type="password"
-                        value={this.state.password}
-                        onChange={e => this.onChange(e)}
-                    />
-                    <br />
-
-                    <input
-
-                        id="confirmPassword"
-                        placeholder="Re-enter Password"
-                        type="password"
-                        value={this.state.confirmPassword}
-                        onChange={e => this.onChange(e)}
-                    />
-                    <br />
-
-                    <input
-
-                        id="country"
-                        placeholder="Country"
-                        value={this.state.country}
-                        onChange={e => this.onChange(e)}
-                    />
-                    <br />
-
-
-
-
-                    <br />
-
-                    <button class="btn" onClick={e => this.onSubmit(e)}>  Register </button>
-
-                    <br />
-                    <Link to="/Login">
-                        <h6 class="loginLink"> Already have an account? Click here</h6>
-                    </Link>
+                <div class="titleLabelSignUpContainer">
+                    <label class="signUpTitle">CurrentSea</label>
+                    <label className="titleSubText">Sign up to begin tracking your<br/>interational journeys </label>
                 </div>
-            </div>
 
+
+                <div >
+
+                    <form class="formContainer">
+                        <div className="nameContainer">
+                            <input name="firstName" className="firstNameInput" placeholder="First Name"
+                                   onChange={this.handleChange}/>
+                            <input name="lastName" className = "lastNameInput" placeholder="Last Name" onChange={this.handleChange}/>
+
+                        </div>
+
+                        <input name="email" className="emailSignUp" placeholder="Email" onChange={this.handleChange}/>
+
+                        <input name="password" className="passwordSignUp" placeholder="Password"
+                               onChange={this.handleChange}/>
+
+                        <input name="confirmPassword" className="confirmPasswordSignUp" placeholder="Confirm Password"
+                               onChange={this.handleChange}/>
+                    </form>
+
+                </div>
+
+                <button className="signUpButton" onClick={e => this.onSubmit(e)}>Sign Up</button>
+
+
+            </div>
 
         );
     }
