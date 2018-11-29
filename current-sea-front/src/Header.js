@@ -56,10 +56,6 @@ export class Header extends Component{
                 <button onClick={this.logout} class="loginButton">{this.state.loggedIn ? 'Logout' : 'Login/Signup'}
                 </button>
               </Link>
-              {/* deprecated
-              <a href ="#"> Reports</a>
-              <a href ="#"> Favorite Currencies</a>
-              <a href ="#"> Help</a>*/}
           </div>
         </div>
       </nav>
