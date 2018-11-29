@@ -12,19 +12,16 @@ import CurrencyMenu from '../Currencies/CurrencyMenu';
 
 class Report extends Component {
     constructor(){
+        
         super();
         this.state = {
             balance : true,
-            startDate : moment()
+            
         }
-        this.setDate = this.setDate.bind(this);
+     
     }
 
-    setDate(date){
-        this.setState({
-            startDate : date
-        });
-    }
+  
 
     showBalanceSheet(event){
         this.setState({
@@ -45,9 +42,10 @@ class Report extends Component {
                 <div class="container">
                     <div class="sheets">
                         <h1 align="center">Reports Page</h1>
+
                         <div className="reports-options">
                             <Menu className="reports-menu" setBalanceSheet={this.showBalanceSheet.bind(this)} setIncomeStatement={this.showIncomeStatement.bind(this)}/>
-                            <DatePicker selected={this.state.startDate} onChange={this.setDate} />
+                            
                             <CurrencyMenu />
                         </div>
 

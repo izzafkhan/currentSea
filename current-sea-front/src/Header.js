@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Header.css';
 import { Link } from "react-router-dom";
-
+import $ from 'jquery';
 
 export class Header extends Component{
   constructor(){
@@ -10,6 +10,39 @@ export class Header extends Component{
       loggedIn : true // set to true by default for testing purposes
     };
   }
+  componentWillMount = () => {
+    $.ajax({
+      url: 'http://localhost:4000/profile/loggedin',
+      type: 'GET',
+      crossDomain: true,
+      xhrFields: { withCredentials: true },
+      success: (data) => {
+        if (data.message === 'OK') {
+          console.log(data.message);
+          this.setState({loggedIn: true});
+        } if (data.message === 'NOK'){
+          console.log(data.message);
+          this.setState({loggedIn: false});
+        }
+      }
+    });
+  }
+
+  logout = () => {
+    $.ajax({
+      url:'http://localhost:4000/profile/logout',
+      type: 'GET',
+      crossDomain: true,
+      xhrFields: { withCredentials: true },
+      success: (data) => {
+        this.setState({ loggedIn: false });
+      },
+      error: (data) => {
+        this.setState({ loggedIn: false });
+      }
+    });
+  }
+
   render() {
       return(
         <nav>
@@ -20,7 +53,7 @@ export class Header extends Component{
               <Link to="/Currencies/Currencies">{this.state.loggedIn ? 'My Currencies' : ' '}</Link>
               <Link to="/Help">?</Link>
               <Link to="/Login">
-                <button class="loginButton">{this.state.loggedIn ? 'Logout' : 'Login/Signup'}
+                <button onClick={this.logout} class="loginButton">{this.state.loggedIn ? 'Logout' : 'Login/Signup'}
                 </button>
               </Link>
               {/* deprecated

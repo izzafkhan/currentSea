@@ -1,15 +1,74 @@
 import React, {Component} from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css'
-import './BalanceSheet.css';
+import './BalanceSheet.css'
+import $ from 'jquery';
+import { ActionTabUnselected } from 'material-ui/svg-icons';
+import DatePicker from 'react-datepicker'
+import moment from "moment"
+
+import "react-datepicker/dist/react-datepicker.css";
 
 class BalanceSheet extends Component{
+    
     constructor(props){
         super(props);
+        this.state = {
+            data: [],
+            loading:true,
+            filtered: [],
+            startDate: moment(),
+            endDate: moment()
+         
+        };
+        this.fetchData = this.fetchData.bind(this);
+        this.handleChangeStart = this.handleChangeStart.bind(this);
+        this.handleChangeEnd = this.handleChangeEnd.bind(this);
+    
+
+    }
+    handleChangeStart(date){
+        this.setState({
+            startDate : date
+     
+        });
+    }
+    handleChangeEnd(date){
+        this.setState({
+            endDate : date
+        });
+    }
+    fetchData(state,instance){
+        $.ajax({
+            url: "http://localhost:4000/balance",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: 'json',
+            xhrFields: { withCredentials: true },
+            data: 'userId=test',
+            success: function(data) {
+                this.setState({data:data});
+            }.bind(this),
+            error: (data) => {
+                //alert('error occurred')
+                
+            }
+        }
+      
+    ); 
+
+    }
+    onFilteredChange(){
 
     }
     render(){
-        var { data = [] } = this.props
+        
+        var  data  = [{
+            number:'324', currency:'USD', account:'Food', start:'342',end:'39',change:'-302', date:''
+        },{
+            number:'331', currency:'USD', account:'Party', start:'34422',end:'32349',change:'-3034'
+        }];
         var columns = [{
                 Header: 'Number',
                 accessor: 'number'
@@ -32,11 +91,32 @@ class BalanceSheet extends Component{
         ]
         return(
             <div className="BalanceSheet-table">
+            <label> Start Date: </label>
+            <DatePicker
+                selected={this.state.startDate}
+                selectsStart
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                onChange={this.handleChangeStart}
+            />
+            <label> End Date: </label>
+            <DatePicker
+            
+                selected={this.state.endDate}
+                selectsEnd
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                onChange={this.handleChangeEnd}
+            />
                 <ReactTable
                         data = {data}
                         noDataText="Your spending will appear here"
                         columns = {columns}
+                        onFetchData= {this.fetchData}
+                        filtered = {this.state.filtered}
+                        onFilteredChange = {filtered => this.setState({filtered})}
                     />
+                
             </div>
         );
     }

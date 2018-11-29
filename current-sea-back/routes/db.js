@@ -12,7 +12,7 @@ const config = {
 const dbConnection = mysql.createConnection(config);
 
 dbConnection.connect((err) => {
-  if (err) { throw err; }
+  if (err) { debug('DATABASE NOT CONNECTED'); }
   debug('Connection established with MySQL');
 });
 
