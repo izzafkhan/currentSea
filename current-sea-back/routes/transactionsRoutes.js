@@ -5,13 +5,13 @@ const db = require('./db');
 const transactionsRouter = express.Router();
 
 module.exports = function router() {
-  transactionsRouter.use((req, res, next) => {
+  /*transactionsRouter.use((req, res, next) => {
     if (req.user) {
       next();
     } else {
       res.status(401).json({ message: 'User is not logged in' });
     }
-  });
+  });*/
 
   transactionsRouter.route('/get_transactions')
     .get((req, res) => {
@@ -27,12 +27,12 @@ module.exports = function router() {
 
   transactionsRouter.route('/add_transactions')
     .post((req, res) => {
-      const {
-        accountId, date, eventId, debitAmt, creditAmt, currencyId,
-      } = req.body;
+            debug(req.body, req.user);
+
+            res.status(200).send('Good');
 
       // tt_transaction_id should be able to auto_increment itself without user input
-      db.query('INSERT INTO transaction_table(tt_user_id, tt_account_id, tt_date, tt_event_id,tt_debit_amount, tt_credit_amount, tt_currency_abv_changed) VALUES (?, ?, ?, ?, ?, ?, ?);',
+      /*db.query('INSERT INTO transaction_table(tt_user_id, tt_account_id, tt_date, tt_event_id,tt_debit_amount, tt_credit_amount, tt_currency_abv_changed) VALUES (?, ?, ?, ?, ?, ?, ?);',
         [req.user.username, accountId, date, eventId, debitAmt, creditAmt, currencyId],
         (err, results) => {
           if (err) {
@@ -41,7 +41,7 @@ module.exports = function router() {
           } else {
             res.status(201).json({ transactionID: results.insertId });
           }
-        });
+        });*/
     });
 
   transactionsRouter.route('/edit_transactions')

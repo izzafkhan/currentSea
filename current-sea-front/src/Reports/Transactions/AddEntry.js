@@ -26,6 +26,7 @@ export default class AddEntry extends React.Component{
         this.addinfo = this.addinfo.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleDescription = this.handleDescription.bind(this);
+        this.handleCurrency = this.handleCurrency.bind(this);
         this.submitData = this.submitData.bind(this);
     }
 
@@ -61,7 +62,7 @@ export default class AddEntry extends React.Component{
     }
 
     handleCurrency(e){
-        let newData = Object.assign({}. this.state.newData);
+        let newData = Object.assign({}, this.state.newData);
         newData['currencyId'] = e.target.value;
         this.setState({newData})
     }
@@ -105,12 +106,12 @@ export default class AddEntry extends React.Component{
             Maybe we should send the internal entries back home instead of newData? We need to avoid losing information one way or another.
         */
        $.ajax({
-           url: "http://localhost:4000/transactions/add_transations",
+           url: "http://localhost:4000/transactions/add_transactions",
            type: "POST",
            contentType: "application/json; charset=utf-8",
            crossDomain: true,
            dataType:"json",
-           xhrFields: {withCredentials:true},
+           xhrFields: { withCredentials:true },
            data: JSON.stringify(this.state.newData),
            success: () => {
                 this.setState({enteringData : false});
@@ -128,7 +129,6 @@ export default class AddEntry extends React.Component{
                 <table width='600' id='addTable'>
                     <thead>
                         <tr>
-                            <th><DatePicker selected={this.state.newData.startDate} onChange={this.setDate} popperPlacement='left-start'/></th>
                             <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
                             <th><input type="text" placeholder="Currency"  onChange={this.handleCurrency} /></th>
                         </tr>
