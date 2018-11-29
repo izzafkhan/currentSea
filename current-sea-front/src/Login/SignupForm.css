@@ -1,3 +1,94 @@
-.loginLink{
-    color:black;
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.loginLink {
+    color: black;
+}
+
+.titleLabelSignUpContainer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-size: 50px;
+    margin-bottom: 30px;
+
+}
+
+.signUpTitle {
+    margin-bottom: -10px;
+    font-size: 50px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: bold;
+    color: #00ADA2;
+}
+
+.titleSubText {
+    text-align: center;
+    font-size: small;
+}
+
+.formContainer {
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.nameContainer {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+
+}
+
+.firstNameInput {
+    margin-right: 10px;
+
+    text-indent: 10px;
+    font-size: 20px;
+    border: none;
+    background-color: #E5E5E5;
+}
+
+.lastNameInput {
+    text-indent: 10px;
+    font-size: 20px;
+    border: none;
+    background-color: #E5E5E5;
+}
+
+.emailSignUp {
+    margin-bottom: 10px;
+
+    text-indent: 10px;
+    font-size: 20px;
+    border: none;
+    background-color: #E5E5E5;
+}
+
+.passwordSignUp {
+    margin-bottom: 10px;
+
+    text-indent: 10px;
+    font-size: 20px;
+    border: none;
+    background-color: #E5E5E5;
+}
+
+.confirmPasswordSignUp {
+    margin-bottom: 10px;
+
+    text-indent: 10px;
+    font-size: 20px;
+    border: none;
+    background-color: #E5E5E5;
+
+    margin-bottom: 20px;
+}
+
+.signUpButton {
+    color: white;
+    background-color: #00ADA2;
 }
