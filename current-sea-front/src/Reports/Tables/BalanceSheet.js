@@ -18,7 +18,8 @@ class BalanceSheet extends Component{
             loading:true,
             filtered: [],
             startDate: moment(),
-            endDate: moment()
+            endDate: moment(),
+            search: ''
          
         };
         this.fetchData = this.fetchData.bind(this);
@@ -60,7 +61,8 @@ class BalanceSheet extends Component{
 
     }
     onFilteredChange(){
-
+      
+        
     }
     render(){
         
@@ -88,7 +90,16 @@ class BalanceSheet extends Component{
                 Header: 'Change',
                 accessor: 'change'
             }
+            
         ]
+        if (this.state.search) {
+            data = data.filter(row => {
+                return String(row.number).includes(this.state.search) ||
+                 row.currency.includes(this.state.search) || String(row.start).includes(this.state.search)
+                  || String(row.end).includes(this.state.search) || String(row.change).includes(this.state.search) ||
+                  row.account.includes(this.state.search)
+            })
+        }
         return(
             <div className="BalanceSheet-table">
             <label> Start Date: </label>
@@ -108,11 +119,18 @@ class BalanceSheet extends Component{
                 endDate={this.state.endDate}
                 onChange={this.handleChangeEnd}
             />
+            Search: <input value={this.state.search}
+							onChange={e => this.setState({search: e.target.value})}
+					/>
                 <ReactTable
                         data = {data}
                         noDataText="Your spending will appear here"
                         columns = {columns}
+                        filterable
                         onFetchData= {this.fetchData}
+                        defaultFilterMethod={(filter,row) => 
+                            String(row[filter.id]) === filter.value ||  String(row[filter.id]).toLowerCase() === filter.value.toLowerCase()
+                        }
                         filtered = {this.state.filtered}
                         onFilteredChange = {filtered => this.setState({filtered})}
                     />
