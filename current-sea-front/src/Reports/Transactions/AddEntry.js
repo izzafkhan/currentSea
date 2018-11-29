@@ -15,12 +15,13 @@ export default class AddEntry extends React.Component{
         this.state = {
             newData : {
                 startDate : moment().format('YYYY-MM-DD'),
-                'currencyId': '',
-                'description': 'Description',
-                'balance' : 0.00,
+                currencyId: '',
+                description: 'Description',
+                balance : 0.00,
                 internalEntries : [],
             },
             enteringData : false,
+            dateSetter : moment(),
         }
         this.setDate = this.setDate.bind(this);
         this.addinfo = this.addinfo.bind(this);
@@ -32,7 +33,10 @@ export default class AddEntry extends React.Component{
 
     setDate(date){
         let newData = Object.assign({}, this.state.newData);
-        newData.startDate = date;
+        this.setState({
+            dateSetter : date
+        });
+        newData.startDate = moment(this.state.dateSetter).format('YYYY-MM-DD');
         this.setState({newData});
     }
 
@@ -40,12 +44,12 @@ export default class AddEntry extends React.Component{
         var internalEntries = this.state.newData.internalEntries.slice(0);
 
         let newRow = {
-            'account' : '9000 Bank',
-            'debit' : 0,
-            'credit' : 0,
-            'event' : 'Party',
+            account : '9000 Bank',
+            debit : 0,
+            credit : 0,
+            event : 'Party',
 
-            'id' : this.state.newData.internalEntries.length,
+            id : this.state.newData.internalEntries.length,
         };
 
         internalEntries.push(newRow);
@@ -57,47 +61,28 @@ export default class AddEntry extends React.Component{
 
     handleDescription(e){
         let newData = Object.assign({}, this.state.newData);
-        newData['description'] = e.target.value;
+        newData.description = e.target.value;
         this.setState({newData});
     }
 
     handleCurrency(e){
-        let newData = Object.assign({}. this.state.newData);
-        newData['currencyId'] = e.target.value;
+        let newData = Object.assign({}, this.state.newData);
+        newData.currencyId = e.target.value;
         this.setState({newData})
     }
 
     handleChange(row, entry, event) {
-        row[entry] = event.target.value;
+        row[entry] = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
     }
 
     submitData(){
-        let internalEntries = Object.assign({}, this.state.newData.internalEntries);
         var sum = 0;
-        var credit = '';
         let newData = Object.assign({}, this.state.newData);
-        for(var i = 0; i < internalEntries.length; i++){
-            sum += internalEntries[i]['debit'];
-            if(internalEntries[i]['credit'] > 0){
-                credit = internalEntries[i]['account'];
-            }
-            if(newData['categories'].length == 0){
-                newData['categories'].push(internalEntries[i]['event']);
-            }
-            var duplicate = false;
-            for(var j = 0; j < newData['categories'].length; j++){
-                if(internalEntries[i]['event'] === newData['categories']){
-                    duplicate = true;
-                }
-            }
-            if(duplicate === false){
-                newData['categories'].push(internalEntries[i]['event']);
-            }
+        for(let i = 0; i < this.state.newData.internalEntries.length; i++){
+            sum += this.state.newData.internalEntries[i].debit;
         }
-        newData['balance'] = sum;
-        newData['accountCredit'] = credit;        
+        newData.balance = sum;     
         this.setState({
-            internalEntries: internalEntries,
             newData : newData,
         });
 
@@ -106,7 +91,7 @@ export default class AddEntry extends React.Component{
             Maybe we should send the internal entries back home instead of newData? We need to avoid losing information one way or another.
         */
        $.ajax({
-           url: "http://localhost:4000/transactions/add_transations",
+           url: "http://localhost:4000/transactions/add_transactions",
            type: "POST",
            contentType: "application/json; charset=utf-8",
            crossDomain: true,
@@ -129,7 +114,7 @@ export default class AddEntry extends React.Component{
                 <table width='600' id='addTable'>
                     <thead>
                         <tr>
-                            <th><DatePicker selected={this.state.newData.startDate} onChange={this.setDate} popperPlacement='left-start'/></th>
+                            <th><DatePicker selected={this.state.dateSetter} onChange={this.setDate} popperPlacement='left-start'/></th>
                             <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
                             <th><input type="text" placeholder="Currency"  onChange={this.handleCurrency} /></th>
                         </tr>
@@ -146,8 +131,8 @@ export default class AddEntry extends React.Component{
                             return (
                                 <tr key={`row-${row.id}`}>
                                     <td><input type="text" onChange={(e) => this.handleChange(row, 'account', e)}/></td>
-                                    <td><input type="text"  onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
-                                    <td><input type="text" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
+                                    <td><input type="number"  onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
+                                    <td><input type="number" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
                                     <td><input type="text"  onChange={(e) => this.handleChange(row, 'event', e)}/></td>
                                 </tr>
                             )
