@@ -50,12 +50,11 @@ export default class LoginForm extends React.Component {
 
         if (this.state.email.length == 0 || this.state.password.length == 0) {
             alert("Missing login data")
-            return
         }
 
         const loginData = {
             id: this.state.email,
-            pass: this.state.password
+            password: this.state.password
         }
 
         console.log(loginData)
@@ -83,18 +82,19 @@ export default class LoginForm extends React.Component {
     render() {
         return (
             <div class="rootContainer">
+            {this.redirectAfterLogin()}
                 <div class="container">
                     <div class="titleLabel">
                         <label>CurrentSea</label>
                     </div>
                     <form class="userInfoForm">
                         <fieldset>
-                            <input type="text" className="emailField" placeholder="Email" value={this.state.value}
+                            <input type="text" className="emailField" placeholder="Email" value={this.state.email}
                                    onChange={this.handleEmailChange}/>
                         </fieldset>
                         <fieldset>
                             <input class="passwordField" type="password" placeholder="Password"
-                                   value={this.state.value} onChange={this.handlePasswordChange}/>
+                                   value={this.state.password} onChange={this.handlePasswordChange}/>
                         </fieldset>
                     </form>
                     <div class="loginButtonSignInDiv">
