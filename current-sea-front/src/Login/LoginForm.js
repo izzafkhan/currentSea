@@ -1,135 +1,113 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './LoginForm.css';
-import { Link, Redirect } from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import $ from 'jquery';
 import {Form,BasicText,asField} from 'informed';
 
-const ErrorText = asField(({ fieldState, ...props }) => (
-    <React.Fragment>
-      <BasicText
-        fieldState={fieldState}
-        {...props}
-        
-        style={fieldState.error ? { border: 'solid 1px red' } : null}
-      />
-      {fieldState.error ? (
-        <small style={{ color: 'red' }}>{fieldState.error}</small>
-      ) : null}
-    </React.Fragment>
-  ));
+export default class LoginForm extends React.Component {
 
-export default class LoginForm extends Component{
-    
-    constructor(props){
+    constructor(props) {
         super(props);
-       
-        this.state= {
+
+        this.state = {
             email: "",
             password: "",
-            toRegister : false,
+            toRegister: false,
             loginSuccess: false
         };
-      
-        }
+
+    }
 
     onChange = e => {
         this.setState({
             [e.target.id]: e.target.value
         });
     }
-    
-    onSubmit = e => {
-        e.preventDefault();
-        const loginData = {
-            id: this.state.email,
-            password: this.state.password
-        }
-          $.ajax({
-            url: "http://localhost:4000/profile/login",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            dataType: 'json',
-            xhrFields: { withCredentials: true },
-            data: JSON.stringify(loginData),
-            success: (data) => {
-                this.setState({ loginSuccess: true });
-            },
-            error: (data) => {
-                this.setState({ password: '' });
-                //alert('Invalid credentials');
-            }
-        }
-      
-    ); 
- 
-       
-    }
 
     redirectAfterLogin = () => {
         if (this.state.loginSuccess) return <Redirect to='/Transactions' />;
     }
 
-    regClick = e =>{
+    regClick = e => {
         e.preventDefault();
         this.setState({
-            [e.target.id]: false});
-
-            
-            
+            [e.target.id]: false
+        });
     }
 
-    validateEmail= value=>{
-        this.setState({email: value});
-        return !value ? 'Enter username or email' : null;
-    }
-    
-    validatePassword = value=>{
-        this.setState({password: value});
-        return !value ? 'Enter password' : null;
+    handleEmailChange = event => {
+        event.preventDefault()
+        this.setState({email: event.target.value});
     }
 
-  render() {
-      return(
+    handlePasswordChange = event => {
+        event.preventDefault()
+        this.setState({password: event.target.value});
+    }
 
-        <div>
-            {this.redirectAfterLogin()}
-            
-            <h1 align = "center">Login</h1>
-            <div class= "inputContainer">
-                <Form id= "Login">
-                    <ErrorText placeholder="Email/UserName"
-                        field="email" 
-                        id="emailLabel"
-                        value={this.state.email}
-                        validateOnBlur
-                        validateOnChange
-                        validate={this.validateEmail}
-                        onChange = {e=> this.onChange(e)}/>
-         
-                    <br/>
-                    <ErrorText placeholder="Password" 
-                        field="password" 
-                        id="passwordLabel"
-                        type="password"
-                        value={this.state.password}
-                        validateOnBlur
-                        validateOnChange
-                        validate= {this.validatePassword}
-                        onChange = {e => this.onChange(e)}
-                        />
-                    <button class="loginBtn" onClick = {e => this.onSubmit(e)}> Log In </button>
-                    <h6 class="registerLink"> Not registered? </h6>
-                         <Link to="/Register">
-                        <button class ="registerBtn" id="toRegister"> Click here. </button>
-                        </Link>
-                </Form>    
+    onSubmit = e => {
+        e.preventDefault();
+
+        if (this.state.email.length == 0 || this.state.password.length == 0) {
+            alert("Missing login data")
+            return
+        }
+
+        const loginData = {
+            id: this.state.email,
+            pass: this.state.password
+        }
+
+        console.log(loginData)
+
+        $.ajax({
+                url: "http://localhost:4000/profile/login",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: 'json',
+                xhrFields: {withCredentials: true},
+                data: JSON.stringify(loginData),
+                success: (data) => {
+                    this.setState({loginSuccess: true});
+                    alert('Successful Login')
+                },
+                error: (data) => {
+                    this.setState({password: ''});
+                    alert('Invalid credentials');
+                }
+            }
+        );
+    }
+
+    render() {
+        return (
+            <div class="rootContainer">
+                <div class="container">
+                    <div class="titleLabel">
+                        <label>CurrentSea</label>
+                    </div>
+                    <form class="userInfoForm">
+                        <fieldset>
+                            <input type="text" className="emailField" placeholder="Email" value={this.state.value}
+                                   onChange={this.handleEmailChange}/>
+                        </fieldset>
+                        <fieldset>
+                            <input class="passwordField" type="password" placeholder="Password"
+                                   value={this.state.value} onChange={this.handlePasswordChange}/>
+                        </fieldset>
+                    </form>
+                    <div class="loginButtonSignInDiv">
+                        <button class="loginButtonSignIn" onClick={e => this.onSubmit(e)}>Login</button>
+                    </div>
+                    <div class="registerDiv">
+                        <Link class="regLink" to="/Register">Not registered? Click here.</Link>
+                    </div>
+                    <div class="forgotDiv">
+                        <Link class="forgotLink" to="/">Forgot password?</Link>
+                    </div>
                 </div>
-        </div>
-  
-       
-    );
-  }
-};
-
-
+            </div>
+        );
+    }
+}

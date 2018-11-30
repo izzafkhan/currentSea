@@ -18,7 +18,7 @@ module.exports = function localStrategy(passport) {
             if (id === ut_user_id || id === ut_email) {
               if (MD5(ut_user_id + password) === ut_password) {
                 const user = {
-                  username: ut_user_id, password: ut_password,
+                  username: ut_user_id,
                 };
                 done(err, user);
               } else {

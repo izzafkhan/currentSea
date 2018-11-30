@@ -1,6 +1,6 @@
 nav {
-	background-color: darkslategray;
-	overflow: hidden;
+  background-color: darkslategray;
+  overflow: hidden;
   padding: 1.5em;
 
 
@@ -25,9 +25,19 @@ div.wideDiv{
 
 button.loginButton{
   color: white;
-  background-color: palevioletred;
+  background-color: #00ADA2;
   border-style: solid;
-  border-color: palevioletred;
-  border-radius: 4px;
+  border-color: #00ADA2;
+  border-radius: 2px;
+  font-weight: bold; 
+}
+
+button.signupButton{
+  color: #051642;
+  background-color: #ffffff;
+  border-style: solid;
+  border-color: #ffffff;
+  border-radius: 2px;
+  font-weight: bold; 
 }
 

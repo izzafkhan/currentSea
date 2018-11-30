@@ -26,6 +26,7 @@ export default class AddEntry extends React.Component{
         this.handleChange = this.handleChange.bind(this);
         this.handleCurrency = this.handleCurrency.bind(this);
         this.handleDescription = this.handleDescription.bind(this);
+        this.handleCurrency = this.handleCurrency.bind(this);
         this.submitData = this.submitData.bind(this);
     }
 
@@ -94,7 +95,7 @@ export default class AddEntry extends React.Component{
            contentType: "application/json; charset=utf-8",
            crossDomain: true,
            dataType:"json",
-           xhrFields: {withCredentials:true},
+           xhrFields: { withCredentials:true },
            data: JSON.stringify(this.state.newData),
            success: () => {
                 this.setState({enteringData : false});
