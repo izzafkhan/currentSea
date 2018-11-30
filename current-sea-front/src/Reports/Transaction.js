@@ -44,6 +44,7 @@ export default class Transaction extends React.Component {
         this.addRow = this.addRow.bind(this);
         this.editRow = this.editRow.bind(this);
         this.closeRow = this.closeRow.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
     }
 
     addRow = () => {
@@ -102,8 +103,7 @@ export default class Transaction extends React.Component {
         })
     }
 
-    render() {
-
+    componentWillMount(){
         $.ajax({
             url: "http://localhost:4000/transactions/get_transactions",
             type: "GET",
@@ -120,6 +120,9 @@ export default class Transaction extends React.Component {
                  console.log("Error: Could not update.");
             }
         });
+    }
+
+    render() {
 
         return (
             <div class="myContainer">
