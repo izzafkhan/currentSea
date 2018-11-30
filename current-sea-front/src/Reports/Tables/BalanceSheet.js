@@ -35,12 +35,14 @@ class BalanceSheet extends Component{
         });
     }
     handleChangeEnd(date){
+       
         this.setState({
             endDate : date
         });
+
     }
     fetchData(state,instance){
-        $.ajax({
+       /* $.ajax({
             url: "http://localhost:4000/balance",
             type: "GET",
             contentType: "application/json; charset=utf-8",
@@ -57,7 +59,7 @@ class BalanceSheet extends Component{
             }
         }
       
-    ); 
+    ); */
 
     }
     onFilteredChange(){
@@ -122,6 +124,7 @@ class BalanceSheet extends Component{
             Search: <input value={this.state.search}
 							onChange={e => this.setState({search: e.target.value})}
 					/>
+                   
                 <ReactTable
                         data = {data}
                         noDataText="Your spending will appear here"

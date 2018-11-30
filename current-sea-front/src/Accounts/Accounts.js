@@ -8,13 +8,14 @@ import './Accounts.css';
 import SelectCurrency from 'react-select-currency';
 import {ChromePicker} from 'react-color';
 import { Sketch } from 'react-color/lib/components/sketch/Sketch';
+import { ToggleRadioButtonUnchecked } from 'material-ui/svg-icons';
 
 
 var data = [
     {
-         acctCurr: '$',acctNum: '2193', acctName : 'Food'
+         onBalance: false ,acctNum: '2193', acctName : 'Food'
     }
-    ,{acctCurr: 'Kr', acctNum: '2343', acctName : 'Cash'}
+    ,{onBalance: false , acctNum: '2343', acctName : 'Cash'}
 ];
 
 var data2 = [
@@ -26,9 +27,7 @@ function onInsert(row){
     let newRow = '';
     
 }
-const onSelectedCurrency = currencyAbbrev => {
-    "Selected ${currencyAbbrev}"
-}
+
 
 class CustomInsertModal extends React.Component {
 
@@ -43,14 +42,14 @@ class CustomInsertModal extends React.Component {
       onSave(newRow);
     }
     state = {
-        displayColorPicker: false,
+        displayColorPicker: true,
       };
     
       handleClick = () => {
         this.setState({ displayColorPicker: !this.state.displayColorPicker })
       };
     
-      handleClose = () => {
+      handleClosToggleRadioButtonUncheckede = () => {
         this.setState({ displayColorPicker: false })
       };
     
@@ -136,8 +135,6 @@ export default class Accounts extends Component{
                             insertRow = {true}
                             pagination = {true}
                             cellEdit = {cellEditP}
-                            exportCSV
-                            csvFileName = 'MyAccounts.csv'
                             containerStyle = {
                                 {
                                     width: "50%"
@@ -145,18 +142,10 @@ export default class Accounts extends Component{
                             }
 
             >
-                <TableHeaderColumn  dataField= 'acctCurr'
-                                    headerAlign="center"
-                                    width= "20%"
-                                    dataAlign = "center"
-                                     >
-                    Currency
-                                   
-                
-                </TableHeaderColumn>
+
                 <TableHeaderColumn isKey dataField = 'acctNum'
                                     headerAlign="center"
-                                    width = "40%"
+                                    width = "30%"
                                     dataAlign = "right">
                                     
                     Account Number
@@ -166,6 +155,15 @@ export default class Accounts extends Component{
                     Account Name
                 </TableHeaderColumn>
             </BootstrapTable>
+
+            <TableHeaderColumn isKey dataField = 'acctNum'
+                                headerAlign="center"
+                                width = "30%"
+                                dataAlign = "right"
+                                >
+                                
+                Statement Type 
+            </TableHeaderColumn>
 
 
             </div>
@@ -184,7 +182,7 @@ export default class Accounts extends Component{
                             }
 
             >
-            <TableHeaderColumn dataField = 'evColor'
+                <TableHeaderColumn  dataField = 'evColor'
                                     dataAlign = "right"
                                     width = "20%">
                                     
