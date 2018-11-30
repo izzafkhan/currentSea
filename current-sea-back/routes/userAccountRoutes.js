@@ -11,11 +11,12 @@ module.exports = function router() {
   // UserAccount Flows
   userAccountRouter.route('/')
     .get((req, res) => {
-      // Render respective html, ejs, or pug
-      res.send('Accounts');
-      db.query('SELECT * FROM user_table where ut_user_id = "Test2" ', (err, results, fields) => {
-        if (err) res.send(err);
-        debug(results.length);
+      db.query('SELECT ut_user_id,ut_first_name, ut_last_name, ut_email FROM user_table ', (err, results, fields) => {
+        if (err) {
+          res.status(500).json({ message: 'An internal SQL error occurred' });
+        } else {
+          res.status(200).json(results);
+        }
       });
     });
 
