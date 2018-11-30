@@ -24,6 +24,35 @@ export default class LoginForm extends React.Component {
         });
     }
 
+    
+    onSubmit = e => {
+        e.preventDefault();
+        const loginData = {
+            id: this.state.email,
+            password: this.state.password
+        }
+          $.ajax({
+            url: "http://localhost:4000/profile/login",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: 'json',
+            xhrFields: { withCredentials: true },
+            data: JSON.stringify(loginData),
+            success: (data) => {
+                this.setState({ loginSuccess: true });
+            },
+            error: (data) => {
+                this.setState({ password: '' });
+                alert('Invalid credentials');
+            }
+        }
+      
+    ); 
+ 
+       
+    }
+
     redirectAfterLogin = () => {
         if (this.state.loginSuccess) return <Redirect to='/Transactions' />;
     }
