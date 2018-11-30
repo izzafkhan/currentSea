@@ -2,7 +2,9 @@ import React from 'react';
 import './Transaction.css';
 import CurrencyMenu from '../Currencies/CurrencyMenu';
 import AddEntry from './Transactions/AddEntry';
-import EditEntry from './Transactions/EditEntry';   
+import EditEntry from './Transactions/EditEntry';
+import Header from '../Header';
+import $ from 'jquery'   
 
 export default class Transaction extends React.Component {
     constructor(props) {
@@ -97,6 +99,21 @@ export default class Transaction extends React.Component {
     }
 
     render() {
+
+        $.ajax({
+            url: "http://localhost:4000/transactions/get_transactions",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType:"json",
+            xhrFields: {withCredentials:true},
+            success: () => {
+                this.state.data = JSON.parse();
+            },
+            error: () => {
+                 console.log("Error: Could not update.");
+            }
+        });
 
         return (
             <div class="container">
@@ -200,111 +217,3 @@ export default class Transaction extends React.Component {
         );
     }
 }
-{/*
-<table class="transaction-table">
-    <thead>
-        <tr>
-            <th>
-                <div class="header-name"> Number </div>
-            </th>
-            <th>    
-                <div class="header-name"> Date </div>
-            </th>
-            <th>
-                <div class="header-name"> Description </div>
-            </th>
-            <th>
-                <div class="header-name"> Balance </div>
-            </th>
-            <th>
-                <div class="header-name"> DF </div>
-            </th>
-            <th>
-                <div class="header-name"> Category </div>
-            </th>
-            <th>
-                <div class="header-name"> <button id="addButton">+</button> </div>
-            </th>
-        </tr>
-    </thead>
-    <tbody className="Transaction-body">
-    </tbody>
-</table>*/}
-
-
-{/*<ReactTable
-        data = {data}
-        noDataText="Add a new Transaction"
-        columns = {columns}
-    />*/}
-
-{/*
-        var { data = [] } = this.props
-        var columns = [{
-                Header: 'Number',
-                accessor: 'number'
-            }, {
-                Header: 'Date',
-                accessor : 'date'
-            }, {
-                Header: 'Description',
-                accessor: 'description'
-            }, {
-                Header: 'Balance',
-                accessor: 'balance'
-            }, {
-                Header: 'DF',
-                accessor: 'df'
-            }, {
-                Header: 'Category',
-                accessor: 'category'
-            }
-        ]*/}
-{/*
-<BootstrapTable 
-                        keyField='id'
-                        data={data}
-                        columns = {columns}
-                        expandRow={expandRow}
-                    />
-*/}
-{/*
-var data = [{
-            'id': '0'
-        },
-            {
-            'id': '1',
-            'date': '11/21/2018',
-            'description': 'Test Entry',
-            'balance' : '100.00',
-            'df' : '$',
-            'category': 'Side Expense'
-        }];
-        const columns = [{
-            dataField: 'id',
-            text: ' '
-        }, {
-            dataField: 'date',
-            text: 'Date'
-        }, {
-            dataField: 'description',
-            text: 'Description'
-        }, {
-            dataField: 'balance',
-            text: 'Balance'
-        }, {
-            dataField: 'df',
-            text: 'DF'
-        }, {
-            dataField: 'category',
-            text: 'Category'
-        }];
-
-        const expandRow = {
-            renderer: row => (
-                <div>
-                    <EditEntry></EditEntry>
-                </div>
-            )
-        };
-    */}

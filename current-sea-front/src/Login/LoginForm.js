@@ -67,7 +67,7 @@ export default class LoginForm extends Component{
     }
 
     redirectAfterLogin = () => {
-        if (this.state.loginSuccess) return <Redirect to='/' />;
+        if (this.state.loginSuccess) return <Redirect to='/Transactions' />;
     }
 
     regClick = e =>{

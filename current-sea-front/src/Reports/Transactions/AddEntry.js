@@ -102,7 +102,7 @@ export default class AddEntry extends React.Component{
                 this.setState({enteringData : false});
            },
            error: () => {
-                console.log("Error");
+                console.log("Error: Could not submit");
            }
        })
     
@@ -146,23 +146,3 @@ export default class AddEntry extends React.Component{
         );
     }
 }
-
-{/*
-            <div>
-                <input type="text" value="Description">Description</input>
-                <input type="number" value="Debit">Debit</input>
-                <input type="number" value="Credit">Credit</input>
-                <input type="submit" value="Done">Done</input>
-            </div>*/}
-
-{/*
-
-
-    {<DebitMenu /> option???}
-    <input type="text" placeholder="Credit" defaultValue={this.state.newData.creditAmt} onChange={this.handleChange.bind(this, 'creditAmt')}/>
-    {<CreditMenu /> option???}
-    <input type="text" placeholder="Category" defaultValue={this.state.newData.eventId} onChange={this.handleChange.bind(this, 'eventId')}/>
-    <input type="text" placeholder="Currency" defaultValue={this.state.newData.currencyId} onChange={this.handleChange.bind(this, 'currencyId')} />
-
-
-*/}
