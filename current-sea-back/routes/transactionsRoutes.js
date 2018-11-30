@@ -11,37 +11,47 @@ module.exports = function router() {
     } else {
       res.status(401).json({ message: 'User is not logged in' });
     }
-  });*/
+  }); */
 
   transactionsRouter.route('/get_transactions')
     .get((req, res) => {
-      db.query('SELECT * FROM transaction_table WHERE tt_user_id=?', [req.user.username], (err, results, fields) => {
-        if (err) {
-          debug('Error occurred while getting the transactions from the transactions table', err);
-          res.status(500).json({ message: 'Internal SQL server error' });
-        } else {
-          res.status(200).json(results);
-        }
-      });
+
     });
 
   transactionsRouter.route('/add_transactions')
     .post((req, res) => {
-            debug(req.body, req.user);
+      if (req.user) {
+        const {
+          startDate, currencyId, description, balance, internalEntries,
+        } = req.body;
 
-            res.status(200).send('Good');
-
-      // tt_transaction_id should be able to auto_increment itself without user input
-      /*db.query('INSERT INTO transaction_table(tt_user_id, tt_account_id, tt_date, tt_event_id,tt_debit_amount, tt_credit_amount, tt_currency_abv_changed) VALUES (?, ?, ?, ?, ?, ?, ?);',
-        [req.user.username, accountId, date, eventId, debitAmt, creditAmt, currencyId],
-        (err, results) => {
-          if (err) {
-            debug('An Error occurred while adding a transaction from transactions table', err);
-            res.status(500).json({ message: 'Error occurred adding a transaction' });
-          } else {
-            res.status(201).json({ transactionID: results.insertId });
-          }
-        });*/
+        db.query('INSERT INTO transaction_table (tt_user_id, tt_date, tt_currency, tt_balance, tt_description) VALUES (?,?,?,?,?)',
+          [req.user.username, startDate, currencyId, balance, description],
+          (err, results, fields) => {
+            if (err) {
+              debug('Error occurred in /add_transactions', err);
+              res.status(500).json({ message: 'Error occurred adding a transaction' });
+            } else {
+              const transactionID = results.transactionId;
+              for (let i = 0; i < internalEntries.length; i += 1) {
+                const { account, debit, credit, event } = internalEntries[i];
+                db.query('INSERT INTO details_table (dt_transaction_id, dt_userID, dt_accountID, dt_eventID, dt_debit, dt_credit)',
+                  [transactionID, req.user.username, account, event, debit, credit],
+                  (err2, results2, fields2) => {
+                    if (err2) {
+                      debug('Error occurred in /add_transactions', err);
+                      res.status(500).json({ message: 'Error occurred adding a transaction' });
+                    } else {
+                      debug(results2);
+                    }
+                  });
+                res.status(201).json({ message: 'Transaction inserted' });
+              }
+            }
+          });
+      } else {
+        res.status(401).json({ message: 'User is not logged in' });
+      }
     });
 
   transactionsRouter.route('/edit_transactions')

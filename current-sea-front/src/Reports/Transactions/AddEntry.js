@@ -68,11 +68,7 @@ export default class AddEntry extends React.Component{
 
     handleCurrency(e){
         let newData = Object.assign({}, this.state.newData);
-<<<<<<< HEAD
-        newData['currencyId'] = e.target.value;
-=======
         newData.currencyId = e.target.value;
->>>>>>> base/master
         this.setState({newData})
     }
 
@@ -119,10 +115,7 @@ export default class AddEntry extends React.Component{
                 <table width='600' id='addTable'>
                     <thead>
                         <tr>
-<<<<<<< HEAD
-=======
                             <th><DatePicker selected={this.state.dateSetter} onChange={this.setDate} popperPlacement='left-start'/></th>
->>>>>>> base/master
                             <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
                             <th><input type="text" placeholder="Currency"  onChange={this.handleCurrency} /></th>
                         </tr>
