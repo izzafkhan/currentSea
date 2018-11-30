@@ -3,7 +3,8 @@ import './Transaction.css';
 import CurrencyMenu from '../Currencies/CurrencyMenu';
 import AddEntry from './Transactions/AddEntry';
 import EditEntry from './Transactions/EditEntry';
-import $ from 'jquery'   
+import $ from 'jquery'
+import moment from "moment"   
 
 export default class Transaction extends React.Component {
     constructor(props) {
@@ -25,18 +26,14 @@ export default class Transaction extends React.Component {
 
             showAddEntry: false,
 
-            data: [{
-                'transactionId': '0',
-                'edit': false
-            },
-            {
-                'accountId' : 'Wells Fargo Bank Account',
-                'date': '2018/11/21',
-                'eventId': 'Side Expense',
-                'description': 'Test Entry',
-                'balance': '100.00',
-                'currencyId': 'USD',
-                'edit': false
+            currentData: [{
+                tt_transaction_id : 0,
+                tt_date : '2018 January 1',
+                tt_description: 'New Entries Go Here',
+                tt_balance: 0,
+                tt_currency: 'USD',
+                tt_user_id : 'This will later become categories',
+
             }]
 
         }
@@ -45,6 +42,7 @@ export default class Transaction extends React.Component {
         this.expenses = this.expenses.bind(this);
         this.addRow = this.addRow.bind(this);
         this.editRow = this.editRow.bind(this);
+        this.closeRow = this.closeRow.bind(this);
     }
 
     addRow = () => {
@@ -59,13 +57,18 @@ export default class Transaction extends React.Component {
         }
     }
 
-    editRow = (transactionId) => {
-        const { data } = this.state
-        if (data[transactionId].edit === false) {
-            data[transactionId].edit = true;
+    closeRow(id){
+        this.state.showAddEntry = id;
+        this.forceUpdate();
+    } 
+
+    editRow = (tt_transaction_id) => {
+        const { data } = this.state.currentData;
+        if (data[tt_transaction_id].edit === false) {
+            data[tt_transaction_id].edit = true;
             this.setState({data});
         } else {
-            data[transactionId].edit = false;
+            data[tt_transaction_id].edit = false;
             this.setState({data});
         }
     }
@@ -102,8 +105,10 @@ export default class Transaction extends React.Component {
             crossDomain: true,
             dataType:"json",
             xhrFields: {withCredentials:true},
-            success: () => {
-                this.state.data = JSON.parse();
+            success: (data) => {
+                this.setState({
+                    currentData : data
+                });
             },
             error: () => {
                  console.log("Error: Could not update.");
@@ -126,24 +131,24 @@ export default class Transaction extends React.Component {
                             <tr>
                                 <th colSpan='6'>
                                     <button id='addEntryButton' onClick={ e => this.addRow()}>+</button>
-                                    {this.state.showAddEntry ? <div><AddEntry/></div> : <span></span>}
+                                    {this.state.showAddEntry ? <div><AddEntry addEntry={this.state.showAddEntry} action={this.closeRow}/></div> : <span></span>}
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.data.map(row => {
+                            {this.state.currentData.map(row => {
                                 return (
-                                    <tr key={`row-${row.transactionId}`}>
+                                    <tr key={`row-${row.tt_transaction_id}`}>
                                         <td colSpan='6'>
                                             <table>
                                                 <tbody>
                                                     <tr id='nested'>
-                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.transactionId}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.date}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.description}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.balance}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.currencyId}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.event}</button></td>
+                                                        <td><button onClick={e => this.editRow(row.tt_transaction_id)}>{row.tt_transaction_id}</button></td>
+                                                        <td><button onClick={e => this.editRow(row.tt_transaction_id)}>{(moment(row.tt_date)).format('YYYY-MM-DD')}</button></td>
+                                                        <td><button onClick={e => this.editRow(row.tt_transaction_id)}>{row.tt_description}</button></td>
+                                                        <td><button onClick={e => this.editRow(row.tt_transaction_id)}>{row.tt_balance}</button></td>
+                                                        <td><button onClick={e => this.editRow(row.tt_transaction_id)}>{row.tt_currency}</button></td>
+                                                        <td><button onClick={e => this.editRow(row.tt_transaction_id)}>{row.tt_user_id}</button></td>
                                                     </tr>
                                                     {row.edit ?
                                                         <tr>
