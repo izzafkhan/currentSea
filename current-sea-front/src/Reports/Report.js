@@ -4,8 +4,6 @@ import Menu from './Menu'
 import BalanceSheet from './Tables/BalanceSheet'
 import IncomeStatement from './Tables/IncomeStatement'
 import Header from '../Header'
-import DatePicker from 'react-datepicker'
-import moment from "moment"
 
 import "react-datepicker/dist/react-datepicker.css";
 import CurrencyMenu from '../Currencies/CurrencyMenu';
