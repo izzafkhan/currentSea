@@ -52,6 +52,9 @@
 .loginButtonSignIn {
     color: white;
     background-color: #00ADA2;
+    border-style: solid;
+    border-color: #00ADA2;
+    border-radius: 2px; 
 }
 
 .registerDiv {

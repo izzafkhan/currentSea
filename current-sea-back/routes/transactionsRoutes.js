@@ -15,7 +15,19 @@ module.exports = function router() {
 
   transactionsRouter.route('/get_transactions')
     .get((req, res) => {
-
+      if (req.user) {
+        db.query('SELECT * FROM transaction_table WHERE tt_user_id = ?', [req.user.username],
+          (err, results, fields) => {
+            if (err) {
+              debug('Error occurred in /get_transactions', err);
+              res.status(500).json({ message: 'Error occurred getting transactions' });
+            } else {
+              res.status(200).json(results);
+            }
+          });
+      } else {
+        res.status(401).json({ message: 'User is not logged in' });
+      }
     });
 
   transactionsRouter.route('/add_transactions')
@@ -32,21 +44,26 @@ module.exports = function router() {
               debug('Error occurred in /add_transactions', err);
               res.status(500).json({ message: 'Error occurred adding a transaction' });
             } else {
-              const transactionID = results.transactionId;
+              const transactionID = results.insertId;
+              let query = '';
               for (let i = 0; i < internalEntries.length; i += 1) {
                 const { account, debit, credit, event } = internalEntries[i];
-                db.query('INSERT INTO details_table (dt_transaction_id, dt_userID, dt_accountID, dt_eventID, dt_debit, dt_credit)',
-                  [transactionID, req.user.username, account, event, debit, credit],
-                  (err2, results2, fields2) => {
-                    if (err2) {
-                      debug('Error occurred in /add_transactions', err);
-                      res.status(500).json({ message: 'Error occurred adding a transaction' });
-                    } else {
-                      debug(results2);
-                    }
-                  });
-                res.status(201).json({ message: 'Transaction inserted' });
+                if (i === 0) {
+                  query += `("${transactionID}", "${req.user.username}", "${account}", "${event}", ${debit}, ${credit})`;
+                } else {
+                  query += `, ("${transactionID}", "${req.user.username}", "${account}", "${event}", ${debit}, ${credit})`;
+                }
               }
+              debug(query);
+              db.query('INSERT INTO details_table (dt_transactionID, dt_userID, dt_accountID, dt_eventID, dt_debit, dt_credit) VALUES ' + query,
+                (err2, results2, fields2) => {
+                  if (err2) {
+                    debug('Error occurred in /add_transactions', err2);
+                    res.status(500).json({ message: 'Error occurred adding a transaction' });
+                  } else {
+                    res.status(201).json({ message: 'Transaction inserted' });
+                  }
+                });
             }
           });
       } else {
