@@ -16,12 +16,12 @@ class App extends React.Component{
         return (
           <BrowserRouter>
             <div>
-              <Route path="/" exact component={Home}/>
               <Route path="/Reports/Report" exact component={Report}/>
               <Route path="/Account/Accounts" exact component={Accounts}/>
               <Route path="/Currencies/Currencies" exact component={Currencies}/>
               <Route path="/Help" exact component={Help}/>
-              <Route path="/Login" exact component={Login}/>
+              <Route path="/" exact component={Login}/>
+              <Route path="/Transactions" exact component={Home}/>
               <Route path="/Register" exact component = {SignUpForm}/>
               <Route path="/Accounts" exact component = {Accounts}/>
       

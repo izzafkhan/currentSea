@@ -2,6 +2,7 @@ import React from 'react';
 import './LoginForm.css';
 import {Link, Redirect} from "react-router-dom";
 import $ from 'jquery';
+import {Form,BasicText,asField} from 'informed';
 
 export default class LoginForm extends React.Component {
 
@@ -24,7 +25,7 @@ export default class LoginForm extends React.Component {
     }
 
     redirectAfterLogin = () => {
-        if (this.state.loginSuccess) return <Redirect to='/'/>;
+        if (this.state.loginSuccess) return <Redirect to='/Transactions' />;
     }
 
     regClick = e => {

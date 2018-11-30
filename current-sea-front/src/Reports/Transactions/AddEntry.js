@@ -1,6 +1,4 @@
 import React from 'react';
-import DebitMenu from '../../Account/DebitMenu'
-import CreditMenu from '../../Account/CreditMenu'
 import DatePicker from 'react-datepicker'
 import moment from "moment"
 import "react-datepicker/dist/react-datepicker.css";
@@ -54,7 +52,7 @@ export default class AddEntry extends React.Component{
         };
 
         internalEntries.push(newRow);
-        
+    
         this.state.newData.internalEntries = internalEntries;
         this.state.enteringData = true;
         this.forceUpdate();
@@ -103,7 +101,7 @@ export default class AddEntry extends React.Component{
                 this.setState({enteringData : false});
            },
            error: () => {
-                console.log("Error");
+                console.log("Error: Could not submit");
            }
        })
     
@@ -131,10 +129,10 @@ export default class AddEntry extends React.Component{
                         {this.state.newData.internalEntries.map(row => {
                             return (
                                 <tr key={`row-${row.id}`}>
-                                    <td><input type="text" onChange={(e) => this.handleChange(row, 'account', e)}/></td>
-                                    <td><input type="number"  onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
-                                    <td><input type="number" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
-                                    <td><input type="text"  onChange={(e) => this.handleChange(row, 'event', e)}/></td>
+                                    <td><input type="text" placeholder="Account" onChange={(e) => this.handleChange(row, 'account', e)}/></td>
+                                    <td><input type="number"  placeholder="Debit" onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
+                                    <td><input type="number" placeholder="Credit" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
+                                    <td><input type="text"  placeholder="Event" onChange={(e) => this.handleChange(row, 'event', e)}/></td>
                                 </tr>
                             )
                         })}
@@ -147,23 +145,3 @@ export default class AddEntry extends React.Component{
         );
     }
 }
-
-{/*
-            <div>
-                <input type="text" value="Description">Description</input>
-                <input type="number" value="Debit">Debit</input>
-                <input type="number" value="Credit">Credit</input>
-                <input type="submit" value="Done">Done</input>
-            </div>*/}
-
-{/*
-
-
-    {<DebitMenu /> option???}
-    <input type="text" placeholder="Credit" defaultValue={this.state.newData.creditAmt} onChange={this.handleChange.bind(this, 'creditAmt')}/>
-    {<CreditMenu /> option???}
-    <input type="text" placeholder="Category" defaultValue={this.state.newData.eventId} onChange={this.handleChange.bind(this, 'eventId')}/>
-    <input type="text" placeholder="Currency" defaultValue={this.state.newData.currencyId} onChange={this.handleChange.bind(this, 'currencyId')} />
-
-
-*/}
