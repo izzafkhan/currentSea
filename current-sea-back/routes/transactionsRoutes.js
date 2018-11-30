@@ -61,7 +61,7 @@ module.exports = function router() {
                     debug('Error occurred in /add_transactions', err2);
                     res.status(500).json({ message: 'Error occurred adding a transaction' });
                   } else {
-                    query += `("${  transactionID  }", "${  req.user.username  }", "${  account  }", "${ event  }", ${  debit  }, ${  credit  })`;
+                    res.status(201).json({ message: 'Transaction inserted' });
                   }
                 });
             }
