@@ -1,0 +1,11 @@
+#addTable th, #addTable input{
+    width: 120px;
+}
+
+#addTable{
+    margin: 12px;
+}
+
+#newEntry td{
+    width: 120px;
+}

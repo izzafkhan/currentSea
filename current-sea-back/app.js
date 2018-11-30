@@ -29,13 +29,14 @@ app.use((req, res, next) => {
 
 app.use(express.static(path.join(__dirname, '/static/'))); // Serve static files from static folder
 
-app.use(['/event', '/accounts', '/transactions', '/statement'], (req, res, next) => {
-    if (!req.user) {
-        res.status(401).json({message: 'User not logged in'});
-    } else {
-        next();
-    }
-});
+/*app.use(['/event', '/accounts', '/transactions', '/statement'], (req, res, next) => {
+  debug(req.user);
+  if (!req.user) {
+    res.status(401).json({ message: 'User not logged in' });
+  } else {
+  next();
+  }
+});*/
 
 const userAccountRouter = require('./routes/userAccountRoutes.js')();
 const bkAccountRouter = require('./routes/bkAccountRoutes.js')();

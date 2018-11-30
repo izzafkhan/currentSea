@@ -9,7 +9,40 @@ module.exports = function router() {
   APIRouter.route('/update')
     .put((req, res) => {
       if (req.body.password === 'UPDATE') {
-        const baseCurrencies = ['EUR', 'USD', 'GBP', 'JPY', 'RUB'];
+        const baseCurrencies = ['AUD',
+          'BGN',
+          'BRL',
+          'CAD',
+          'CHF',
+          'CNY',
+          'CZK',
+          'DKK',
+          'EUR',
+          'GBP',
+          'HKD',
+          'HRK',
+          'HUF',
+          'IDR',
+          'ILS',
+          'INR',
+          'ISK',
+          'JPY',
+          'KRW',
+          'MXN',
+          'MYR',
+          'NOK',
+          'NZD',
+          'PHP',
+          'PLN',
+          'RON',
+          'RUB',
+          'SEK',
+          'SGD',
+          'THB',
+          'TRY',
+          'USD',
+          'ZAR'];
+
 
         for (let i = 0; i < baseCurrencies.length; i += 1) {
           const xhr = new XMLHttpRequest();
