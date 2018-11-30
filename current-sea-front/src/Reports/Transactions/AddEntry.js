@@ -54,7 +54,6 @@ export default class AddEntry extends React.Component{
         internalEntries.push(newRow);
     
         this.state.newData.internalEntries = internalEntries;
-        this.state.enteringData = true;
         this.forceUpdate();
     }
 
@@ -98,10 +97,11 @@ export default class AddEntry extends React.Component{
            xhrFields: { withCredentials:true },
            data: JSON.stringify(this.state.newData),
            success: () => {
-                this.setState({enteringData : false});
+                this.props.action(false);
            },
            error: () => {
                 console.log("Error: Could not submit");
+                this.props.action(false);
            }
        })
     
@@ -110,37 +110,40 @@ export default class AddEntry extends React.Component{
     render(){
         return(
             <div>
-                <table width='600' id='addTable'>
-                    <thead>
-                        <tr>
-                            <th><DatePicker selected={this.state.dateSetter} onChange={this.setDate} popperPlacement='left-start'/></th>
-                            <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
-                            <th><input type="text" placeholder="Currency"  onChange={this.handleCurrency} /></th>
-                        </tr>
-                        <tr>
-                            <th>Account</th>
-                            <th>Debit</th>
-                            <th>Credit</th>
-                            <th>Event</th>
-                        </tr>
-                    </thead>
-                    {this.state.enteringData ? 
-                    <tbody>
-                        {this.state.newData.internalEntries.map(row => {
-                            return (
-                                <tr key={`row-${row.id}`}>
-                                    <td><input type="text" placeholder="Account" onChange={(e) => this.handleChange(row, 'account', e)}/></td>
-                                    <td><input type="number"  placeholder="Debit" onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
-                                    <td><input type="number" placeholder="Credit" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
-                                    <td><input type="text"  placeholder="Event" onChange={(e) => this.handleChange(row, 'event', e)}/></td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                    : (null) }
-                </table>
-                <button onClick={this.addinfo}>Add +</button>
-                <button onClick={this.submitData}>Done</button>
+                {this.props.addEntry ? 
+                <div>
+                    <table width='600' id='addTable'>
+                        <thead>
+                            <tr>
+                                <th><DatePicker selected={this.state.dateSetter} onChange={this.setDate} popperPlacement='left-start'/></th>
+                                <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
+                                <th><input type="text" placeholder="Currency"  onChange={this.handleCurrency} /></th>
+                            </tr>
+                            <tr>
+                                <th>Account</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                                <th>Event</th>
+                            </tr>
+                        </thead>
+                    
+                        <tbody>
+                            {this.state.newData.internalEntries.map(row => {
+                                return (
+                                    <tr key={`row-${row.id}`}>
+                                        <td><input type="text" placeholder="Account" onChange={(e) => this.handleChange(row, 'account', e)}/></td>
+                                        <td><input type="number"  placeholder="Debit" onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
+                                        <td><input type="number" placeholder="Credit" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
+                                        <td><input type="text"  placeholder="Event" onChange={(e) => this.handleChange(row, 'event', e)}/></td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>     
+                    </table>
+                    <button onClick={this.addinfo}>Add +</button>
+                    <button onClick={this.submitData}>Done</button>
+                </div>
+                : (null) }
             </div>
         );
     }
