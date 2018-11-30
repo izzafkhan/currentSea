@@ -128,10 +128,10 @@ export default class AddEntry extends React.Component{
                         {this.state.newData.internalEntries.map(row => {
                             return (
                                 <tr key={`row-${row.id}`}>
-                                    <td><input type="text" onChange={(e) => this.handleChange(row, 'account', e)}/></td>
-                                    <td><input type="number"  onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
-                                    <td><input type="number" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
-                                    <td><input type="text"  onChange={(e) => this.handleChange(row, 'event', e)}/></td>
+                                    <td><input type="text" placeholder="Account" onChange={(e) => this.handleChange(row, 'account', e)}/></td>
+                                    <td><input type="number"  placeholder="Debit" onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
+                                    <td><input type="number" placeholder="Credit" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
+                                    <td><input type="text"  placeholder="Event" onChange={(e) => this.handleChange(row, 'event', e)}/></td>
                                 </tr>
                             )
                         })}
