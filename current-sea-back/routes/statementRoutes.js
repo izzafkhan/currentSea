@@ -31,5 +31,13 @@ module.exports = function router() {
     .get((req, res) => {
       // Render respective html, ejs, or pug
     });
+
+  /* Total sum(balance) within each month
+  */
+
+  statementRouter.route('/balancegraph')
+    .get((req, res) => {
+    });
+
   return statementRouter;
 };
