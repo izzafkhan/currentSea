@@ -33,6 +33,7 @@ export default class Transaction extends React.Component {
                 tt_balance: 0,
                 tt_currency: 'USD',
                 tt_user_id : 'This will later become categories',
+                edit : false,
 
             }]
 
@@ -62,14 +63,19 @@ export default class Transaction extends React.Component {
         this.forceUpdate();
     } 
 
-    editRow = (tt_transaction_id) => {
-        const { data } = this.state.currentData;
-        if (data[tt_transaction_id].edit === false) {
-            data[tt_transaction_id].edit = true;
-            this.setState({data});
+    editRow = (e, tt_transaction_id) => {
+        let index = this.state.currentData.findIndex(x=>x.tt_transaction_id==tt_transaction_id);
+        let editData = this.state.currentData;
+        if (editData[index].edit === false) {
+            editData[index].edit = true;
+            this.setState({
+                currentData : editData
+            });
         } else {
-            data[tt_transaction_id].edit = false;
-            this.setState({data});
+            editData[index].edit = false;
+            this.setState({
+                currentData : editData
+            });
         }
     }
 
@@ -143,12 +149,12 @@ export default class Transaction extends React.Component {
                                             <table>
                                                 <tbody>
                                                     <tr id='nested'>
-                                                        <td><button onClick={e => this.editRow(row.tt_transaction_id)}>{row.tt_transaction_id}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.tt_transaction_id)}>{(moment(row.tt_date)).format('YYYY-MM-DD')}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.tt_transaction_id)}>{row.tt_description}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.tt_transaction_id)}>{row.tt_balance}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.tt_transaction_id)}>{row.tt_currency}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.tt_transaction_id)}>{row.tt_user_id}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_transaction_id}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{(moment(row.tt_date)).format('YYYY-MM-DD')}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_balance}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_currency}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_user_id}</button></td>
                                                     </tr>
                                                     {row.edit ?
                                                         <tr>
