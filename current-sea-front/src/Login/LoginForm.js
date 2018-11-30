@@ -69,7 +69,7 @@ export default class LoginForm extends React.Component {
                 data: JSON.stringify(loginData),
                 success: (data) => {
                     this.setState({loginSuccess: true});
-                    alert('Successful Login')
+                    
                 },
                 error: (data) => {
                     this.setState({password: ''});
