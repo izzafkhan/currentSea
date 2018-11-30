@@ -10,7 +10,6 @@ import SignUpForm from './Login/SignupForm'
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Route } from "react-router-dom";
 import Accounts from './Account/Accounts';
-import Transaction from './Reports/Transaction';
 
 class App extends React.Component{
     render() {

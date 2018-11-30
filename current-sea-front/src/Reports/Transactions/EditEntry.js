@@ -6,20 +6,7 @@ export default class EditEntry extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            data: {'accountId' : '',
-            'account' : '',
-            'userID' : '',
-            'transactionId': '',
-            'date': '',
-            'eventId': '',
-            'event' : '',
-            'description': '',
-            'debitAmt' : '',
-            'creditAmt': '',
-            'balance': '',
-            'currencyId': '',
-            'edit': false
-            }
+            data : []
         }
     }
 

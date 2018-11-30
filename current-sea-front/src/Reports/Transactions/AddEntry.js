@@ -1,6 +1,4 @@
 import React from 'react';
-import DebitMenu from '../../Account/DebitMenu'
-import CreditMenu from '../../Account/CreditMenu'
 import DatePicker from 'react-datepicker'
 import moment from "moment"
 import "react-datepicker/dist/react-datepicker.css";
@@ -53,7 +51,7 @@ export default class AddEntry extends React.Component{
         };
 
         internalEntries.push(newRow);
-        
+    
         this.state.newData.internalEntries = internalEntries;
         this.state.enteringData = true;
         this.forceUpdate();

@@ -32,13 +32,9 @@ export default class Transaction extends React.Component {
             },
             {
                 'accountId' : 'Wells Fargo Bank Account',
-                'userID' : 'user',
-                'transactionId': '1',
                 'date': '2018/11/21',
                 'eventId': 'Side Expense',
                 'description': 'Test Entry',
-                'debitAmt' : '100.00',
-                'creditAmt': '100.00',
                 'balance': '100.00',
                 'currencyId': 'USD',
                 'edit': false

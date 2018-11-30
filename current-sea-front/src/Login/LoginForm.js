@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './LoginForm.css';
 import { Link, Redirect } from "react-router-dom";
 import $ from 'jquery';
-import {Form,Text,BasicText,asField} from 'informed';
+import {Form,BasicText,asField} from 'informed';
 
 const ErrorText = asField(({ fieldState, ...props }) => (
     <React.Fragment>
