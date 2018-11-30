@@ -102,8 +102,9 @@ export default class Transaction extends React.Component {
             crossDomain: true,
             dataType:"json",
             xhrFields: {withCredentials:true},
-            success: () => {
-                this.state.data = JSON.parse();
+            success: (data) => {
+                console.log(JSON.parse(data));
+                console.log('Hello');
             },
             error: () => {
                  console.log("Error: Could not update.");
