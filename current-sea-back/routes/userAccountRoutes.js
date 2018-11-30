@@ -86,8 +86,8 @@ module.exports = function router() {
         if (confirmPassword === newPassword) {
           db.query('UPDATE user_table SET ut_password = ? WHERE ut_email = ? AND ut_user_id = ?', [
             MD5(user.utUserId + user.newPassword), utEmail, user.utUserId], (results) => {
-              debug(results);
-            });
+            debug(results);
+          });
         } else {
           res.status(401).json({ message: 'Please ensure that your confirming password matches your new password.' });
         }

@@ -10,7 +10,6 @@ class Home extends Component {
     return (
       <div>
         {/*<Link to="/Reports/Report">View Reports</Link>*/}
-        <Login/>
         <Header/>
         <Transaction/>
       </div>

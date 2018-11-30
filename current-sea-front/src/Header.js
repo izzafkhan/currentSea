@@ -53,14 +53,15 @@ export class Header extends Component{
               {this.state.loggedIn ? <Link to="/Reports/Report"> View Reports</Link> : <span></span>} 
               {this.state.loggedIn ? <Link to="/Currencies/Currencies">My Currencies</Link> : <span></span>}
               {this.state.loggedIn ? <Link to="/Help">?</Link> : <span></span>}
-              <Link to="/Login">
-                <button onClick={this.logout} class="loginButton"><img src="./" alt="lockwhite"></img>{this.state.loggedIn ? 'Logout' : 'Login'}
+              <Link to="/">
+                <button onClick={this.logout} class="loginButton"><img src={require('./Assets/lockwhite.png')} alt="lockwhite" width="8" height="8"></img>{this.state.loggedIn ? 'Logout' : 'Login'}
                 </button>
               </Link>
+              {this.state.loggedIn ?  (null) :
               <Link to="/SignupForm">
-                <button onClick={this.logout} class="signupButton">{this.state.loggedIn ? 'Logout' : 'Signup'}
+                <button onClick={this.logout} class="signupButton"> Sign Up
                 </button>
-              </Link>
+              </Link> }
           </div>
         </div>
       </nav>

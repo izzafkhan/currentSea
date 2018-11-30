@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './SignupForm.css';
-import Header from '../Header.js';
-import {Link, Redirect} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import $ from 'jquery';
 
 export default class SignupForm extends Component {
@@ -33,11 +32,11 @@ export default class SignupForm extends Component {
     }
 
     fieldIsEmpty = () => {
-        if (this.state.firstName.length == 0 ||
-            this.state.lastName.length == 0 ||
-            this.state.email.length == 0 ||
-            this.state.password.length == 0 ||
-            this.state.confirmPassword.length == 0) {
+        if (this.state.firstName.length === 0 ||
+            this.state.lastName.length === 0 ||
+            this.state.email.length === 0 ||
+            this.state.password.length === 0 ||
+            this.state.confirmPassword.length === 0) {
 
             return true
         }

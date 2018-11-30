@@ -16,8 +16,8 @@ export default class Login extends Component{
         <div>
      
             <Header/>
-            {/*<LoginForm/>*/}
-            <SignupForm/>
+            <LoginForm/>
+            {/*<SignupForm/>*/}
 
         </div>
     );
