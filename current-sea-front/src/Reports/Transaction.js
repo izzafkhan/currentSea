@@ -3,7 +3,6 @@ import './Transaction.css';
 import CurrencyMenu from '../Currencies/CurrencyMenu';
 import AddEntry from './Transactions/AddEntry';
 import EditEntry from './Transactions/EditEntry';
-import Header from '../Header';
 import $ from 'jquery'   
 
 export default class Transaction extends React.Component {
@@ -112,7 +111,7 @@ export default class Transaction extends React.Component {
         });
 
         return (
-            <div class="container">
+            <div class="myContainer">
                 <div className="transaction-table">
                     <table id='dataTable' width="600">
                         <thead>
