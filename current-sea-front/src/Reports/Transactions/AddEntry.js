@@ -46,7 +46,7 @@ export default class AddEntry extends React.Component{
             account : '9000 Bank',
             debit : 0,
             credit : 0,
-            event : 'Party',
+            event : '',
 
             id : this.state.newData.internalEntries.length,
         };
