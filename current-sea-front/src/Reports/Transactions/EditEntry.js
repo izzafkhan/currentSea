@@ -15,6 +15,7 @@ export default class EditEntry extends React.Component{
             action_id : 0,
         }
         this.componentWillMount = this.componentWillMount.bind(this);
+        this.addinfo = this.addinfo.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.save = this.save.bind(this);
         this.remove = this.remove.bind(this);
