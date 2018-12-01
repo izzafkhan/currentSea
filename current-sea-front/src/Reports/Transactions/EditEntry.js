@@ -6,7 +6,7 @@ export default class EditEntry extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            data : []
+            data : this.props.editData
         }
     }
 

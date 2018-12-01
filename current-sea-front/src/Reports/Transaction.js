@@ -26,6 +26,7 @@ export default class Transaction extends React.Component {
 
             showAddEntry: false,
             update: false,
+            editableData : {},
 
             currentData: [{
                 tt_transaction_id : 0,
@@ -74,6 +75,23 @@ export default class Transaction extends React.Component {
             this.setState({
                 currentData : editData
             });
+            $.ajax({
+                url: "http://localhost:4000/transactions/get_details",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType:"json",
+                xhrFields: { withCredentials:true },
+                data: JSON.stringify(tt_transaction_id),
+                success: (receivedData) => {
+                    this.setState({
+                        editableData: receivedData
+                    })
+                },
+                error: () => {
+                     console.log("Error: Could not submit");
+                }
+            })
         } else {
             editData[index].edit = false;
             this.setState({
@@ -186,7 +204,7 @@ export default class Transaction extends React.Component {
                                                     {row.edit ?
                                                         <tr>
                                                             <td colSpan='6'>
-                                                                <EditEntry />
+                                                                <EditEntry editData={this.state.editableData}/>
                                                             </td>
                                                         </tr> : <tr></tr>}
                                                 </tbody>
