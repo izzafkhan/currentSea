@@ -112,24 +112,29 @@ module.exports = function router() {
     });
 
   transactionsRouter.route('/delete_transactions')
-    .post((req, res) => {
-      const { transactionId } = req.body;
-      db.query('SELECT tt_transaction_id from transaction_table where tt_transaction_id = ?',
-        [transactionId], (err, result, fields) => {
-          if (result.length === 0) {
-            res.status(401).json({ message: 'Transaction id does not exist.' });
-          } else {
-            db.query('DELETE FROM transaction_table WHERE tt_transaction_id = ? AND tt_user_id = ?',
-              [transactionId, req.user.username], (err, results, fields) => {
-                if (err) {
-                  debug('An Error occurred while deleting  a transaction from transactions table', err);
-                  res.status(500).json({ message: 'Error occurred deleting a transaction' });
-                } else {
-                  res.status(200).json({ message: 'Transaction deleted succsessfully' });
-                }
-              });
-          }
-        });
+    .delete((req, res) => {
+      if (req.user) {
+        const { tt_transaction_id } = req.body;
+        db.query('SELECT tt_transaction_id from transaction_table where tt_transaction_id = ?',
+          [tt_transaction_id], (err, result, fields) => {
+            if (result.length === 0) {
+              res.status(401).json({ message: 'Transaction id does not exist.' });
+            } else {
+              // Also deletes in details_table as foreign key and ON DELETE CASCADE is implemented
+              db.query('DELETE FROM transaction_table WHERE tt_transaction_id = ? AND tt_user_id = ?',
+                [tt_transaction_id, req.user.username], (err, results, fields) => {
+                  if (err) {
+                    debug('An Error occurred while deleting  a transaction from transactions table', err);
+                    res.status(500).json({ message: 'Error occurred deleting a transaction' });
+                  } else {
+                    res.status(200).json({ message: 'Transaction deleted succsessfully' });
+                  }
+                });
+            }
+          });
+      } else {
+        res.status(401).json({ message: 'User is not logged in' });
+      }
     });
   return transactionsRouter;
 };
