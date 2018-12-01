@@ -47,7 +47,7 @@ export default class EditEntry extends React.Component{
             crossDomain: true,
             dataType:"json",
             xhrFields: { withCredentials:true },
-            data: JSON.stringify({'tt_transaction_id' : this.state.action_id}),
+            data: JSON.stringify({'tt_transaction_id' : this.state.action_id}, {'data': this.state.data} ),
             success: () => {
                  this.props.closeAction(this.state.action_id);
                  console.log(this.state.data);
