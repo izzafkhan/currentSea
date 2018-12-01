@@ -72,8 +72,9 @@ module.exports = function router() {
     });
 
   transactionsRouter.route('/get_details')
-    .get((req, res) => {
+    .post((req, res) => {
       if (req.user) {
+        debug(req.body);
         const { tt_transaction_id } = req.body;
         db.query('SELECT * FROM details_table WHERE dt_transactionID = ? AND dt_userID = ?',
           [tt_transaction_id, req.user.username], (err, results, fields) => {
