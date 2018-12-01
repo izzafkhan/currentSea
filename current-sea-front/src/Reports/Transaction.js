@@ -46,6 +46,7 @@ export default class Transaction extends React.Component {
         this.addRow = this.addRow.bind(this);
         this.editRow = this.editRow.bind(this);
         this.closeRow = this.closeRow.bind(this);
+        this.closeEdit = this.closeEdit.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
     }
 
