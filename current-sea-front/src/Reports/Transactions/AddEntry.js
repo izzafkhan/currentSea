@@ -46,7 +46,7 @@ export default class AddEntry extends React.Component{
             account : '9000 Bank',
             debit : 0,
             credit : 0,
-            event : 'Party',
+            event : '',
 
             id : this.state.newData.internalEntries.length,
         };
@@ -76,13 +76,13 @@ export default class AddEntry extends React.Component{
     submitData(){
         var sum = 0;
         let newData = Object.assign({}, this.state.newData);
-        for(let i = 0; i < this.state.newData.internalEntries.length; i++){
-            sum += this.state.newData.internalEntries[i].debit;
+        for(let i = 0; i < newData.internalEntries.length; i++){
+            
+            sum += newData.internalEntries[i].debit;
         }
-        newData.balance = sum;     
-        this.setState({
-            newData : newData,
-        });
+        console.log(sum);
+        this.state.newData.balance = sum;     
+        this.setState({newData});
 
         /*
             Ajax magic 

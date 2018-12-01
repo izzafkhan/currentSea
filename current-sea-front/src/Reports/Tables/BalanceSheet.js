@@ -6,7 +6,6 @@ import $ from 'jquery';
 import { ActionTabUnselected } from 'material-ui/svg-icons';
 import DatePicker from 'react-datepicker'
 import moment from "moment"
-
 import "react-datepicker/dist/react-datepicker.css";
 
 class BalanceSheet extends Component{

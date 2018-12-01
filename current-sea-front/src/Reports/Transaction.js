@@ -25,6 +25,9 @@ export default class Transaction extends React.Component {
             conversion: "0.00",
 
             showAddEntry: false,
+            update: false,
+            editableData : {},
+            editUpdate : false,
 
             currentData: [{
                 tt_transaction_id : 0,
@@ -44,6 +47,9 @@ export default class Transaction extends React.Component {
         this.addRow = this.addRow.bind(this);
         this.editRow = this.editRow.bind(this);
         this.closeRow = this.closeRow.bind(this);
+        this.closeEdit = this.closeEdit.bind(this);
+        this.deleteEdit = this.deleteEdit.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
     }
 
     addRow = () => {
@@ -60,8 +66,27 @@ export default class Transaction extends React.Component {
 
     closeRow(id){
         this.state.showAddEntry = id;
+        this.state.update = true;
         this.forceUpdate();
     } 
+
+    closeEdit(tt_transaction_id){
+        let index = this.state.currentData.findIndex(x=>x.tt_transaction_id==tt_transaction_id);
+        let editData = this.state.currentData;
+        editData[index].edit = false;
+        this.setState({
+            currentData : editData,
+            editUpdate: true,
+        });
+    }
+
+    deleteEdit(tt_transaction_id){
+        let index = this.state.currentData.findIndex(x=>x.tt_transaction_id==tt_transaction_id);
+        let editData = this.state.currentData;
+        var editIndex = editData.indexOf(index);
+        editData.splice(editIndex, 1);
+        this.forceUpdate();
+    }
 
     editRow = (e, tt_transaction_id) => {
         let index = this.state.currentData.findIndex(x=>x.tt_transaction_id==tt_transaction_id);
@@ -69,12 +94,14 @@ export default class Transaction extends React.Component {
         if (editData[index].edit === false) {
             editData[index].edit = true;
             this.setState({
-                currentData : editData
+                currentData : editData,
+                editUpdate : true
             });
         } else {
             editData[index].edit = false;
             this.setState({
-                currentData : editData
+                currentData : editData,
+                editUpdate : true
             });
         }
     }
@@ -102,8 +129,7 @@ export default class Transaction extends React.Component {
         })
     }
 
-    render() {
-
+    componentWillMount(){
         $.ajax({
             url: "http://localhost:4000/transactions/get_transactions",
             type: "GET",
@@ -120,7 +146,32 @@ export default class Transaction extends React.Component {
                  console.log("Error: Could not update.");
             }
         });
+    }
 
+
+    render() {
+        if(this.state.update === true){
+            $.ajax({
+                url: "http://localhost:4000/transactions/get_transactions",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType:"json",
+                xhrFields: {withCredentials:true},
+                success: (data) => {
+                    this.setState({
+                        currentData : data,
+                        update: false
+                    });
+                },
+                error: () => {
+                     console.log("Error: Could not update.");
+                     this.setState({
+                         update : false
+                     })
+                }
+            });
+        }
         return (
             <div class="myContainer">
                 <div className="transaction-table">
@@ -159,7 +210,7 @@ export default class Transaction extends React.Component {
                                                     {row.edit ?
                                                         <tr>
                                                             <td colSpan='6'>
-                                                                <EditEntry />
+                                                                <EditEntry editData={this.state.editableData} id={row.tt_transaction_id} makeEdit={row.edit} deleteAction={this.deleteEdit} closeAction={this.closeEdit}/>
                                                             </td>
                                                         </tr> : <tr></tr>}
                                                 </tbody>
