@@ -67,6 +67,15 @@ export default class Transaction extends React.Component {
         this.forceUpdate();
     } 
 
+    closeEdit(tt_transaction_id){
+        let index = this.state.currentData.findIndex(x=>x.tt_transaction_id==tt_transaction_id);
+        let editData = this.state.currentData;
+        editData[index].edit = false;
+        this.setState({
+            currentData : editData
+        });
+    }
+
     editRow = (e, tt_transaction_id) => {
         let index = this.state.currentData.findIndex(x=>x.tt_transaction_id==tt_transaction_id);
         let editData = this.state.currentData;
@@ -204,7 +213,7 @@ export default class Transaction extends React.Component {
                                                     {row.edit ?
                                                         <tr>
                                                             <td colSpan='6'>
-                                                                <EditEntry editData={this.state.editableData}/>
+                                                                <EditEntry editData={this.state.editableData} id={row.tt_transaction_id} makeEdit={row.edit} action={this.closeEdit}/>
                                                             </td>
                                                         </tr> : <tr></tr>}
                                                 </tbody>
