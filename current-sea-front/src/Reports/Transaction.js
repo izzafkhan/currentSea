@@ -25,6 +25,7 @@ export default class Transaction extends React.Component {
             conversion: "0.00",
 
             showAddEntry: false,
+            update: false,
 
             currentData: [{
                 tt_transaction_id : 0,
@@ -61,6 +62,7 @@ export default class Transaction extends React.Component {
 
     closeRow(id){
         this.state.showAddEntry = id;
+        this.state.update = true;
         this.forceUpdate();
     } 
 
@@ -122,8 +124,30 @@ export default class Transaction extends React.Component {
         });
     }
 
-    render() {
 
+    render() {
+        if(this.state.update === true){
+            $.ajax({
+                url: "http://localhost:4000/transactions/get_transactions",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType:"json",
+                xhrFields: {withCredentials:true},
+                success: (data) => {
+                    this.setState({
+                        currentData : data,
+                        update: false
+                    });
+                },
+                error: () => {
+                     console.log("Error: Could not update.");
+                     this.setState({
+                         update : false
+                     })
+                }
+            });
+        }
         return (
             <div class="myContainer">
                 <div className="transaction-table">
