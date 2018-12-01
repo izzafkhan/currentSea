@@ -112,8 +112,9 @@ module.exports = function router() {
     });
 
   transactionsRouter.route('/delete_transactions')
-    .delete((req, res) => {
+    .post((req, res) => {
       if (req.user) {
+        debug(req.body);
         const { tt_transaction_id } = req.body;
         db.query('SELECT tt_transaction_id from transaction_table where tt_transaction_id = ?',
           [tt_transaction_id], (err, result, fields) => {

@@ -56,11 +56,11 @@ export default class EditEntry extends React.Component{
             xhrFields: { withCredentials:true },
             data: JSON.stringify(this.state.data),
             success: () => {
-                 this.props.action(this.state.action_id);
+                 this.props.closeAction(this.state.action_id);
             },
             error: () => {
                  console.log("Error: Could not submit");
-                 this.props.action(this.state.action_id);
+                 this.props.closeAction(this.state.action_id);
             }
         })
     }
@@ -68,18 +68,18 @@ export default class EditEntry extends React.Component{
     remove(){
         $.ajax({
             url: "http://localhost:4000/transactions/delete_transactions",
-            type: "DELETE",
+            type: "POST",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
             dataType:"json",
             xhrFields: { withCredentials:true },
-            data: JSON.stringify(this.state.action_id),
+            data: JSON.stringify({'tt_transaction_id': this.state.action_id}),
             success: () => {
-                 this.props.action(this.state.action_id);
+                 this.props.deleteAction(this.state.action_id);
             },
             error: () => {
                  console.log("Error: Could not submit");
-                 this.props.action(this.state.action_id);
+                 this.props.deleteAction(this.state.action_id);
             }
         })
     }

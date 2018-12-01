@@ -48,6 +48,7 @@ export default class Transaction extends React.Component {
         this.editRow = this.editRow.bind(this);
         this.closeRow = this.closeRow.bind(this);
         this.closeEdit = this.closeEdit.bind(this);
+        this.deleteEdit = this.deleteEdit.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
     }
 
@@ -74,8 +75,17 @@ export default class Transaction extends React.Component {
         let editData = this.state.currentData;
         editData[index].edit = false;
         this.setState({
-            currentData : editData
+            currentData : editData,
+            editUpdate: true,
         });
+    }
+
+    deleteEdit(tt_transaction_id){
+        let index = this.state.currentData.findIndex(x=>x.tt_transaction_id==tt_transaction_id);
+        let editData = this.state.currentData;
+        var editIndex = editData.indexOf(index);
+        editData.splice(editIndex, 1);
+        this.forceUpdate();
     }
 
     editRow = (e, tt_transaction_id) => {
@@ -200,7 +210,7 @@ export default class Transaction extends React.Component {
                                                     {row.edit ?
                                                         <tr>
                                                             <td colSpan='6'>
-                                                                <EditEntry editData={this.state.editableData} id={row.tt_transaction_id} makeEdit={row.edit} action={this.closeEdit}/>
+                                                                <EditEntry editData={this.state.editableData} id={row.tt_transaction_id} makeEdit={row.edit} deleteAction={this.deleteEdit} closeAction={this.closeEdit}/>
                                                             </td>
                                                         </tr> : <tr></tr>}
                                                 </tbody>
