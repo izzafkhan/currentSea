@@ -221,7 +221,13 @@ export default class Transaction extends React.Component {
                             })}
                         </tbody>
                     </table>
-                </div>
+                </div> 
+            </div>
+        );
+    }
+}
+
+{/*
                 <div class="quick">
                     <div class="summary">
                         <h2>Summary</h2>
@@ -270,7 +276,4 @@ export default class Transaction extends React.Component {
                         <CurrencyMenu />
                     </div>
                 </div>
-            </div>
-        );
-    }
-}
+                                    </div> */}

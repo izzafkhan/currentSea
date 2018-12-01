@@ -4,6 +4,8 @@ import moment from "moment"
 import "react-datepicker/dist/react-datepicker.css";
 import './AddEntry.css'
 import $ from 'jquery'
+import DummyAccountsMenu from '../../Accounts/DummyAccountsMenu';
+import CurrencyMenu from '../../Currencies/CurrencyMenu';
 
 export default class AddEntry extends React.Component{
 
@@ -65,7 +67,7 @@ export default class AddEntry extends React.Component{
 
     handleCurrency(e){
         let newData = Object.assign({}, this.state.newData);
-        newData.currencyId = e.target.value;
+        newData.currencyId = e;
         this.setState({newData})
     }
 
@@ -117,7 +119,8 @@ export default class AddEntry extends React.Component{
                             <tr>
                                 <th><DatePicker selected={this.state.dateSetter} onChange={this.setDate} popperPlacement='left-start'/></th>
                                 <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
-                                <th><input type="text" placeholder="Currency"  onChange={this.handleCurrency} /></th>
+                                {/*<th><input type="text" placeholder="Currency"  onChange={this.handleCurrency} /></th> */}
+                                <th><CurrencyMenu onSelectCurrency={this.handleCurrency}/></th>
                             </tr>
                             <tr>
                                 <th>Account</th>
@@ -131,6 +134,7 @@ export default class AddEntry extends React.Component{
                             {this.state.newData.internalEntries.map(row => {
                                 return (
                                     <tr key={`row-${row.id}`}>
+                                        <td><DummyAccountsMenu/></td>
                                         <td><input type="text" placeholder="Account" onChange={(e) => this.handleChange(row, 'account', e)}/></td>
                                         <td><input type="number"  placeholder="Debit" onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
                                         <td><input type="number" placeholder="Credit" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
