@@ -25,6 +25,8 @@ export default class Transaction extends React.Component {
             conversion: "0.00",
 
             showAddEntry: false,
+            update: false,
+            editableData : {},
 
             currentData: [{
                 tt_transaction_id : 0,
@@ -44,6 +46,7 @@ export default class Transaction extends React.Component {
         this.addRow = this.addRow.bind(this);
         this.editRow = this.editRow.bind(this);
         this.closeRow = this.closeRow.bind(this);
+        this.closeEdit = this.closeEdit.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
     }
 
@@ -61,8 +64,18 @@ export default class Transaction extends React.Component {
 
     closeRow(id){
         this.state.showAddEntry = id;
+        this.state.update = true;
         this.forceUpdate();
     } 
+
+    closeEdit(tt_transaction_id){
+        let index = this.state.currentData.findIndex(x=>x.tt_transaction_id==tt_transaction_id);
+        let editData = this.state.currentData;
+        editData[index].edit = false;
+        this.setState({
+            currentData : editData
+        });
+    }
 
     editRow = (e, tt_transaction_id) => {
         let index = this.state.currentData.findIndex(x=>x.tt_transaction_id==tt_transaction_id);
@@ -72,6 +85,23 @@ export default class Transaction extends React.Component {
             this.setState({
                 currentData : editData
             });
+            $.ajax({
+                url: "http://localhost:4000/transactions/get_details",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType:"json",
+                xhrFields: { withCredentials:true },
+                data: JSON.stringify(tt_transaction_id),
+                success: (receivedData) => {
+                    this.setState({
+                        editableData: receivedData
+                    })
+                },
+                error: () => {
+                     console.log("Error: Could not submit");
+                }
+            })
         } else {
             editData[index].edit = false;
             this.setState({
@@ -122,8 +152,30 @@ export default class Transaction extends React.Component {
         });
     }
 
-    render() {
 
+    render() {
+        if(this.state.update === true){
+            $.ajax({
+                url: "http://localhost:4000/transactions/get_transactions",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType:"json",
+                xhrFields: {withCredentials:true},
+                success: (data) => {
+                    this.setState({
+                        currentData : data,
+                        update: false
+                    });
+                },
+                error: () => {
+                     console.log("Error: Could not update.");
+                     this.setState({
+                         update : false
+                     })
+                }
+            });
+        }
         return (
             <div class="myContainer">
                 <div className="transaction-table">
@@ -162,7 +214,7 @@ export default class Transaction extends React.Component {
                                                     {row.edit ?
                                                         <tr>
                                                             <td colSpan='6'>
-                                                                <EditEntry />
+                                                                <EditEntry editData={this.state.editableData} id={row.tt_transaction_id} makeEdit={row.edit} action={this.closeEdit}/>
                                                             </td>
                                                         </tr> : <tr></tr>}
                                                 </tbody>
