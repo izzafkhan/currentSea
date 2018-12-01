@@ -71,6 +71,22 @@ module.exports = function router() {
       }
     });
 
+  transactionsRouter.route('/get_details')
+    .get((req, res) => {
+      if (req.user) {
+        const { tt_transaction_id } = req.body;
+        db.query('SELECT * FROM details_table WHERE dt_transactionID = ? AND dt_userID = ?',
+          [tt_transaction_id, req.user.username], (err, results, fields) => {
+            if (err) {
+              debug('Error in /get_details', err);
+              res.status(500).json({ message: 'Error has occurred while getting details' });
+            } else {
+              res.status(200).json(results);
+            }
+          });
+      }
+    });
+
   transactionsRouter.route('/edit_transactions')
     .post((req, res) => {
       const {
