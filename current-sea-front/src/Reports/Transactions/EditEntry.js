@@ -6,14 +6,7 @@ export default class EditEntry extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            data : [{
-                dt_accountID : '9000 Bank',
-                dt_debit : 0,
-                dt_credit : 0,
-                dt_eventID : 'Party',
-
-                dt_transactionID : 0,
-                
+            data : [{                
             }],
             action_id : 0,
             update : false,
@@ -32,8 +25,7 @@ export default class EditEntry extends React.Component{
             dt_debit : 0,
             dt_credit : 0,
             dt_eventID : '',
-
-            dt_transactionID : this.state.data.length,
+            dt_transactionID : 0
         };
 
         internalEntries.push(newRow);
@@ -44,6 +36,7 @@ export default class EditEntry extends React.Component{
 
     handleChange(row, entry, event) {
         row[entry] = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
+        console.log('Here');
     }
 
     save(){
@@ -54,13 +47,14 @@ export default class EditEntry extends React.Component{
             crossDomain: true,
             dataType:"json",
             xhrFields: { withCredentials:true },
-            data: JSON.stringify(this.state.data),
+            data: JSON.stringify({'tt_transaction_id' : this.state.action_id}),
             success: () => {
-                 this.props.action(this.state.action_id);
+                 this.props.closeAction(this.state.action_id);
+                 console.log(this.state.data);
             },
             error: () => {
                  console.log("Error: Could not submit");
-                 this.props.action(this.state.action_id);
+                 this.props.closeAction(this.state.action_id);
             }
         })
     }
@@ -68,18 +62,18 @@ export default class EditEntry extends React.Component{
     remove(){
         $.ajax({
             url: "http://localhost:4000/transactions/delete_transactions",
-            type: "DELETE",
+            type: "POST",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
             dataType:"json",
             xhrFields: { withCredentials:true },
-            data: JSON.stringify(this.state.action_id),
+            data: JSON.stringify({'tt_transaction_id': this.state.action_id}),
             success: () => {
-                 this.props.action(this.state.action_id);
+                 this.props.deleteAction(this.state.action_id);
             },
             error: () => {
                  console.log("Error: Could not submit");
-                 this.props.action(this.state.action_id);
+                 this.props.deleteAction(this.state.action_id);
             }
         })
     }
@@ -97,11 +91,11 @@ export default class EditEntry extends React.Component{
                 this.setState({
                     data: receivedData
                 })
-                console.log(this.state.data);
-                console.log(receivedData);
-                console.log(this.props.id);
+                //console.log(this.state.data);
+                //console.log(receivedData);
+                //console.log(this.props.id);
 
-                console.log(receivedData);
+                //console.log(receivedData);
                 if(receivedData){
                     this.setState({
                         data: receivedData
@@ -121,8 +115,8 @@ export default class EditEntry extends React.Component{
 
     render(){
         return(
-            <div>
-                <table>
+            <div width='400'>
+                <table id='editTable' width='400'>
                     <thead id='headEntry'>
                         <tr>
                             <th>Account</th>
@@ -132,9 +126,9 @@ export default class EditEntry extends React.Component{
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.data.map(row => {
+                        {this.state.data.map( (row, index) => {
                             return (
-                                <tr key={`row-${row.dt_transactionID}`}>
+                                <tr key={`row-${index}`}>
                                     <td><input type="text" defaultValue={row.dt_accountID} onChange={(e) => this.handleChange(row, 'dt_accountID', e)}/></td>
                                     <td><input type="number"  defaultValue={row.dt_debit} onChange={(e) => this.handleChange(row, 'dt_debit', e)}/></td>
                                     <td><input type="number" defaultValue={row.dt_credit} onChange={(e) => this.handleChange(row, 'dt_credit', e)}/></td>

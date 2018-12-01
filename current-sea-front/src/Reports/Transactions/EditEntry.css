@@ -6,13 +6,6 @@
     float: right;
 }
 
-#headEntry th{ 
-    text-align: left;
+#editTable th, #editTable td{
     width: 100px;
-    padding: 0px;
-}
-
-#bodyEntry td{
-    text-align: left;
-    width: 100px; 
 }

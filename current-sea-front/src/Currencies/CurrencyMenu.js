@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import $ from 'jquery'
 
 class CurrencyMenu extends React.Component{
     
@@ -8,6 +9,7 @@ class CurrencyMenu extends React.Component{
         this.state = {
             buttonText : props.editCurrency,
             menu : false,
+            currencySet : {},
         }
         this.showMenu = this.showMenu.bind(this);
         this.hideMenu = this.hideMenu.bind(this);
@@ -34,6 +36,26 @@ class CurrencyMenu extends React.Component{
             buttonText : currency
         });
     }
+
+    componentDidMount(){
+        $.ajax({
+            url: "http://localhost:4000/transactions/currencies",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType:"json",
+            xhrFields: {withCredentials:true},
+            success: (data) => {
+                this.setState({
+                    currencySet : data,
+                });
+                console.log(this.state.currencySet);
+            },
+            error: () => {
+                 console.log("Error: Could not update.");
+            }
+        });
+    }
     
     render(){
         return(
@@ -44,7 +66,7 @@ class CurrencyMenu extends React.Component{
                         <button onClick={ () => this.setText('USD')}>USD</button>
                         <button onClick={ () => this.setText('EUR')}>EUR</button>
                         <button onClick={ () => this.setText('GBP')}>GBP</button>
-                        <button onClick={ () =>this.setText('JPY')}>JPY</button>
+                        <button onClick={ () => this.setText('JPY')}>JPY</button>
                     </div>
                 ) : (null) }
             </div>
