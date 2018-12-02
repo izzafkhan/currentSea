@@ -23,20 +23,17 @@ export default class SignupForm extends Component {
     }
 
 
-    redirectAfterRegistration = () => {
-        if (this.state.registered) return <Redirect to='/'/>;
-    }
-
     handleChange(e) {
         this.setState({[e.target.name]: e.target.value});
     }
 
     fieldIsEmpty = () => {
-        if (this.state.firstName.length === 0 ||
-            this.state.lastName.length === 0 ||
-            this.state.email.length === 0 ||
-            this.state.password.length === 0 ||
-            this.state.confirmPassword.length === 0) {
+        if (this.state.username.length == 0 ||
+            this.state.firstName.length == 0 ||
+            this.state.lastName.length == 0 ||
+            this.state.email.length == 0 ||
+            this.state.password.length == 0 ||
+            this.state.confirmPassword.length == 0) {
 
             return true
         }
@@ -55,6 +52,12 @@ export default class SignupForm extends Component {
             return false
         }
         return true
+    }
+
+    redirectAfterRegistration = () => {
+        if (this.state.registered == true) {
+            return <Redirect to='/Login'/>
+        }
     }
 
     onSubmit = e => {
@@ -94,51 +97,99 @@ export default class SignupForm extends Component {
             dataType: 'json',
             success: (data) => {
                 this.setState({registered: true});
+                console.log("Success")
+
             },
             error: (data) => {
-                this.setState({password: '', confirmPassword: ''});
                 return alert(data.responseJSON.message);
             }
         });
 
+        console.log("In on submit")
     }
 
     render() {
+
+        console.log("In render")
+
         return (
 
-            <div class="container">
 
-                <div class="titleLabelSignUpContainer">
-                    <label class="signUpTitle">CurrentSea</label>
-                    <label className="titleSubText">Sign up to begin tracking your<br/>interational journeys </label>
+            <div className="signUpRoot">
+                {this.redirectAfterRegistration()}
+                <div>
+                    <nav className="navbarSignUp">
+
+                    </nav>
                 </div>
 
+                <div className="signUpBody">
 
-                <div >
+                    <div className="navbarSignUpFormGap">
 
-                    <form class="formContainer">
-                        <div className="nameContainer">
-                            <input name="firstName" className="firstNameInput" placeholder="First Name"
-                                   onChange={this.handleChange}/>
-                            <input name="lastName" className = "lastNameInput" placeholder="Last Name" onChange={this.handleChange}/>
+                    </div>
 
+                    <div className="signUpContainerGird">
+
+                        <div className="sucTop">CurrentSea</div>
+
+                        <div className="sucBottom">
+                            <div className="signUpFormFieldsContainer">
+
+                                <div className="supUserNameDiv">
+                                    <input name="username" className="supFormField" placeholder="Username"
+                                           onChange={this.handleChange}/>
+                                </div>
+
+                                <div className="loginFieldGap"></div>
+
+                                <div className="supNamesDiv">
+                                    <input name="firstName" className="firstNameField" placeholder="First Name"
+                                           onChange={this.handleChange}/>
+                                    <input name="lastName" className="lastNameField" placeholder="Last Name"
+                                           onChange={this.handleChange}/>
+                                </div>
+
+                                <div className="loginFieldGap"></div>
+
+                                <div className="supEmailDiv">
+                                    <input name="email" className="supFormField" placeholder="Email"
+                                           onChange={this.handleChange}/>
+                                </div>
+
+                                <div className="loginFieldGap"></div>
+
+                                <div className="supPasswordDiv">
+                                    <input name="password" className="supFormField" placeholder="Password"
+                                           onChange={this.handleChange}/>
+                                </div>
+
+                                <div className="loginFieldGap"></div>
+
+                                <div className="supConfirmPasswordDiv">
+                                    <input name="confirmPassword" className="supFormField"
+                                           placeholder="Confirm Password" onChange={this.handleChange}/>
+                                </div>
+
+                                <button className="loginButton" onClick={e => this.onSubmit(e)}>Sign Up</button>
+
+                                <div>
+                                    <div className="supSignInDiv">
+                                        <Link className="supsignInLink" to="/Login">Already have an account? Sign
+                                            in.</Link>
+                                    </div>
+                                </div>
+
+
+                            </div>
                         </div>
 
-                        <input name="email" className="emailSignUp" placeholder="Email" onChange={this.handleChange}/>
-
-                        <input name="password" className="passwordSignUp" placeholder="Password"
-                               onChange={this.handleChange}/>
-
-                        <input name="confirmPassword" className="confirmPasswordSignUp" placeholder="Confirm Password"
-                               onChange={this.handleChange}/>
-                    </form>
+                    </div>
 
                 </div>
 
-                <button className="signUpButton" onClick={e => this.onSubmit(e)}>Sign Up</button>
-
-
             </div>
+
 
         );
     }
