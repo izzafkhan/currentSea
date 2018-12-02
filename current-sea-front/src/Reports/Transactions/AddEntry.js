@@ -82,7 +82,7 @@ export default class AddEntry extends React.Component{
             
             sum += newData.internalEntries[i].debit;
         }
-        console.log(sum);
+        //console.log(sum);
         this.state.newData.balance = sum;     
         this.setState({newData});
 

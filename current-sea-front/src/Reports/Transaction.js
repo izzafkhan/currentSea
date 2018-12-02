@@ -70,14 +70,16 @@ export default class Transaction extends React.Component {
         this.forceUpdate();
     } 
 
-    closeEdit(tt_transaction_id){
+    closeEdit(tt_transaction_id, sum){
         let index = this.state.currentData.findIndex(x=>x.tt_transaction_id==tt_transaction_id);
         let editData = this.state.currentData;
         editData[index].edit = false;
+        editData[index].tt_balance = sum;
         this.setState({
             currentData : editData,
-            editUpdate: true,
+            update: true,  
         });
+        {/*Line 80 (was: editUpdate: true, which does nothing) is probably singlehandedly responsible for the problems we had today. Pitfall?*/}
     }
 
     deleteEdit(tt_transaction_id){
@@ -85,6 +87,10 @@ export default class Transaction extends React.Component {
         let editData = this.state.currentData;
         var editIndex = editData.indexOf(index);
         editData.splice(editIndex, 1);
+        this.setState({
+            currentData : editData,
+            update: true,
+        });
         this.forceUpdate();
     }
 
