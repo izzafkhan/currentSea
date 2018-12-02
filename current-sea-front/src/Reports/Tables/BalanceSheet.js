@@ -18,7 +18,8 @@ class BalanceSheet extends Component{
             filtered: [],
             startDate: moment(),
             endDate: moment(),
-            search: ''
+            search: '',
+            rate: 1,
          
         };
         this.fetchData = this.fetchData.bind(this);
@@ -40,17 +41,18 @@ class BalanceSheet extends Component{
         });
 
     }
+    
     fetchData(state,instance){
-       /* $.ajax({
+      /* $.ajax({
             url: "http://localhost:4000/balance",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
             dataType: 'json',
             xhrFields: { withCredentials: true },
-            data: 'userId=test',
-            success: function(data) {
-                this.setState({data:data});
+            data:   ,
+            success: function(receiveddata) {
+                this.setState({data:receiveddata});
             }.bind(this),
             error: (data) => {
                 //alert('error occurred')
@@ -58,13 +60,21 @@ class BalanceSheet extends Component{
             }
         }
       
-    ); */
-
+    ); 
+*/
     }
     onFilteredChange(){
       
         
     }
+
+    onCurrencyChange(){
+
+    }
+
+    
+  
+    
     render(){
         
         var  data  = [{
@@ -135,6 +145,7 @@ class BalanceSheet extends Component{
                         }
                         filtered = {this.state.filtered}
                         onFilteredChange = {filtered => this.setState({filtered})}
+                        //resolveData={}
                     />
                 
             </div>

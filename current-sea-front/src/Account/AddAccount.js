@@ -4,6 +4,7 @@ import moment from "moment"
 import "react-datepicker/dist/react-datepicker.css";
 import './AddAccount.css'
 import $ from 'jquery'
+import CurrencyMenu from '../Currencies/CurrencyMenu';
 
 export default class AddAccount extends React.Component{
 
@@ -12,67 +13,35 @@ export default class AddAccount extends React.Component{
 
         this.state = {
             newData : {
+ 
                 currencyId: '',
                 description: 'Description',
                 balance : 0.00,
+                internalEntries : [],
             },
             enteringData : false,
+     
         }
-        this.addinfo = this.addinfo.bind(this);
+      
         this.handleChange = this.handleChange.bind(this);
-        this.handleDescription = this.handleDescription.bind(this);
-        this.handleNumber = this.handleNumber.bind(this);
-        this.handleType= this.handleType.bind(this);
         this.submitData = this.submitData.bind(this);
     }
 
-   
-    addinfo = () => {
+ 
 
-        let newRow = {
-            number : '9000',
-            description : 'Description',
-            type : 'Balance',
-         
 
-            id : this.number
-        };
-
-    
-        this.forceUpdate();
-    }
-
-    handleDescription(e){
-        let newData = Object.assign({}, this.state.newData);
-        newData.description = e.target.value;
-        this.setState({newData});
-    }
-
-    handleNumber(e){
-        let newData = Object.assign({}, this.state.newData);
-        newData.number = e.target.value;
-        this.setState({newData})
-    }
-
-    handleType(e){
-        let newData = Object.assign({}, this.state.newData);
-        newData.type = e.target.value;
-        this.setState({newData})
-    }
-    handleChange( entry, event) {
-       entry = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
+    handleChange(row, entry, event) {
+        row[entry] = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
     }
 
     submitData(){
-       
-        let newData = Object.assign({}, this.state.newData);
-       
+        let newData = Object.assign({}, this.state.newData);   
         this.setState({newData});
 
         /*
             Ajax magic 
             Maybe we should send the internal entries back home instead of newData? We need to avoid losing information one way or another.
-        
+        */
        $.ajax({
            url: "http://localhost:4000/transactions/add_transactions",
            type: "POST",
@@ -89,27 +58,32 @@ export default class AddAccount extends React.Component{
                 this.props.action(false);
            }
        })
-    */
+    
     }
 
     render(){
         return(
             <div>
-                {this.props.addAccount ? 
+                {this.props.AddAccount ? 
                 <div>
-                    <table width='600' id='addTableAcct'>
+                    <table width='600' id='addTable'>
                         <thead>
-                       
                             <tr>
-                            
-                                <th><input type="text" placeholder="Number"  onChange={this.handleNumber} /></th>
                                 <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
-                                <th><input type="text" placeholder="Type"  onChange={this.handleType} /></th>
+                                {/*<th><input type="text" placeholder="Currency"  onChange={this.handleCurrency} /></th> */}
+                                <th><CurrencyMenu onSelectCurrency={this.handleCurrency}/></th>
                             </tr>
-                          
+                            <tr>
+                                <th>Account</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                                <th>Event</th>
+                            </tr>
                         </thead>
                     
-                         
+                        <tbody>
+                            
+                        </tbody>     
                     </table>
                     <button onClick={this.submitData}>Done</button>
                 </div>

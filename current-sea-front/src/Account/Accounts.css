@@ -5,7 +5,7 @@ div.tableContainer{
     justify-content: center;
 }
 
-div.account-table{
+div.tableContainer{
     margin-inline-end: 40px;
 }
 
@@ -25,46 +25,54 @@ div.account-table{
 
 
 
-div.account-table, div.quick { float: left;}
+div.transaction-table, div.quick { float: left;}
+div.summary1, div.summary2 {float: left;}
+div.summary3, div.other {float: left;}
+span.dot, span.text {float:left;}
 
 div.tableContainer {overflow: hidden;}
-
+div.row1 {overflow: hidden;}
+div.row2 {overflow: hidden;}
+div.summary1 {overflow: hidden;}
+div.summary2 {overflow: hidden;}
+div.summary3 {overflow: hidden;}
+div.other {overflow: hidden;}
 
 /* 
 Styling to make the table readable
 */
 
-#dataTable td, #dataTable th {
+#dataTableA td, #dataTableA th {
     background-color: #ffffff;
 }
 
-#dataTable tr:nth-child(even){background-color: #f2f2f2;}
+#dataTableA tr:nth-child(even){background-color: #f2f2f2;}
 
-#dataTable th{
+#dataTableA th{
     padding-top: 12px;
     padding-bottom: 12px;
     
-    padding: 800px;
+    padding: 8px;
     text-align: left;
     background-color:white;
     color: black;
-    width: 100px;
+    width: 250px;
 }
 
 #nested td {
     text-align: left;
-    width: 100px;
+    width: 250px;
 }
 
 #nested button {
-    width: 100px;
+    width: 250;
     background-color: white;
     border-color: white;
     border-style: solid;
     text-align: left;
 }
 
-#addAccountButton {
+#addEntryButton {
     width: 600px;
     text-align: center;
     color: white;
@@ -72,3 +80,6 @@ Styling to make the table readable
     border-color: rgb(2, 228, 115);
     border-style: solid;
 }
+
+
+
