@@ -88,28 +88,43 @@ module.exports = function router() {
       }
     });
 
-  transactionsRouter.route('/edit_transactions')
-    .post((req, res) => {
-      const {
-        transactionId, accountId, date, eventId, debitAmt, creditAmt, currencyId,
-      } = req.body;
-      db.query('SELECT * FROM transaction_table WHERE tt_transaction_id = ?', [transactionId], (err, results, fields) => {
-        if (results.length === 0) {
-          res.status(401).json({ message: 'Transaction id does not exist.' });
-        } else {
-          db.query('UPDATE transaction_table SET tt_user_id = ?, tt_account_id = ?, tt_date = ?, tt_event_id = ?, tt_debit_amount = ?, tt_credit_amount = ?, tt_currency_abv_changed = ? WHERE tt_transaction_id = ?;',
-            [req.user.username, accountId, date, eventId, debitAmt, creditAmt, currencyId, transactionId],
-            (err, results, fields) => {
-              if (err) {
-                debug('An Error occurred while editing a transaction from transactions table', err);
-                res.status(500).json({ message: 'Error occurred editing a transaction' });
-              } else {
-                res.status(200).json({ message: 'Transaction edited successfully' });
-              }
+    transactionsRouter.route('/edit_transactions')
+        .post((req, res) => {
+            var dt_transactionID, dt_accountID, dt_eventID, dt_debit, dt_credit;
+            if (req.body.data && req.body.data.length > 0) {
+                dt_transactionID = req.body.data[0].dt_transactionID;
+                dt_accountID = req.body.data[0].dt_accountID;
+                dt_eventID = req.body.data[0].dt_eventID;
+                dt_debit = req.body.data[0].dt_debit;
+                dt_credit = req.body.data[0].dt_credit;
+            }
+            db.query('SELECT * FROM transaction_table WHERE tt_transaction_id = ?', [dt_transactionID], (err, results, fields) => {
+                if (results.length === 0) {
+                    res.status(401).json({message: 'Transaction id does not exist.'});
+                } else {
+                    //change this to UPDATE transaction_table SET tt_currency = ?
+                    db.query('SELECT * FROM transaction_table WHERE tt_transaction_id = ?;',
+                        [dt_transactionID],
+                        (err, results, fields) => {
+                            if (err) {
+                                debug('An Error occurred while editing a transaction from transactions table', err);
+                                res.status(500).json({message: 'Error occurred editing a transaction'});
+                            } else {
+                                db.query('UPDATE details_table SET dt_eventID = ?, dt_accountID = ?, dt_debit = ?, dt_credit = ? WHERE dt_transactionID = ?;',
+                                    [dt_eventID, dt_accountID, dt_debit, dt_credit, dt_transactionID],
+                                    (err, results, fields) => {
+                                        if (err) {
+                                            debug('An Error occurred while editing a transaction_detail in the details table', err);
+                                            res.status(500).json({message: 'Error occurred editing a transaction_detail'});
+                                        } else {
+                                            res.status(201).json({message: 'Transaction detail edited successfully'});
+                                        }
+                                    });
+                            }
+                        });
+                }
             });
-        }
-      });
-    });
+        });
 
   transactionsRouter.route('/delete_transactions')
     .post((req, res) => {
