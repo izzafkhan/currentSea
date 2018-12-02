@@ -6,6 +6,7 @@ import './AddEntry.css'
 import $ from 'jquery'
 import DummyAccountsMenu from '../../Accounts/DummyAccountsMenu';
 import CurrencyMenu from '../../Currencies/CurrencyMenu';
+import Select from 'react-select';
 
 export default class AddEntry extends React.Component{
 
@@ -22,6 +23,7 @@ export default class AddEntry extends React.Component{
             },
             enteringData : false,
             dateSetter : moment(),
+            accounts: []
         }
         this.setDate = this.setDate.bind(this);
         this.addinfo = this.addinfo.bind(this);
@@ -30,6 +32,7 @@ export default class AddEntry extends React.Component{
         this.handleDescription = this.handleDescription.bind(this);
         this.handleCurrency = this.handleCurrency.bind(this);
         this.submitData = this.submitData.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
 
     setDate(date){
@@ -72,7 +75,11 @@ export default class AddEntry extends React.Component{
     }
 
     handleChange(row, entry, event) {
+        if (entry == "account") {
+            row[entry] = event.value;
+        } else {
         row[entry] = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
+        }
     }
 
     submitData(){
@@ -108,6 +115,31 @@ export default class AddEntry extends React.Component{
        })
     
     }
+    componentDidMount = () => {
+        $.ajax({
+            url: "http://localhost:4000/accounts/get_accounts",
+           type: "GET",
+           contentType: "application/json; charset=utf-8",
+           crossDomain: true,
+           dataType:"json",
+           xhrFields: { withCredentials:true },
+           success: (data) => {
+                const accounts = [];
+                for (let i = 0; i < data.results.length; i++) {
+                    const newRow = {value: '', label: ''};
+                    newRow.value = data.results[i].at_account_name;
+                    newRow.label = data.results[i].at_account_name;
+                    accounts[i] = newRow;
+                }
+                this.setState({
+                    accounts: accounts
+                });
+           },
+           error: () => {
+                console.log("Error: Could not fetch data");
+           }
+        });
+    } 
 
     render(){
         return(
@@ -134,8 +166,7 @@ export default class AddEntry extends React.Component{
                             {this.state.newData.internalEntries.map(row => {
                                 return (
                                     <tr key={`row-${row.id}`}>
-                                        <td><DummyAccountsMenu/></td>
-                                        <td><input type="text" placeholder="Account" onChange={(e) => this.handleChange(row, 'account', e)}/></td>
+                                        <td><Select options={this.state.accounts} onChange={(e) => this.handleChange(row, 'account', e)}/></td>
                                         <td><input type="number"  placeholder="Debit" onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
                                         <td><input type="number" placeholder="Credit" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
                                         <td><input type="text"  placeholder="Event" onChange={(e) => this.handleChange(row, 'event', e)}/></td>
