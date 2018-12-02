@@ -1,80 +1,122 @@
-.rootContainer {
-    display: flex;
-    flex-direction: column;
-    background-image: url("pexels-photo-259165.jpeg");
-    height: 100vh;
-    padding-top: 150px;
+.loginRoot {
+
+}
+
+.navbarLogin {
+    background: white;
+    height: 100px;
+}
+
+.navbarLoginDiv {
+
+}
+
+.navbarLoginFormGap {
+    padding-top: 100px;
 }
 
 
-.container {
-    display: flex;
-    flex-direction: column;
+.loginBody {
+    background-image: url("CurrentSea_bg.png");
+    height: 1024px;
+}
+
+.loginContainerGrid {
+    display: grid;
+    grid-template-rows: 30%;
+    grid-auto-rows: 35% 35%;
+
+    height: 550px;
     width: 500px;
-    align-items: center;
+
+    margin-right: auto;
+    margin-left: auto;
+
     background-color: white;
+
 }
 
+.lcgTop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-.titleLabel {
-    padding-bottom: 25px;
-    text-align: center;
-    font-size: 50px;
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
-    color: #00ADA2;
+    font-size: 325%;
+    color: #051642;
 }
 
-.emailField {
-    margin-bottom: 8px;
-    width: 300px;
-    border: none;
-    background-color: #E5E5E5;
-    font-size: 20px;
+.lcgMiddle {
+
+}
+
+.loginFieldsContainer {
+    padding-top: 10px;
+    display: table;
+    margin: 0 auto;
+
+}
+
+.loginFormField {
+
+    font-size: large;
     text-indent: 10px;
-}
-
-.passwordField {
-    border-radius: 0px;
-    margin-bottom: 15px;
-    width: 300px;
     border: none;
+    width: 375px;
+    height: 50px;
     background-color: #E5E5E5;
-    font-size: 20px;
-    text-indent: 10px;
+    font-family: 'Roboto', sans-serif;
 }
 
-.loginButtonSignInDiv {
-    margin-top: 8px;
-    text-align: center;
+.loginFieldGap {
+    padding: 10px;
 }
 
-.loginButtonSignIn {
+
+.lcgBottom {
+
+}
+
+.loginButtonContainer {
+
+}
+
+.loginButton {
+    width: 130px;
+    height: 50px;
     color: white;
     background-color: #00ADA2;
+    font-size: large;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+
+    margin:0 auto;
+    display:block;
 }
 
 .registerDiv {
     text-align: center;
+    margin-top: 75px;
 }
 
 .regLink {
-    font-size: x-small;
+    font-size: medium;
     padding: 0px;
     color: black;
 }
 
-.forgotDiv {
-    margin-top: -10px;
-    text-align: center;
-    margin-bottom: 20px;
+.regLink:hover {
+    color: blue;
 }
 
-.forgotLink {
-    font-size: x-small;
-    padding: 0px;
-    color: black;
 
-}
+
+
+
+
+
+
+
 
 

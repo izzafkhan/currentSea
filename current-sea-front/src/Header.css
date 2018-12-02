@@ -1,33 +1,32 @@
-nav {
-  background-color: darkslategray;
-  overflow: hidden;
-  padding: 1.5em;
+/*nav {*/
+  /*background-color: white;*/
+  /*overflow: hidden;*/
+  /*height: 40px;*/
 
+/*}*/
 
-}
+/*a{*/
+  /*color: white;*/
+  /*font-weight: bold;*/
+  /*font: Tahoma;*/
+  /*padding: 0.8cm;*/
+  /*text-decoration: none; */
+/*}*/
 
-a{
-  color: white;
-  font-weight: bold;
-  font: Tahoma;
-  padding: 0.8cm;
-  text-decoration: none; 
-}
+/*a:hover{*/
+  /*color:white;*/
+  /*opacity:0.7;*/
+/*}*/
 
-a:hover{
-  color:white;
-  opacity:0.7;
-}
+/*div.wideDiv{*/
+  /*text-align: right;*/
+/*}*/
 
-div.wideDiv{
-  text-align: right;
-}
-
-button.loginButton{
-  color: white;
-  background-color: palevioletred;
-  border-style: solid;
-  border-color: palevioletred;
-  border-radius: 4px;
-}
+/*button.loginButton{*/
+  /*color: white;*/
+  /*background-color: palevioletred;*/
+  /*border-style: solid;*/
+  /*border-color: palevioletred;*/
+  /*border-radius: 4px;*/
+/*}*/
 
