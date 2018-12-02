@@ -23,7 +23,8 @@ export default class AddEntry extends React.Component{
             },
             enteringData : false,
             dateSetter : moment(),
-            accounts: []
+            accounts: [],
+            currencies: []
         }
         this.setDate = this.setDate.bind(this);
         this.addinfo = this.addinfo.bind(this);
@@ -70,7 +71,7 @@ export default class AddEntry extends React.Component{
 
     handleCurrency(e){
         let newData = Object.assign({}, this.state.newData);
-        newData.currencyId = e;
+        newData.currencyId = e.value;
         this.setState({newData})
     }
 
@@ -139,6 +140,27 @@ export default class AddEntry extends React.Component{
                 console.log("Error: Could not fetch data");
            }
         });
+        $.ajax({
+            url: "http://localhost:4000/currencies/currencies",
+           type: "GET",
+           contentType: "application/json; charset=utf-8",
+           crossDomain: true,
+           dataType:"json",
+           xhrFields: { withCredentials:true },
+           success: (data) => {
+               let currencies = []
+                for (let i = 0; i < data.currencies.length; i++) {
+                    const newRow = {value: '', label: ''};
+                    newRow.value = data.currencies[i];
+                    newRow.label = data.currencies[i];
+                    currencies[i] = newRow;
+                }
+                this.setState({currencies: currencies})
+           },
+           error: () => {
+                console.log("Error: Could not fetch data");
+           }
+        });
     } 
 
     render(){
@@ -152,7 +174,7 @@ export default class AddEntry extends React.Component{
                                 <th><DatePicker selected={this.state.dateSetter} onChange={this.setDate} popperPlacement='left-start'/></th>
                                 <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
                                 {/*<th><input type="text" placeholder="Currency"  onChange={this.handleCurrency} /></th> */}
-                                <th><CurrencyMenu onSelectCurrency={this.handleCurrency}/></th>
+                                <th><Select options={this.state.currencies} onChange={this.handleCurrency}/></th>
                             </tr>
                             <tr>
                                 <th>Account</th>
