@@ -20,7 +20,7 @@ export class Header extends Component{
         if (data.message === 'OK') {
           console.log(data.message);
           this.setState({loggedIn: true});
-        } if (data.message === 'NOK'){
+        } if (data.message  === 'NOK'){
           console.log(data.message);
           this.setState({loggedIn: false});
         }
@@ -49,13 +49,19 @@ export class Header extends Component{
           <div className = "navWide">
             <div className = "wideDiv">
               {this.state.loggedIn ? <Link to="/Account/Accounts">My Account</Link>: <span></span>}
+              {this.state.loggedIn ? <Link to="/Transactions">My Transactions</Link>: <span></span>}
               {this.state.loggedIn ? <Link to="/Reports/Report"> View Reports</Link> : <span></span>} 
               {this.state.loggedIn ? <Link to="/Currencies/Currencies">My Currencies</Link> : <span></span>}
               {this.state.loggedIn ? <Link to="/Help">?</Link> : <span></span>}
-              <Link to="/Login">
-                <button onClick={this.logout} class="loginButton">{this.state.loggedIn ? 'Logout' : 'Login/Signup'}
+              <Link to="/">
+                <button onClick={this.logout} class="loginButton"><img src={require('./Assets/lockwhite.png')} alt="lockwhite" width="8" height="8"></img>{this.state.loggedIn ? 'Logout' : 'Login'}
                 </button>
               </Link>
+              {this.state.loggedIn ?  (null) :
+              <Link to="/SignupForm">
+                <button onClick={this.logout} class="signupButton"> Sign Up
+                </button>
+              </Link> }
           </div>
         </div>
       </nav>

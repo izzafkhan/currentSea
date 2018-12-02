@@ -17,9 +17,7 @@ export default class Login extends Component{
   render() {
       return(
         <div>
-            {/*<Accounts/>*/}
-            {/*<LoginForm/>*/}
-            <IncomeStatement/>
+            {<LoginForm/>} 
         </div>
     );
   }

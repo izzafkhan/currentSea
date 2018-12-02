@@ -1,9 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './Transaction.css';
 import CurrencyMenu from '../Currencies/CurrencyMenu';
 import AddEntry from './Transactions/AddEntry';
 import EditEntry from './Transactions/EditEntry';
+import $ from 'jquery'
+import moment from "moment"   
 
 export default class Transaction extends React.Component {
     constructor(props) {
@@ -24,23 +25,19 @@ export default class Transaction extends React.Component {
             conversion: "0.00",
 
             showAddEntry: false,
+            update: false,
+            editableData : {},
+            editUpdate : false,
 
-            data: [{
-                'transactionId': '0',
-                'edit': false
-            },
-            {
-                'accountId' : 'Wells Fargo Bank Account',
-                'userID' : 'user',
-                'transactionId': '1',
-                'date': '2018/11/21',
-                'eventId': 'Side Expense',
-                'description': 'Test Entry',
-                'debitAmt' : '100.00',
-                'creditAmt': '100.00',
-                'balance': '100.00',
-                'currencyId': 'USD',
-                'edit': false
+            currentData: [{
+                tt_transaction_id : 0,
+                tt_date : '2018 January 1',
+                tt_description: 'New Entries Go Here',
+                tt_balance: 0,
+                tt_currency: 'USD',
+                tt_user_id : 'This will later become categories',
+                edit : false,
+
             }]
 
         }
@@ -49,7 +46,10 @@ export default class Transaction extends React.Component {
         this.expenses = this.expenses.bind(this);
         this.addRow = this.addRow.bind(this);
         this.editRow = this.editRow.bind(this);
-        this.addData = this.addData.bind(this);
+        this.closeRow = this.closeRow.bind(this);
+        this.closeEdit = this.closeEdit.bind(this);
+        this.deleteEdit = this.deleteEdit.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
     }
 
     addRow = () => {
@@ -64,31 +64,52 @@ export default class Transaction extends React.Component {
         }
     }
 
-    editRow = (transactionId) => {
-        const { data } = this.state
-        if (data[transactionId].edit === false) {
-            data[transactionId].edit = true;
-            this.setState({data});
-        } else {
-            data[transactionId].edit = false;
-            this.setState({data});
-        }
+    closeRow(id){
+        this.state.showAddEntry = id;
+        this.state.update = true;
+        this.forceUpdate();
+    } 
+
+    closeEdit(tt_transaction_id, sum){
+        let index = this.state.currentData.findIndex(x=>x.tt_transaction_id==tt_transaction_id);
+        let editData = this.state.currentData;
+        editData[index].edit = false;
+        editData[index].tt_balance = sum;
+        this.setState({
+            currentData : editData,
+            update: true,  
+        });
+        {/*Line 80 (was: editUpdate: true, which does nothing) is probably singlehandedly responsible for the problems we had today. Pitfall?*/}
     }
 
-    addData = (newData) => {
-        var data = this.state.data;
-        var indexedData = newData;
-        indexedData.transactionID = '0';
-        indexedData.edit = false;
-        indexedData.balance = newData.debitAmt;
+    deleteEdit(tt_transaction_id){
+        let index = this.state.currentData.findIndex(x=>x.tt_transaction_id==tt_transaction_id);
+        let editData = this.state.currentData;
+        var editIndex = editData.indexOf(index);
+        editData.splice(editIndex, 1);
         this.setState({
-            showAddEntry: false
-            
-        })
-        var joined = indexedData + data;     
-        this.setState({
-            data: joined
-        })
+            currentData : editData,
+            update: true,
+        });
+        this.forceUpdate();
+    }
+
+    editRow = (e, tt_transaction_id) => {
+        let index = this.state.currentData.findIndex(x=>x.tt_transaction_id==tt_transaction_id);
+        let editData = this.state.currentData;
+        if (editData[index].edit === false) {
+            editData[index].edit = true;
+            this.setState({
+                currentData : editData,
+                editUpdate : true
+            });
+        } else {
+            editData[index].edit = false;
+            this.setState({
+                currentData : editData,
+                editUpdate : true
+            });
+        }
     }
 
     get(event) {
@@ -114,10 +135,51 @@ export default class Transaction extends React.Component {
         })
     }
 
-    render() {
+    componentWillMount(){
+        $.ajax({
+            url: "http://localhost:4000/transactions/get_transactions",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType:"json",
+            xhrFields: {withCredentials:true},
+            success: (data) => {
+                this.setState({
+                    currentData : data
+                });
+            },
+            error: () => {
+                 console.log("Error: Could not update.");
+            }
+        });
+    }
 
+
+    render() {
+        if(this.state.update === true){
+            $.ajax({
+                url: "http://localhost:4000/transactions/get_transactions",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType:"json",
+                xhrFields: {withCredentials:true},
+                success: (data) => {
+                    this.setState({
+                        currentData : data,
+                        update: false
+                    });
+                },
+                error: () => {
+                     console.log("Error: Could not update.");
+                     this.setState({
+                         update : false
+                     })
+                }
+            });
+        }
         return (
-            <div class="container">
+            <div class="myContainer">
                 <div className="transaction-table">
                     <table id='dataTable' width="600">
                         <thead>
@@ -132,29 +194,29 @@ export default class Transaction extends React.Component {
                             <tr>
                                 <th colSpan='6'>
                                     <button id='addEntryButton' onClick={ e => this.addRow()}>+</button>
-                                    {this.state.showAddEntry ? <div><AddEntry onAddData={this.addData}/></div> : <span></span>}
+                                    {this.state.showAddEntry ? <div><AddEntry addEntry={this.state.showAddEntry} action={this.closeRow}/></div> : <span></span>}
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.data.map(row => {
+                            {this.state.currentData.map(row => {
                                 return (
-                                    <tr key={`row-${row.transactionId}`}>
+                                    <tr key={`row-${row.tt_transaction_id}`}>
                                         <td colSpan='6'>
                                             <table>
                                                 <tbody>
                                                     <tr id='nested'>
-                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.transactionId}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.date}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.description}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.balance}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.currencyId}</button></td>
-                                                        <td><button onClick={e => this.editRow(row.transactionId)}>{row.event}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_transaction_id}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{(moment(row.tt_date)).format('YYYY-MM-DD')}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_balance}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_currency}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_user_id}</button></td>
                                                     </tr>
                                                     {row.edit ?
                                                         <tr>
                                                             <td colSpan='6'>
-                                                                <EditEntry />
+                                                                <EditEntry editData={this.state.editableData} id={row.tt_transaction_id} makeEdit={row.edit} deleteAction={this.deleteEdit} closeAction={this.closeEdit}/>
                                                             </td>
                                                         </tr> : <tr></tr>}
                                                 </tbody>
@@ -165,7 +227,13 @@ export default class Transaction extends React.Component {
                             })}
                         </tbody>
                     </table>
-                </div>
+                </div> 
+            </div>
+        );
+    }
+}
+
+{/*
                 <div class="quick">
                     <div class="summary">
                         <h2>Summary</h2>
@@ -214,115 +282,4 @@ export default class Transaction extends React.Component {
                         <CurrencyMenu />
                     </div>
                 </div>
-            </div>
-        );
-    }
-}
-{/*
-<table class="transaction-table">
-    <thead>
-        <tr>
-            <th>
-                <div class="header-name"> Number </div>
-            </th>
-            <th>    
-                <div class="header-name"> Date </div>
-            </th>
-            <th>
-                <div class="header-name"> Description </div>
-            </th>
-            <th>
-                <div class="header-name"> Balance </div>
-            </th>
-            <th>
-                <div class="header-name"> DF </div>
-            </th>
-            <th>
-                <div class="header-name"> Category </div>
-            </th>
-            <th>
-                <div class="header-name"> <button id="addButton">+</button> </div>
-            </th>
-        </tr>
-    </thead>
-    <tbody className="Transaction-body">
-    </tbody>
-</table>*/}
-
-
-{/*<ReactTable
-        data = {data}
-        noDataText="Add a new Transaction"
-        columns = {columns}
-    />*/}
-
-{/*
-        var { data = [] } = this.props
-        var columns = [{
-                Header: 'Number',
-                accessor: 'number'
-            }, {
-                Header: 'Date',
-                accessor : 'date'
-            }, {
-                Header: 'Description',
-                accessor: 'description'
-            }, {
-                Header: 'Balance',
-                accessor: 'balance'
-            }, {
-                Header: 'DF',
-                accessor: 'df'
-            }, {
-                Header: 'Category',
-                accessor: 'category'
-            }
-        ]*/}
-{/*
-<BootstrapTable 
-                        keyField='id'
-                        data={data}
-                        columns = {columns}
-                        expandRow={expandRow}
-                    />
-*/}
-{/*
-var data = [{
-            'id': '0'
-        },
-            {
-            'id': '1',
-            'date': '11/21/2018',
-            'description': 'Test Entry',
-            'balance' : '100.00',
-            'df' : '$',
-            'category': 'Side Expense'
-        }];
-        const columns = [{
-            dataField: 'id',
-            text: ' '
-        }, {
-            dataField: 'date',
-            text: 'Date'
-        }, {
-            dataField: 'description',
-            text: 'Description'
-        }, {
-            dataField: 'balance',
-            text: 'Balance'
-        }, {
-            dataField: 'df',
-            text: 'DF'
-        }, {
-            dataField: 'category',
-            text: 'Category'
-        }];
-
-        const expandRow = {
-            renderer: row => (
-                <div>
-                    <EditEntry></EditEntry>
-                </div>
-            )
-        };
-    */}
+                                    </div> */}

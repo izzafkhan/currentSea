@@ -22,6 +22,7 @@
   /*text-align: right;*/
 /*}*/
 
+
 /*button.loginButton{*/
   /*color: white;*/
   /*background-color: palevioletred;*/
@@ -29,4 +30,11 @@
   /*border-color: palevioletred;*/
   /*border-radius: 4px;*/
 /*}*/
+
+div.wideDiv{
+  text-align: right;
+}
+
+
+
 

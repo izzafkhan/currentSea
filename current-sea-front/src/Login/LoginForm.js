@@ -26,8 +26,9 @@ export default class LoginForm extends React.Component {
         });
     }
 
+    
     redirectAfterLogin = () => {
-        if (this.state.loginSuccess) return <Redirect to='/'/>;
+        if (this.state.loginSuccess) return <Redirect to='/Transactions' />;
     }
 
     regClick = e => {
@@ -52,12 +53,11 @@ export default class LoginForm extends React.Component {
 
         if (this.state.email.length == 0 || this.state.password.length == 0) {
             alert("Missing login data")
-            return
         }
 
         const loginData = {
             id: this.state.email,
-            pass: this.state.password
+            password: this.state.password
         }
 
         $.ajax({
@@ -107,11 +107,10 @@ export default class LoginForm extends React.Component {
                 <div className="loginBody">
 
 
-                    <div className="navbarLoginFormGap">
-
-                    </div>
+                    <div className="navbarLoginFormGap"></div>
 
                     <div className="loginContainerGrid">
+          
                         <div className="lcgTop">CurrentSea</div>
 
                         <div className="lcgMiddle">
@@ -151,13 +150,6 @@ export default class LoginForm extends React.Component {
 
 
                     </div>
-
-                    {/*<div className="loginFormContainer">*/}
-
-                        {/*<div className="loginLogo">*/}
-                            {/*<label>CurrentSea</label>*/}
-                        {/*</div>*/}
-                    {/*</div>*/}
 
                 </div>
             </div>
