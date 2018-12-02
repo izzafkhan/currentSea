@@ -97,7 +97,7 @@ export default class LoginForm extends React.Component {
         return (
 
             <div className="loginRoot">
-
+                {this.redirectAfterLogin()}
                 <div className="navbarLoginDiv">
                     <nav className="navbarLogin"></nav>
                 </div>
@@ -118,7 +118,7 @@ export default class LoginForm extends React.Component {
 
                             <div className="loginFieldsContainer">
                                 <div>
-                                    <input type="text" className="loginFormField" placeholder="Username or Email" value={this.state.value}
+                                    <input type="text" className="loginFormField" placeholder="Username or Email"
                                            onChange={this.handleEmailChange}/>
                                 </div>
 
@@ -127,7 +127,7 @@ export default class LoginForm extends React.Component {
                                 </div>
 
                                 <div>
-                                    <input type="password" className="loginFormField" placeholder="Password"  value={this.state.value}
+                                    <input type="password" className="loginFormField" placeholder="Password"
                                            onChange={this.handlePasswordChange}/>
                                 </div>
                             </div>
@@ -139,7 +139,7 @@ export default class LoginForm extends React.Component {
 
                         <div className="lcgBottom">
                             <div className="loginButtonContainer">
-                                <button className="loginButton" onClick={this.onSubmitDemo}>Log In</button>
+                                <button className="loginButton" onClick={this.onSubmit}>Log In</button>
                             </div>
 
                             <div className="registerDiv">
