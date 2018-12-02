@@ -7,6 +7,8 @@ import { ActionTabUnselected } from 'material-ui/svg-icons';
 import DatePicker from 'react-datepicker'
 import moment from "moment"
 import "react-datepicker/dist/react-datepicker.css";
+import CurrencyMenu from '../../Currencies/CurrencyMenu';
+import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 
 class BalanceSheet extends Component{
     
@@ -20,6 +22,11 @@ class BalanceSheet extends Component{
             endDate: moment(),
             search: '',
             rate: 1,
+            reportDropdownOpen: false,
+            currencyDropdownOpen: false,
+            gotoHome: false,
+            demoExchangeRate: '1',
+            demoDefaultCurrencyCode: 'USD',
          
         };
         this.fetchData = this.fetchData.bind(this);
@@ -68,12 +75,65 @@ class BalanceSheet extends Component{
         
     }
 
-    onCurrencyChange(){
+    onCurrencyChange(startCurr, endCurr){
 
     }
 
+    currencyChangedDemo = event => {
+        const currencyCode = event.target.value
+
+        if (currencyCode == "USD") {
+            this.setState({demoExchangeRate: "1"})
+            this.setState({demoDefaultCurrencyCode: 'USD'})
+        }
+
+        if (currencyCode == "GBP") {
+            this.setState({demoExchangeRate: ".78"})
+            this.setState({demoDefaultCurrencyCode: 'GBP'})
+        }
+
+        if (currencyCode == "EURO") {
+            this.setState({demoExchangeRate: ".88"})
+            this.setState({demoDefaultCurrencyCode: 'EURO'})
+        }
+    }
     
-  
+    currencyChanged = event => {
+        let currencyCode = event.target.value
+
+        $.ajax({
+                url: "http://localhost:4000/currencies/getrate",
+                type: "Get",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: 'json',
+                xhrFields: {withCredentials: true},
+                data: {currencyFrom: 'USD', currencyTo: 'USD', date: '2018-06-06'},
+                success: function (receivedData) {
+                    console.log("Successful Get")
+                    console.log(receivedData)
+                    this.setState({data: receivedData});
+                }.bind(this),
+                error: (receivedData) => {
+                    alert('error occurred')
+
+                }
+            }
+        );
+    }
+
+    toggleReport = () => {
+        this.setState(prevState => ({
+            reportDropdownOpen: !prevState.reportDropdownOpen
+        }));
+    }
+
+    toggleCurrency = () => {
+        this.setState(prevState => ({
+            currencyDropdownOpen: !prevState.currencyDropdownOpen
+        }));
+    }
+
     
     render(){
         
@@ -113,6 +173,7 @@ class BalanceSheet extends Component{
         }
         return(
             <div className="BalanceSheet-table">
+           {/* <CurrencyMenu/>
             <label> Start Date: </label>
             <DatePicker
                 selected={this.state.startDate}
@@ -122,23 +183,35 @@ class BalanceSheet extends Component{
                 onChange={this.handleChangeStart}
             />
             <label> End Date: </label>
+
             <DatePicker
-            
                 selected={this.state.endDate}
                 selectsEnd
                 startDate={this.state.startDate}
                 endDate={this.state.endDate}
                 onChange={this.handleChangeEnd}
-            />
+           />*/}
+            <Dropdown className="isDropDownReports" isOpen={this.state.reportDropdownOpen}
+                              toggle={this.toggleReport}>
+                        <DropdownToggle caret>
+                            Income Statement
+                        </DropdownToggle>
+                        <DropdownMenu className="isDropDownReportsMenu" >
+                            <DropdownItem>Balance Sheet</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+
+            <h1> </h1>
             Search: <input value={this.state.search}
 							onChange={e => this.setState({search: e.target.value})}
 					/>
+
+            
                    
                 <ReactTable
                         data = {data}
                         noDataText="Your spending will appear here"
                         columns = {columns}
-                        filterable
                         onFetchData= {this.fetchData}
                         defaultFilterMethod={(filter,row) => 
                             String(row[filter.id]) === filter.value ||  String(row[filter.id]).toLowerCase() === filter.value.toLowerCase()

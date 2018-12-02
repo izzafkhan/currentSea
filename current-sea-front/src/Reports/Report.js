@@ -44,7 +44,7 @@ class Report extends Component {
                         <div className="reports-options">
                             <Menu className="reports-menu" setBalanceSheet={this.showBalanceSheet.bind(this)} setIncomeStatement={this.showIncomeStatement.bind(this)}/>
                             
-                            <CurrencyMenu />
+                          
                         </div>
 
                         {this.state.balance ? 
