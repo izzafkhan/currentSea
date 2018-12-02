@@ -40,6 +40,11 @@ export default class EditEntry extends React.Component{
     }
 
     save(){
+        var sum = 0;
+        for(let i = 0; i < this.state.data.length; i++){
+            
+            sum += this.state.data[i].dt_debit;
+        }
         $.ajax({
             url: "http://localhost:4000/transactions/edit_transactions",
             type: "POST",
@@ -49,12 +54,11 @@ export default class EditEntry extends React.Component{
             xhrFields: { withCredentials:true },
             data: JSON.stringify({'tt_transaction_id' : this.state.action_id, 'data': this.state.data} ),
             success: () => {
-                 this.props.closeAction(this.state.action_id);
-                 console.log(this.state.data);
+                 this.props.closeAction(this.state.action_id, sum);
             },
             error: () => {
                  console.log("Error: Could not submit");
-                 this.props.closeAction(this.state.action_id);
+                 this.props.closeAction(this.state.action_id, 0);
             }
         })
     }
