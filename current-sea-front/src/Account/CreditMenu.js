@@ -11,7 +11,7 @@ constructor(){
 
         data : [
             {
-                acctNum: '2348203', 
+                acctNum: '2303', 
                 acctName : 'Cash', 
                 type: 'credit'
             }

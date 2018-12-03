@@ -63,7 +63,6 @@ class Report extends Component {
         }
 
         return(
-
             <body className="reportsRootContainer">
                 <Header/>
                 <div className="reportsTitle">Reports</div>
@@ -95,6 +94,7 @@ class Report extends Component {
             //         {/*</div>*/}
             //     {/*</div>*/}
             // {/*</div>*/}
+
         );
     }
 }

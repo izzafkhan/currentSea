@@ -1,0 +1,11 @@
+#addTableA th, #addTableA input{
+    width: 120px;
+}
+
+#addTableA{
+    margin: 12px;
+}
+
+#newAccount td{
+    width: 120px;
+}

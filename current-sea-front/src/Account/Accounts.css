@@ -1,0 +1,90 @@
+
+div.tableContainer{
+    margin-block-start: 20px;
+    height: 100vh; /* Magic here */
+    display: flex;    
+    justify-content: center;
+    background: #051642;
+    margin:0
+  
+}
+
+
+
+.header-name{
+    margin-inline-start: 8px;
+    margin-inline-end: 8px;
+    background: #051642;
+}
+
+
+h1 {
+    
+    font-family: 'Roboto', sans-serif;
+    margin:0;
+    padding:0;
+    background: #051642;
+    color:white
+}
+
+h6 {
+   
+    font-family: 'Roboto',sans-serif;
+    font:bold;
+    background:#051642;
+    margin: 0;
+    padding:0;
+    color:white;
+}
+
+div.accounts-table, div.quick { float: left;}
+
+
+div.tableContainer {overflow: hidden;}
+
+
+/* 
+Styling to make the table readable
+*/
+
+#dataTableA td, #dataTableA th {
+    background-color: #ffffff;
+}
+
+#dataTableA tr:nth-child(even){background-color: #f2f2f2;}
+
+#dataTableA th{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    
+    padding: 8px;
+    text-align: left;
+    background-color:white;
+    color: black;
+    width: 250px;
+}
+
+#nested td {
+    text-align: left;
+    width: 250px;
+}
+
+#nested button {
+    width: 250;
+    background-color: white;
+    border-color: white;
+    border-style: solid;
+    text-align: left;
+}
+
+#addAccountButton {
+    width: 734px;
+    text-align: center;
+    color: white;
+    background-color: #00ADA2;
+    border-color: #00ADA2;
+    border-style: solid;
+}
+
+
+
