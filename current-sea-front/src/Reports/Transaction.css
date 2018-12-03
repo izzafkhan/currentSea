@@ -125,6 +125,9 @@ div.conversion p, div.conversion h2, div.conversion h3, div.conversion input{
 
 #start-currency, #end-currency {
     color: black;
+    padding: 8px;
+    width: 200px;
+    height: auto;
 }
 
 

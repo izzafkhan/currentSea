@@ -1,6 +1,7 @@
 #addTable th, #addTable input{
     table-layout: fixed;
     width: 100px;
+    text-align: left;
 }
 
 #addTable{

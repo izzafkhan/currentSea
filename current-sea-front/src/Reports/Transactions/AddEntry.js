@@ -171,16 +171,12 @@ export default class AddEntry extends React.Component{
                     <table width='600' id='addTable'>
                         <thead>
                             <tr>
+                                <th></th>
                                 <th><DatePicker id='date' selected={this.state.dateSetter} onChange={this.setDate} popperPlacement='right-start'/></th>
                                 <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
+                                <th></th>
                                 {/*<th><input type="text" placeholder="Currency"  onChange={this.handleCurrency} /></th> */}
-                                <th  width='100px'><Select options={this.state.currencies} onChange={this.handleCurrency}/></th>
-                            </tr>
-                            <tr>
-                                <th>Account</th>
-                                <th>Debit</th>
-                                <th>Credit</th>
-                                <th>Event</th>
+                                <th><Select options={this.state.currencies} onChange={this.handleCurrency}/></th>
                             </tr>
                         </thead>
                     
