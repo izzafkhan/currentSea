@@ -205,7 +205,7 @@ export default class Currencies extends React.Component{
                 <div>
                     <h2>My Exchange Rates</h2>
                     <Linechart
-                        width={1500}
+                        width={750}
                         height={500}
                         data={monthlyData}
                     />
