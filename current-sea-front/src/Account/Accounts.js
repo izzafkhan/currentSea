@@ -156,7 +156,7 @@ export default class Accounts extends React.Component {
         }
         return (
             <div> <Header/> 
-            <h1 align="center"> Accounts </h1>
+            <h1 align="center" background="#051642"> Accounts </h1>
             <h6 align="center"> Here you can set up, edit and delete your accounts and events </h6>
             <div class="tableContainer">
                 <div className="account-table">

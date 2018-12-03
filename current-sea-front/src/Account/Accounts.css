@@ -1,17 +1,15 @@
-body{
-    background: #051642;
-}
+
 div.tableContainer{
     margin-block-start: 20px;
     height: 100vh; /* Magic here */
     display: flex;    
     justify-content: center;
     background: #051642;
+    margin:0
+  
 }
 
-div.tableContainer{
-    margin-inline-end: 40px;
-}
+
 
 .header-name{
     margin-inline-start: 8px;
@@ -21,16 +19,22 @@ div.tableContainer{
 
 
 h1 {
-    color:white;
-    background: #051642;
+    
     font-family: 'Roboto', sans-serif;
+    margin:0;
+    padding:0;
+    background: #051642;
+    color:white
 }
 
 h6 {
-    color:white;
-    background:#051642;
+   
     font-family: 'Roboto',sans-serif;
     font:bold;
+    background:#051642;
+    margin: 0;
+    padding:0;
+    color:white;
 }
 
 div.accounts-table, div.quick { float: left;}
