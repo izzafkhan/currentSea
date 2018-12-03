@@ -37,8 +37,11 @@
 .logo {
   display: inline-block;
   vertical-align: top;
-  margin-left: 20px;
-    height: 58px;
+  margin-left: 15px;
+  margin-top: 4px;
+    height:auto;
+    width:200px;
+
 }
 
 .logoutHeader {
