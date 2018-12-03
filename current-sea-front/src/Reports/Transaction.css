@@ -1,9 +1,10 @@
-.myContainer{
+div.myContainer{
     display: flex;
     flex-direction: row;
     justify-content: center;
     height: 100vh;
     background-color: #051642;
+    color: white;
 }
 
 div.transaction-table{

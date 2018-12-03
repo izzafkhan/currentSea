@@ -1,4 +1,4 @@
-import React, {Component, Link} from 'react';
+import React, {Component} from 'react';
 import './SignupForm.css';
 import { Redirect} from "react-router-dom";
 import $ from 'jquery';
