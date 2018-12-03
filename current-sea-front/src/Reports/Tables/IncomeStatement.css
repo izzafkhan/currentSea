@@ -7,34 +7,6 @@
 
 }
 
-.navbarStatements {
-    display: flex;
-    flex-direction: row;
-
-    align-items: center;
-    background: white;
-    height: 50px;
-}
-
-.homeLabel {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: bold;
-    color: #051642;
-    font-size: x-large;
-    margin-top: 5px;
-    margin-left: 20px;
-}
-
-
-.isReportsTitle {
-    text-align: center;
-    color: white;
-    font-size: x-large;
-    font-family: 'Roboto', sans-serif;
-    font-weight: bold;
-    padding: 30px;
-}
-
 .gridContainer {
     display: grid;
     grid-template-rows: 10%;
@@ -68,7 +40,7 @@
 .isDropDownReports {
     background-color: #727272;
     margin-left: 30px;
-    margin-right: 250px;
+    margin-right: 260px;
 }
 
 .isDropDownReportsMenu {
@@ -79,6 +51,7 @@
 .isStartDatePicker {
     height: 38px;
     width: 100px;
+    margin-left: px;
     margin-right: 10px;
 }
 
@@ -88,8 +61,10 @@
 }
 
 .isDropDownCurrency {
+    float: right;
     background-color: #727272;
     margin-left: 30px;
+    margin-right: 10px;
     padding: 0px;
 
 }

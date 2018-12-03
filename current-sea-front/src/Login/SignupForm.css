@@ -4,7 +4,7 @@
 
 .navbarSignUp {
     background: white;
-    height: 100px;
+    height: 60px;
 }
 
 .navbarSignUpFormGap {
@@ -75,22 +75,6 @@
     float: right;
 }
 
-.supNamesDiv {
-
-}
-
-.supEmailDiv {
-
-}
-
-.supPasswordDiv {
-
-}
-
-.supConfirmPasswordDiv {
-
-}
-
 .supFormField {
     font-size: large;
     text-indent: 10px;
@@ -109,14 +93,12 @@
     font-size: large;
     font-family: 'Roboto', sans-serif;
     font-weight: bold;
-
-    margin:30px auto;
     display:block;
 }
 
 .supSignInDiv {
     text-align: center;
-    margin-top: 80px;
+    margin-top: 60px;
 }
 
 .supsignInLink {
@@ -127,4 +109,8 @@
 
 .supSignInLink:hover {
     color: blue;
+}
+
+.signUpButtonDiv {
+    margin-top: 50px;
 }

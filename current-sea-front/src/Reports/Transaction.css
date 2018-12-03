@@ -1,12 +1,16 @@
-div.myContainer{
-    margin-block-start: 16px;
-    height: 1000vh; /* Magic here */
-    display: flex;    
+.myContainer{
+    display: flex;
+    flex-direction: row;
     justify-content: center;
+    height: 100vh;
+    background-color: #051642;
 }
 
 div.transaction-table{
     margin-inline-end: 40px;
+    margin-top: 40px;
+
+
 }
 
 .header-name{
@@ -87,9 +91,7 @@ Styling to make the table readable
     width: 600px;
     text-align: center;
     color: white;
-    background-color: rgb(2, 228, 115);
-    border-color: rgb(2, 228, 115);
-    border-style: solid;
+    background-color: #00ADA2;
 }
 
 

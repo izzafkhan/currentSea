@@ -20,7 +20,6 @@ export default class IncomeStatement extends Component {
             endDate: '',
             reportDropdownOpen: false,
             currencyDropdownOpen: false,
-            gotoHome: false,
             demoExchangeRate: '1',
             demoDefaultCurrencyCode: 'USD'
 
@@ -30,13 +29,12 @@ export default class IncomeStatement extends Component {
 
     fetchData(state, instance) {
         $.ajax({
-                url: "http://localhost:4000/statement",
+                url: "http://localhost:4000/statement/statement",
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,
                 dataType: 'json',
                 xhrFields: {withCredentials: true},
-                data: 'userId=test',
                 success: function (receivedData) {
                     this.setState({data: receivedData});
                 }.bind(this),
@@ -74,7 +72,7 @@ export default class IncomeStatement extends Component {
             this.setState({demoDefaultCurrencyCode: 'GBP'})
         }
 
-        if (currencyCode == "EURO") {
+        if (currencyCode == "EUR") {
             this.setState({demoExchangeRate: ".88"})
             this.setState({demoDefaultCurrencyCode: 'EURO'})
         }
@@ -90,10 +88,9 @@ export default class IncomeStatement extends Component {
                 crossDomain: true,
                 dataType: 'json',
                 xhrFields: {withCredentials: true},
-                data: {currencyFrom: 'USD', currencyTo: 'USD', date: '2018-06-06'},
+                data: {currencyFrom: 'USD', currencyTo: 'USD'},
                 success: function (receivedData) {
                     console.log("Successful Get")
-                    console.log(receivedData)
                     this.setState({data: receivedData});
                 }.bind(this),
                 error: (receivedData) => {
@@ -120,13 +117,14 @@ export default class IncomeStatement extends Component {
     render() {
 
 
-
         var data = [{
-            number: '3500', currency: 'USD', account: 'Food', change: 170*this.state.demoExchangeRate
+            number: '1000', account: 'Profit/ Loss from Previous Year', change: 55.63 * this.state.demoExchangeRate
         }, {
-            number: '5000', currency: 'USD', account: 'Apartment Rent', change: 25*this.state.demoExchangeRate
+            number: '1900', account: 'Union Bank of Switzerland', change: 55.63 * this.state.demoExchangeRate
         }, {
-            number: '4100', currency: 'USD', account: 'Travelling', change: 2000*this.state.demoExchangeRate
+            number: '1950', account: 'Bank of Finland', change: 0 * this.state.demoExchangeRate
+        },{
+            number: '6000', account: 'Food', change: 10.50 * this.state.demoExchangeRate
         }];
         var columns = [
             {
@@ -144,30 +142,22 @@ export default class IncomeStatement extends Component {
             }]
 
         return (
-            <body className="incomeStatementRoot">
 
-            <div>
-                <nav className="navbarStatements">
-                    <label class="homeLabel" >CurrentSea</label>
-                </nav>
-            </div>
-
-            <div className="isReportsTitle">Reports</div>
 
             <div className="gridContainer">
 
                 <div className="isgTop">
-
 
                     <Dropdown className="isDropDownReports" isOpen={this.state.reportDropdownOpen}
                               toggle={this.toggleReport}>
                         <DropdownToggle caret>
                             Income Statement
                         </DropdownToggle>
-                        <DropdownMenu className="isDropDownReportsMenu" >
-                            <DropdownItem>Balance Sheet</DropdownItem>
+                        <DropdownMenu className="isDropDownReportsMenu">
+                            <DropdownItem onClick={this.props.action}>Balance Sheet</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
+
 
 
                     <DatePicker className="isStartDatePicker"
@@ -184,7 +174,7 @@ export default class IncomeStatement extends Component {
                     />
 
 
-                    <Dropdown className="isDropDownCurrency"  isOpen={this.state.currencyDropdownOpen}
+                    <Dropdown className="isDropDownCurrency" isOpen={this.state.currencyDropdownOpen}
                               toggle={this.toggleCurrency}>
                         <DropdownToggle caret>
                             {this.state.demoDefaultCurrencyCode}
@@ -198,7 +188,7 @@ export default class IncomeStatement extends Component {
                                 <option onClick={this.currencyChangedDemo}>GBP</option>
                             </DropdownItem>
                             <DropdownItem>
-                                <option onClick={this.currencyChangedDemo}>EURO</option>
+                                <option onClick={this.currencyChangedDemo}>EUR</option>
                             </DropdownItem>
                         </DropdownMenu>
 
@@ -219,8 +209,6 @@ export default class IncomeStatement extends Component {
 
 
             </div>
-
-            </body>
 
         );
     }
