@@ -102,20 +102,15 @@ class BalanceSheet extends Component{
     render(){
         
         var  data  = [{
-            number:'1000', currency:'USD', account:'Profit/Loss from previous year', start:(8250.55 * this.state.demoExchangeRate).toFixed(2),end:(8306.18 * this.state.demoExchangeRate).toFixed(2),change:(55.63 * this.state.demoExchangeRate).toFixed(2), date:''
+            number:'1000', account:'Profit/Loss from previous year', start:(8250.55 * this.state.demoExchangeRate).toFixed(2),end:(8306.18 * this.state.demoExchangeRate).toFixed(2),change:(55.63 * this.state.demoExchangeRate).toFixed(2), date:''
         },{
-            number:'1900', currency:'USD', account:'Union Bank of Switzerland ', start:(7607.15* this.state.demoExchangeRate).toFixed(2),end:(7662.78 * this.state.demoExchangeRate).toFixed(2),change:(55.63 * this.state.demoExchangeRate).toFixed(2), date: ''
+            number:'1900', account:'Union Bank of Switzerland ', start:(7607.15* this.state.demoExchangeRate).toFixed(2),end:(7662.78 * this.state.demoExchangeRate).toFixed(2),change:(55.63 * this.state.demoExchangeRate).toFixed(2), date: ''
         },{
-            number:'1950', currency:'USD', account:'Bank of Finland', start:(643.40 * this.state.demoExchangeRate).toFixed(2),end:(643.40 * this.state.demoExchangeRate).toFixed(2),change:'0.00', date:''
-        },{
-            number:'6000', currency:'USD', account:'Food', start:'0.00',end:(55.63 * this.state.demoExchangeRate).toFixed(2),change:(-55.64 * this.state.demoExchangeRate).toFixed(2), date:''
+            number:'1950', account:'Bank of Finland', start:(643.40 * this.state.demoExchangeRate).toFixed(2),end:(643.40 * this.state.demoExchangeRate).toFixed(2),change:'0.00', date:''
         }];
         var columns = [{
-                Header: 'Number',
+                Header: 'No.',
                 accessor: 'number'
-            }, {
-                Header: 'Currency',
-                accessor: 'currency',
             }, {
                 Header: 'Account',
                 accessor: 'account',
@@ -124,11 +119,11 @@ class BalanceSheet extends Component{
                 Header: 'Start',
                 accessor: 'start'
             }, {
-                Header: 'End',
-                accessor: 'end'
-            }, {
                 Header: 'Change',
                 accessor: 'change'
+            },  {
+                Header: 'End',
+                accessor: 'end'
             }
             
         ]
