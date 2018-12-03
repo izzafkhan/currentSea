@@ -4,6 +4,8 @@
 
 #addTable{
     margin: 12px;
+    
+    height: 200vh;
 }
 
 #newEntry td{

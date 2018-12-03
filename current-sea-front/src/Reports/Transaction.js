@@ -1,10 +1,12 @@
 import React from 'react';
 import './Transaction.css';
 import CurrencyMenu from '../Currencies/CurrencyMenu';
+import Header from '../Header'
 import AddEntry from './Transactions/AddEntry';
 import EditEntry from './Transactions/EditEntry';
 import $ from 'jquery'
-import moment from "moment"   
+import moment from "moment"
+import Select from 'react-select';   
 
 export default class Transaction extends React.Component {
     constructor(props) {
@@ -21,9 +23,6 @@ export default class Transaction extends React.Component {
 
             other: "Other",
 
-            original: "0.00",
-            conversion: "0.00",
-
             showAddEntry: false,
             update: false,
             editableData : {},
@@ -38,10 +37,16 @@ export default class Transaction extends React.Component {
                 tt_user_id : 'This will later become categories',
                 edit : false,
 
-            }]
+            }],
+            convertCurrencies: [],
+            startCurrency: '',
+            endCurrency: '',
+            original: 0,
+            rate : 1,
+            conversion: 0,
 
         }
-        this.get = this.get.bind(this);
+        this.convert = this.convert.bind(this);
         this.income = this.income.bind(this);
         this.expenses = this.expenses.bind(this);
         this.addRow = this.addRow.bind(this);
@@ -49,7 +54,8 @@ export default class Transaction extends React.Component {
         this.closeRow = this.closeRow.bind(this);
         this.closeEdit = this.closeEdit.bind(this);
         this.deleteEdit = this.deleteEdit.bind(this);
-        this.componentWillMount = this.componentWillMount.bind(this);
+        this.handleStartCurrency = this.handleStartCurrency.bind(this);
+        this.handleEndCurrency = this.handleEndCurrency.bind(this);
     }
 
     addRow = () => {
@@ -112,14 +118,39 @@ export default class Transaction extends React.Component {
         }
     }
 
-    get(event) {
-        {/*
-            We'll need to figure out how to use the API before we can convert
-            things. We will use the currency chosen in CurrencyMenu for this.
-        */}
+    handleStartCurrency(event){
+        this.setState({
+            startCurrency : event
+        })
+    }
+
+    handleEndCurrency(event){
+        this.setState({
+            endCurrency : event
+        })
+    }
+
+    convert(event) {
+        $.ajax({
+            url: "http://localhost:4000/currencies/getrate",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType:"json",
+            xhrFields: {withCredentials:true},
+            data : [this.state.startCurrency, this.state.endCurrency],
+            success: (data) => {
+                this.setState({
+                    rate : data,
+                });
+            },
+            error: () => {
+                 console.log("Error: Could not update.");
+            }
+        });
+        this.state.conversion = this.state.rate * this.state.original;
         this.setState({
             original: event.target.value,
-            conversion: event.target.value
         })
     }
 
@@ -135,7 +166,7 @@ export default class Transaction extends React.Component {
         })
     }
 
-    componentWillMount(){
+    componentDidMount(){
         $.ajax({
             url: "http://localhost:4000/transactions/get_transactions",
             type: "GET",
@@ -151,6 +182,31 @@ export default class Transaction extends React.Component {
             error: () => {
                  console.log("Error: Could not update.");
             }
+        });
+
+        $.ajax({
+            url: "http://localhost:4000/currencies/currencies",
+           type: "GET",
+           contentType: "application/json; charset=utf-8",
+           crossDomain: true,
+           dataType:"json",
+           xhrFields: { withCredentials:true },
+           success: (data) => {
+               let currencies = []
+                for (let i = 0; i < data.currencies.length; i++) {
+                    const newRow = {value: '', label: ''};
+                    newRow.value = data.currencies[i];
+                    newRow.label = data.currencies[i];
+                    currencies[i] = newRow;
+                }
+                this.setState({convertCurrencies: currencies,
+                    startCurrency : currencies[31],
+                    endCurrency: currencies[8]    
+                })
+           },
+           error: () => {
+                console.log("Error: Could not fetch data");
+           }
         });
     }
 
@@ -228,6 +284,54 @@ export default class Transaction extends React.Component {
                         </tbody>
                     </table>
                 </div> 
+                <div class="quick">
+                    <div class="summary">
+                        <h2>Summary</h2>
+                        <button onClick={this.income} >Income</button>
+                        <button onClick={this.expenses}>Expenses</button>
+                        <div class="row1">
+                            <div class="summary1">
+                                <span class="dot"></span>
+                                <span class="text">
+                                    {this.state.showIncome ?
+                                        <p>{this.state.income1}</p> :
+                                        <p>{this.state.expense1}</p>}
+                                </span>
+                            </div>
+                            <div class="summary2">
+                                <span class="dot"></span>
+                                <span class="text">
+                                    {this.state.showIncome ?
+                                        <p>{this.state.income2}</p> :
+                                        <p>{this.state.expense2}</p>}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row2">
+                            <div class="summary3">
+                                <span class="dot"></span>
+                                <span class="text">
+                                    {this.state.showIncome ?
+                                        <p>{this.state.income3}</p> :
+                                        <p>{this.state.expense3}</p>}
+                                </span>
+                            </div>
+                            <div class="other">
+                                <span class="dot"></span>
+                                <span class="text"><p>{this.state.other}</p> </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="conversion">
+                        <h2>Currency Conversion</h2>
+                        <input type="number" defaultValue={this.state.original} onChange={this.convert} />
+                        <Select options={this.state.convertCurrencies} defaultValue={this.state.startCurrency} onChange={this.handleStartCurrency}/>
+                        <h3>=</h3>
+                        <p>{this.state.conversion}</p>
+                        <Select options={this.state.convertCurrencies} defaultValue={this.state.endCurrency} onChange={this.handleEndCurrency}/>
+                    </div>
+                </div>
             </div>
         );
     }
