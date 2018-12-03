@@ -1,4 +1,5 @@
-.body {
+.bodyImage {
+    top:100px;
     background-image: url("Capture.PNG");
     height: 1000px;
     background-size: cover 

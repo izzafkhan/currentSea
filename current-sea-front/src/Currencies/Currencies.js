@@ -158,8 +158,9 @@ export default class Currencies extends React.Component {
         return (
 
             <div class="body">
+            <Header />
+            <div class="bodyImage"></div>
                 {/*
-                <Header />
                 <h1 align="center">Currencies</h1>
                 <div>
                     <div>
