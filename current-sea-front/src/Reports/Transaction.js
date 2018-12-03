@@ -241,101 +241,122 @@ export default class Transaction extends React.Component {
             });
         }
         return (
-            <div class="myContainer">
-                <div className="transaction-table">
-                    <table id='dataTable' width="600">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>Date</th>
-                                <th>Description</th>
-                                <th>Balance</th>
-                                <th>DF</th>
-                                <th>Category</th>
-                            </tr>
-                            <tr>
-                                <th colSpan='6'>
-                                    <button id='addEntryButton' onClick={ e => this.addRow()}>+</button>
-                                    {this.state.showAddEntry ? <div><AddEntry addEntry={this.state.showAddEntry} action={this.closeRow}/></div> : <span></span>}
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.currentData.map(row => {
-                                return (
-                                    <tr key={`row-${row.tt_transaction_id}`}>
-                                        <td colSpan='6'>
-                                            <table>
-                                                <tbody>
-                                                    <tr id='nested'>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_transaction_id}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{(moment(row.tt_date)).format('YYYY-MM-DD')}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_balance}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_currency}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_user_id}</button></td>
-                                                    </tr>
-                                                    {row.edit ?
-                                                        <tr>
-                                                            <td colSpan='6'>
-                                                                <EditEntry editData={this.state.editableData} id={row.tt_transaction_id} makeEdit={row.edit} deleteAction={this.deleteEdit} closeAction={this.closeEdit}/>
-                                                            </td>
-                                                        </tr> : <tr></tr>}
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>
-                </div> 
+            <div class="bigContainer">
+                <h1>Bookkeeping</h1>
+                <div class="myContainer">
+                    <div className="transaction-table">
+                        <table id='dataTable' width="600">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Balance</th>
+                                    <th>DF</th>
+                                    <th>Category</th>
+                                </tr>
+                                <tr>
+                                    <th colSpan='6'>
+                                        <button id='addEntryButton' onClick={ e => this.addRow()}>+</button>
+                                        {this.state.showAddEntry ? <div><AddEntry addEntry={this.state.showAddEntry} action={this.closeRow}/></div> : <span></span>}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.currentData.map(row => {
+                                    let index = this.state.currentData.indexOf(row);
+                                    let display = this.state.currentData.length - index; 
+                                    return (
+                                        <tr key={`row-${row.tt_transaction_id}`}>
+                                            <td colSpan='6'>
+                                                <table>
+                                                    <tbody>
+                                                        <tr id='nested'>
+                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{display}</button></td>
+                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{(moment(row.tt_date)).format('YYYY-MM-DD')}</button></td>
+                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
+                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_balance}</button></td>
+                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_currency}</button></td>
+                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
+                                                        </tr>
+                                                        {row.edit ?
+                                                            <tr>
+                                                                <td colSpan='6'>
+                                                                    <EditEntry editData={this.state.editableData} id={row.tt_transaction_id} makeEdit={row.edit} deleteAction={this.deleteEdit} closeAction={this.closeEdit}/>
+                                                                </td>
+                                                            </tr> : <tr></tr>}
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
+                                <tr>
+                                    <td colSpan='6'>
+                                        <table>
+                                            <tbody>
+                                                <tr id='nested'>
+                                                    <td color='black'><button>0</button></td>
+                                                    <td><button></button></td>
+                                                    <td color='black'><button>Start Balance</button></td>
+                                                    <td><button></button></td>
+                                                    <td><button></button></td>
+                                                    <td><button></button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div> 
 
-                <div class="quick">
-                    <div class="summary">
-                        <h2>Summary</h2>
-                        <button onClick={this.income} >Income</button>
-                        <button onClick={this.expenses}>Expenses</button>
-                        <div class="row1">
-                            <div class="summary1">
-                                <span class="dot"></span>
-                                <span class="text">
-                                    {this.state.showIncome ?
-                                        <p>{this.state.income1}</p> :
-                                        <p>{this.state.expense1}</p>}
-                                </span>
+                    <div class="quick">
+                        <div class="summary">
+                            <h2>Summary</h2>
+                            <button onClick={this.income} >Income</button>
+                            <button onClick={this.expenses}>Expenses</button>
+                            <div class="row1">
+                                <div class="summary1">
+                                    <span class="dot"></span>
+                                    <span class="text">
+                                        {this.state.showIncome ?
+                                            <p>{this.state.income1}</p> :
+                                            <p>{this.state.expense1}</p>}
+                                    </span>
+                                </div>
+                                <div class="summary2">
+                                    <span class="dot"></span>
+                                    <span class="text">
+                                        {this.state.showIncome ?
+                                            <p>{this.state.income2}</p> :
+                                            <p>{this.state.expense2}</p>}
+                                    </span>
+                                </div>
                             </div>
-                            <div class="summary2">
-                                <span class="dot"></span>
-                                <span class="text">
-                                    {this.state.showIncome ?
-                                        <p>{this.state.income2}</p> :
-                                        <p>{this.state.expense2}</p>}
-                                </span>
+                            <div class="row2">
+                                <div class="summary3">
+                                    <span class="dot"></span>
+                                    <span class="text">
+                                        {this.state.showIncome ?
+                                            <p>{this.state.income3}</p> :
+                                            <p>{this.state.expense3}</p>}
+                                    </span>
+                                </div>
+                                <div class="other">
+                                    <span class="dot"></span>
+                                    <span class="text"><p>{this.state.other}</p> </span>
+                                </div>
                             </div>
                         </div>
-                        <div class="row2">
-                            <div class="summary3">
-                                <span class="dot"></span>
-                                <span class="text">
-                                    {this.state.showIncome ?
-                                        <p>{this.state.income3}</p> :
-                                        <p>{this.state.expense3}</p>}
-                                </span>
-                            </div>
-                            <div class="other">
-                                <span class="dot"></span>
-                                <span class="text"><p>{this.state.other}</p> </span>
-                            </div>
+                        <div class="conversion">
+                            <h2>Currency Conversion</h2>
+                            <input type="number" defaultValue={this.state.original} onInput={this.convert} />
+                            <Select id='start-currency' options={this.state.convertCurrencies} defaultValue={this.state.startCurrency} onChange={this.handleStartCurrency}/>
+                            <h3>=</h3>
+                            <p>{this.state.conversion}</p>
+                            <Select id='end-currency' options={this.state.convertCurrencies} defaultValue={this.state.endCurrency} onChange={this.handleEndCurrency}/>
                         </div>
-                    </div>
-                    <div class="conversion">
-                        <h2>Currency Conversion</h2>
-                        <input type="number" defaultValue={this.state.original} onInput={this.convert} />
-                        <Select id='start-currency' options={this.state.convertCurrencies} defaultValue={this.state.startCurrency} onChange={this.handleStartCurrency}/>
-                        <h3>=</h3>
-                        <p>{this.state.conversion}</p>
-                        <Select id='end-currency' options={this.state.convertCurrencies} defaultValue={this.state.endCurrency} onChange={this.handleEndCurrency}/>
                     </div>
                 </div>
             </div>
