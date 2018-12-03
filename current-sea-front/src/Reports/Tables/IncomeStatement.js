@@ -224,4 +224,6 @@ export default class IncomeStatement extends Component {
 
         );
     }
+
 }
+
