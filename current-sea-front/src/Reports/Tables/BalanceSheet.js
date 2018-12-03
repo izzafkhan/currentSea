@@ -21,7 +21,8 @@ class BalanceSheet extends Component{
             reportDropdownOpen: false,
             currencyDropdownOpen: false,
             demoDefaultCurrencyCode: 'USD',
-            search: ''
+            search: '',
+            demoExchangeRate:1
          
         };
         this.fetchData = this.fetchData.bind(this);
@@ -38,6 +39,25 @@ class BalanceSheet extends Component{
             endDate: date
         });
 
+    }
+
+    currencyChangedDemo = event => {
+        const currencyCode = event.target.value
+
+        if (currencyCode == "USD") {
+            this.setState({demoExchangeRate: "1"})
+            this.setState({demoDefaultCurrencyCode: 'USD'})
+        }
+
+        if (currencyCode == "GBP") {
+            this.setState({demoExchangeRate: ".78"})
+            this.setState({demoDefaultCurrencyCode: 'GBP'})
+        }
+
+        if (currencyCode == "EUR") {
+            this.setState({demoExchangeRate: ".88"})
+            this.setState({demoDefaultCurrencyCode: 'EURO'})
+        }
     }
 
     fetchData(state,instance){
@@ -82,13 +102,13 @@ class BalanceSheet extends Component{
     render(){
         
         var  data  = [{
-            number:'1000', currency:'USD', account:'Profit/Loss from previous year', start:'8250.55',end:'8306.18',change:'55.63', date:''
+            number:'1000', currency:'USD', account:'Profit/Loss from previous year', start:(8250.55 * this.state.demoExchangeRate).toFixed(2),end:(8306.18 * this.state.demoExchangeRate).toFixed(2),change:(55.63 * this.state.demoExchangeRate).toFixed(2), date:''
         },{
-            number:'1900', currency:'USD', account:'Union Bank of Switzerland ', start:'7607.15',end:'7662.78',change:'55.63'
+            number:'1900', currency:'USD', account:'Union Bank of Switzerland ', start:(7607.15* this.state.demoExchangeRate).toFixed(2),end:(7662.78 * this.state.demoExchangeRate).toFixed(2),change:(55.63 * this.state.demoExchangeRate).toFixed(2), date: ''
         },{
-            number:'1950', currency:'USD', account:'Bank of Finland', start:'643.40',end:'643.40',change:'0.00', date:''
+            number:'1950', currency:'USD', account:'Bank of Finland', start:(643.40 * this.state.demoExchangeRate).toFixed(2),end:(643.40 * this.state.demoExchangeRate).toFixed(2),change:'0.00', date:''
         },{
-            number:'6000', currency:'USD', account:'Food', start:'',end:'55.63',change:'', date:''
+            number:'6000', currency:'USD', account:'Food', start:'0.00',end:(55.63 * this.state.demoExchangeRate).toFixed(2),change:(-55.64 * this.state.demoExchangeRate).toFixed(2), date:''
         }];
         var columns = [{
                 Header: 'Number',
