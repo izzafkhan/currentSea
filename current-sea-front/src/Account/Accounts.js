@@ -56,7 +56,7 @@ export default class Accounts extends React.Component {
 
     addToTable(data){
         var newArray = this.state.currentData.slice();
-           newArray.push(data);
+           newArray.unshift(data);
         this.setState({
             currentData: newArray
 
