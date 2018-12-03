@@ -51,33 +51,67 @@ export default class LoginForm extends React.Component {
     onSubmit = e => {
         e.preventDefault();
 
-        if (this.state.email.length == 0 || this.state.password.length == 0) {
-            alert("Missing login data")
-        }
+            if (this.state.email.length == 0 || this.state.password.length == 0) {
+                alert("Missing login data")
+                return
+            }
 
         const loginData = {
             id: this.state.email,
             password: this.state.password
         }
-
         $.ajax({
                 url: "http://localhost:4000/profile/login",
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,
                 dataType: 'json',
-                xhrFields: {withCredentials: true},
+                xhrFields: { withCredentials: true },
                 data: JSON.stringify(loginData),
-                success: (recivedData) => {
-                    this.setState({loginSuccess: true});
-                    console.log('Successful Login')
+                success: (data) => {
+                    this.setState({ loginSuccess: true });
                 },
                 error: (data) => {
+                    this.setState({ password: '' });
                     alert('Invalid credentials');
                 }
             }
+
         );
+
+
     }
+
+    // onSubmit = e => {
+    //     e.preventDefault();
+    //
+    //     if (this.state.email.length == 0 || this.state.password.length == 0) {
+    //         alert("Missing login data")
+    //     }
+    //
+    //     const loginData = {
+    //         id: this.state.email,
+    //         password: this.state.password
+    //     }
+    //
+    //     $.ajax({
+    //             url: "http://localhost:4000/profile/login",
+    //             type: "POST",
+    //             contentType: "application/json; charset=utf-8",
+    //             crossDomain: true,
+    //             dataType: 'json',
+    //             xhrFields: {withCredentials: true},
+    //             data: JSON.stringify(loginData),
+    //             success: (recivedData) => {
+    //                 this.setState({loginSuccess: true});
+    //                 console.log('Successful Login')
+    //             },
+    //             error: (data) => {
+    //                 alert('Invalid credentials');
+    //             }
+    //         }
+    //     );
+    // }
 
     onSubmitDemo = () => {
         this.setState({loginForDemo: true})
@@ -98,8 +132,19 @@ export default class LoginForm extends React.Component {
 
             <div className="loginRoot">
 
+                {this.redirectAfterLogin()}
+
                 <div className="navbarLoginDiv">
-                    <nav className="navbarLogin"></nav>
+                    <nav className="navbarLogin">
+
+                        <Link to="/Register">
+                            <button className="signUpButtonToolbar">Sign Up</button>
+                        </Link>
+
+                        <img className="logo" src={require('../Assets/CSLogo.png')}></img>
+
+
+                    </nav>
                 </div>
 
 
@@ -139,7 +184,7 @@ export default class LoginForm extends React.Component {
 
                         <div className="lcgBottom">
                             <div className="loginButtonContainer">
-                                <button className="loginButton" onClick={this.onSubmitDemo}>Log In</button>
+                                <button className="loginButton" onClick={e => this.onSubmit(e)}>Log In</button>
                             </div>
 
                             <div className="registerDiv">

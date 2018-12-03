@@ -1,7 +1,21 @@
-.reports-objects{
-    display: flex;
+/*.reports-objects{*/
+    /*display: flex;*/
+/*}*/
+
+/*.reports-menu{*/
+    /*width: 200px;*/
+/*}*/
+
+.reportsRootContainer {
+    background-color: #051642;
+    height: 100%;
 }
 
-.reports-menu{
-    width: 200px;
+.reportsTitle {
+    text-align: center;
+    color: white;
+    font-size: xx-large;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    padding: 30px;
 }
