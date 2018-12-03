@@ -96,7 +96,7 @@ module.exports = function router() {
       });
   });
 
-  favCurRouter.route('/getrate').get((req, res) => {
+  favCurRouter.route('/getrate').post((req, res) => {
     const { from, to } = req.body;
     debug('FROM: ', from, ', TO: ', to);
     db.query('select * from currency_table where ct_from = ? AND ct_to = ? order by ct_date desc LIMIT 1;',

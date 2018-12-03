@@ -39,8 +39,8 @@ export default class Transaction extends React.Component {
 
             }],
             convertCurrencies: [],
-            startCurrency: '',
-            endCurrency: '',
+            startCurrency: {label: '', value: ''},
+            endCurrency: {label: '', value: ''},
             original: 0,
             rate : 1,
             conversion: 0,
@@ -131,27 +131,33 @@ export default class Transaction extends React.Component {
     }
 
     convert(event) {
+        var from = this.state.startCurrency.value;
+        var to = this.state.endCurrency.value;
         $.ajax({
             url: "http://localhost:4000/currencies/getrate",
-            type: "GET",
+            type: "POST",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
             dataType:"json",
             xhrFields: {withCredentials:true},
-            data : [this.state.startCurrency, this.state.endCurrency],
+            data : JSON.stringify({from, to}),
             success: (data) => {
+                console.log(data);
                 this.setState({
-                    rate : data,
-                });
+                    rate : parseFloat(data.rate) 
+                })
             },
             error: () => {
                  console.log("Error: Could not update.");
             }
         });
-        this.state.conversion = this.state.rate * this.state.original;
+        this.state.original = parseFloat(event.target.value);
         this.setState({
-            original: event.target.value,
+            conversion : (typeof (this.state.rate * this.state.original) == 'number') ? (this.state.rate * this.state.original) : 0
         })
+        var test = event.target.value;
+        console.log(test);
+        console.log(parseFloat(test));
     }
 
     income() {
@@ -325,7 +331,7 @@ export default class Transaction extends React.Component {
 
                     <div class="conversion">
                         <h2>Currency Conversion</h2>
-                        <input type="number" defaultValue={this.state.original} onChange={this.convert} />
+                        <input type="number" defaultValue={this.state.original} onInput={this.convert} />
                         <Select options={this.state.convertCurrencies} defaultValue={this.state.startCurrency} onChange={this.handleStartCurrency}/>
                         <h3>=</h3>
                         <p>{this.state.conversion}</p>
