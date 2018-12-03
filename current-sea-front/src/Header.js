@@ -62,12 +62,11 @@ export class Header extends Component {
                                                                                 height="15"></img>{this.state.loggedIn ? 'Logout' : 'Login'}
                         </button>
                     </Link>
-
-                    <Link to="/Help">?</Link>
-                    <Link to="/Currencies/Currencies">My Currencies</Link>
-                    <Link to="/Reports/Report"> View Reports</Link>
-                    <Link to="/Transactions">My Transactions</Link>
-                    <Link to="/Account/Accounts">My Account</Link>
+                    
+                    <Link to="/Account/Accounts">Settings</Link>
+                    <Link to="/Currencies/Currencies">Currencies</Link>  
+                    <Link to="/Reports/Report"> Reports</Link>
+                    <Link to="/Transactions">Bookkeeping</Link>
                 </div>
 
 
