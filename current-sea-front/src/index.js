@@ -26,6 +26,7 @@ class App extends React.Component{
               <Route path="/Transactions" exact component={Home}/>
               <Route path="/Register" exact component = {SignUpForm}/>
               <Route path="/Accounts" exact component = {Accounts}/>
+            
       
             </div>
           </BrowserRouter>
