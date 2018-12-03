@@ -2,15 +2,15 @@ div.myContainer{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    height: 100vh;
     background-color: #051642;
+    height: auto;
     color: white;
+    padding: 40px;
 }
 
 div.transaction-table{
     margin-inline-end: 40px;
-    margin-top: 40px;
-
+    height: auto;
 
 }
 
@@ -93,7 +93,17 @@ Styling to make the table readable
     text-align: center;
     color: white;
     background-color: #00ADA2;
+    border: #00ADA2;
 }
 
+div.conversion p, div.conversion h2, div.conversion h3, div.conversion input{
+    margin-top: 8px;
+    margin-bottom: 8px;
+    color: white;
+}
+
+#start-currency, #end-currency {
+    color: black;
+}
 
 

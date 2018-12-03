@@ -290,6 +290,7 @@ export default class Transaction extends React.Component {
                         </tbody>
                     </table>
                 </div> 
+
                 <div class="quick">
                     <div class="summary">
                         <h2>Summary</h2>
@@ -328,68 +329,16 @@ export default class Transaction extends React.Component {
                             </div>
                         </div>
                     </div>
-
                     <div class="conversion">
                         <h2>Currency Conversion</h2>
                         <input type="number" defaultValue={this.state.original} onInput={this.convert} />
-                        <Select options={this.state.convertCurrencies} defaultValue={this.state.startCurrency} onChange={this.handleStartCurrency}/>
+                        <Select id='start-currency' options={this.state.convertCurrencies} defaultValue={this.state.startCurrency} onChange={this.handleStartCurrency}/>
                         <h3>=</h3>
                         <p>{this.state.conversion}</p>
-                        <Select options={this.state.convertCurrencies} defaultValue={this.state.endCurrency} onChange={this.handleEndCurrency}/>
+                        <Select id='end-currency' options={this.state.convertCurrencies} defaultValue={this.state.endCurrency} onChange={this.handleEndCurrency}/>
                     </div>
                 </div>
             </div>
         );
     }
 }
-
-{/*
-                <div class="quick">
-                    <div class="summary">
-                        <h2>Summary</h2>
-                        <button onClick={this.income} >Income</button>
-                        <button onClick={this.expenses}>Expenses</button>
-                        <div class="row1">
-                            <div class="summary1">
-                                <span class="dot"></span>
-                                <span class="text">
-                                    {this.state.showIncome ?
-                                        <p>{this.state.income1}</p> :
-                                        <p>{this.state.expense1}</p>}
-                                </span>
-                            </div>
-                            <div class="summary2">
-                                <span class="dot"></span>
-                                <span class="text">
-                                    {this.state.showIncome ?
-                                        <p>{this.state.income2}</p> :
-                                        <p>{this.state.expense2}</p>}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="row2">
-                            <div class="summary3">
-                                <span class="dot"></span>
-                                <span class="text">
-                                    {this.state.showIncome ?
-                                        <p>{this.state.income3}</p> :
-                                        <p>{this.state.expense3}</p>}
-                                </span>
-                            </div>
-                            <div class="other">
-                                <span class="dot"></span>
-                                <span class="text"><p>{this.state.other}</p> </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="conversion">
-                        <h2>Currency Conversion</h2>
-                        <input type="number" value={this.state.original} onChange={this.get} />
-                        <CurrencyMenu />
-                        <h3>=</h3>
-                        <p>{this.state.conversion}</p>
-                        <CurrencyMenu />
-                    </div>
-                </div>
-                                    </div> */}
