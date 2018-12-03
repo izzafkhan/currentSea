@@ -18,15 +18,15 @@ export default class Accounts extends React.Component {
             editUpdate : false,
 
             currentData: [{
-                accountId : '1900',
-                accountName : 'Food',
-                accountType: 'Balance',
+                accountId : '',
+                accountName : '',
+                accountType: '',
                 edit : false,
 
             }, {
-                accountId : '1300',
-                accountName : 'Rent',
-                accountType: 'Balance',
+                accountId : '',
+                accountName : '',
+                accountType: '',
                 edit : false,
             }]
 

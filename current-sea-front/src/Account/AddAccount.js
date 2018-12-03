@@ -6,6 +6,10 @@ import './AddAccount.css'
 import $ from 'jquery'
 import Select from 'react-select';
 
+const options = [
+    { value: "Balance", label: "Balance Sheet"},
+    { value: "Income", label:"Income Statement"}
+]
 export default class AddAccount extends React.Component{
 
     constructor(props){
@@ -16,7 +20,7 @@ export default class AddAccount extends React.Component{
                 accountName: 'Description',
                 accountId: 'Account Number',
                 
-                accountType : 'Balance',
+                accountType : '',
                 internalEntries : [],
             },
             enteringData : false,
@@ -43,9 +47,10 @@ export default class AddAccount extends React.Component{
         newData.accountName = e.target.value;
         this.setState({newData});
     }
-    handleType(e){
+    handleType(accountType){
         let newData = Object.assign({}, this.state.newData);
-        newData.accountType = e.target.value;
+        newData.accountType = accountType.value;
+        console.log(newData.accountType);
         this.setState({newData});
     }
 
@@ -101,9 +106,12 @@ export default class AddAccount extends React.Component{
                     <table width='600' id='addTableA'>
                         <thead>
                             <tr>
+                                
                                 <th><input type="number" placeholder="Account Number" onChange={this.handleAcctID }/></th>
                                 <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
-                                <th><input type="text" placeholder="Balance or Income" onChange={this.handleType} /></th>
+                                {/*<th><input type="text" placeholder="Balance or Income" onChange={this.handleType} /></th>*/}
+                                <th><Select options={options} onChange={this.handleType}/></th>
+                               
                             </tr>
                            
                         </thead>
