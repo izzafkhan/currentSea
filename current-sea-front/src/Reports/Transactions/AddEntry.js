@@ -1,11 +1,11 @@
 import React from 'react';
 import DatePicker from 'react-datepicker'
 import moment from "moment"
-import "react-datepicker/dist/react-datepicker.css";
 import './AddEntry.css'
 import $ from 'jquery'
 import DummyAccountsMenu from '../../Accounts/DummyAccountsMenu';
 import CurrencyMenu from '../../Currencies/CurrencyMenu';
+import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select';
 
 export default class AddEntry extends React.Component{
@@ -171,7 +171,7 @@ export default class AddEntry extends React.Component{
                     <table width='600' id='addTable'>
                         <thead>
                             <tr>
-                                <th><DatePicker selected={this.state.dateSetter} onChange={this.setDate} popperPlacement='left-start'/></th>
+                                <th><DatePicker id='date' selected={this.state.dateSetter} onChange={this.setDate} popperPlacement='right-start'/></th>
                                 <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
                                 {/*<th><input type="text" placeholder="Currency"  onChange={this.handleCurrency} /></th> */}
                                 <th><Select options={this.state.currencies} onChange={this.handleCurrency}/></th>
