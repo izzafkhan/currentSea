@@ -18,13 +18,13 @@ module.exports = function router() {
               debug(err);
               res.status(500).json({ message: 'An error has occurred when getting transactions from transaction_table' });
             } else {
-              const transactionID = results1.transaction_id;
+              const { tt_transaction_id } = results1;
               
               db.query('SELECT * FROM detail_table, transaction_table, account_table'
-              + 'WHERE at_user_id = dt_user_id AND at_account_id = dt_account_id'
-              + 'AND tt_user_id = dt_user_id AND tt_transaction_id = dt_transaction_id AND dt_user_id = ?'
-              + 'AND dt_transaction_id = ? AND at_account_type = ? ORDER BY dt_account_id, tt_date ASC',
-              [req.user.username, transactionID, 'Balance'],
+              + 'WHERE at_user_id = dt_userID AND at_account_id = dt_accountID'
+              + 'AND tt_user_id = dt_userID AND tt_transaction_id = dt_transactionID AND dt_userID = ?'
+              + 'AND dt_transactionID = ? AND at_account_type = ? ORDER BY dt_accountID, tt_date ASC',
+              [req.user.username, tt_transaction_id, 'Balance'],
               (err, results2) => {
                 const start_amount = [];
                 const change_amount = [];
@@ -39,26 +39,26 @@ module.exports = function router() {
                   let end = 0;
                   for (let i = 0; i < results2.length; i += 1) {
                     let total_change = 0;
-                    accountId.push(results2[i].account_id);
-                    accountName.push(results2[i].account_name);
+                    accountId.push(results2[i].dt_accountID);
+                    accountName.push(results2[i].at_account_name);
                     //credit not null for first transaction
-                    if(results2[i].credit){
-                      total_change -= results2[i].credit;
-                      start_amount.push('('+results2[i].credit+')');
-                      start = results2[i].credit;
+                    if(results2[i].dt_credit){
+                      total_change -= results2[i].dt_credit;
+                      start_amount.push('('+results2[i].dt_credit+')');
+                      start = results2[i].dt_credit;
                     }
                     //debit not null for first transaction
-                    else if(results2[i].debit){ 
-                      total_change += results2[i].debit;
-                      start_amount.push(results2[i].debit);
-                      start = results2[i].debit;
+                    else if(results2[i].dt_debit){ 
+                      total_change += results2[i].dt_debit;
+                      start_amount.push(results2[i].dt_debit);
+                      start = results2[i].dt_debit;
                     }
                     //loop through same account_id
-                    while(results2[i].account_id === results2[i+1].account_id){
-                      if(results2[i+1].credit)
-                        total_change -= results2[i+1].credit; 
-                      else if(results2[i+1].debit)
-                        total_change += results2[i+1].debit;
+                    while(results2[i].dt_accountID === results2[i+1].dt_accountID){
+                      if(results2[i+1].dt_credit)
+                        total_change -= results2[i+1].dt_credit; 
+                      else if(results2[i+1].dt_debit)
+                        total_change += results2[i+1].dt_debit;
                       i++;
                     }
                     //push the total change amount for each account
@@ -107,13 +107,13 @@ module.exports = function router() {
               debug(err);
               res.status(500).json({ message: 'An error has occurred when getting transactions from transaction_table' });
             } else {
-              const transactionID = results1.transaction_id;
+              const { tt_transaction_id } = results1;
               
               db.query('SELECT * FROM detail_table, transaction_table, account_table'
-              + 'WHERE at_user_id = dt_user_id AND at_account_id = dt_account_id'
-              + 'AND tt_user_id = dt_user_id AND tt_transaction_id = dt_transaction_id AND dt_user_id = ?'
-              + 'AND dt_transaction_id = ? AND at_account_type = ? ORDER BY dt_account_id, tt_date ASC',
-              [req.user.username, transactionID, 'Income'],
+              + 'WHERE at_user_id = dt_userID AND at_account_id = dt_accountID'
+              + 'AND tt_user_id = dt_userID AND tt_transaction_id = dt_transactionID AND dt_userID = ?'
+              + 'AND dt_transactionID = ? AND at_account_type = ? ORDER BY dt_accountID, tt_date ASC',
+              [req.user.username, tt_transaction_id, 'Income'],
               (err, results2) => {
                 const end_amount = [];
                 const accountId = [];
@@ -126,24 +126,24 @@ module.exports = function router() {
                   let end = 0;
                   for (let i = 0; i < results2.length; i += 1) {
                     let total_change = 0;
-                    accountId.push(results2[i].account_id);
-                    accountName.push(results2[i].account_name);
+                    accountId.push(results2[i].dt_accountID);
+                    accountName.push(results2[i].at_account_name);
                     //credit not null for first transaction
-                    if(results2[i].credit){
-                      total_change -= results2[i].credit;
-                      start = results2[i].credit;
+                    if(results2[i].dt_credit){
+                      total_change -= results2[i].dt_credit;
+                      start = results2[i].dt_credit;
                     }
                     //debit not null for first transaction
-                    else if(results2[i].debit){ 
-                      total_change += results2[i].debit;
-                      start = results2[i].debit;
+                    else if(results2[i].dt_debit){ 
+                      total_change += results2[i].dt_debit;
+                      start = results2[i].dt_debit;
                     }
                     //loop through same account_id
-                    while(results2[i].account_id === results2[i+1].account_id){
-                      if(results2[i+1].credit)
-                        total_change -= results2[i+1].credit; 
-                      else if(results2[i+1].debit)
-                        total_change += results2[i+1].debit;
+                    while(results2[i].dt_accountID === results2[i+1].dt_accountID){
+                      if(results2[i+1].dt_credit)
+                        total_change -= results2[i+1].dt_credit; 
+                      else if(results2[i+1].dt_debit)
+                        total_change += results2[i+1].dt_debit;
                       i++;
                     }
                     //calculate the end amount
