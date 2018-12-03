@@ -20,9 +20,11 @@ module.exports = function router() {
             } else {
               const transactionID = results1.transaction_id;
               
-              db.query('SELECT * FROM detail_table AND account_table WHERE at_user_id = dt_user_id AND at_account_id = dt_account_id'
-              + 'AND dt_transaction_id = ? AND at_account_type = ? ORDER BY dt_account_id, dt_date ASC)', 
-              [transactionID, 'Balance'],
+              db.query('SELECT * FROM detail_table, transaction_table, account_table'
+              + 'WHERE at_user_id = dt_user_id AND at_account_id = dt_account_id'
+              + 'AND tt_user_id = dt_user_id AND tt_transaction_id = dt_transaction_id AND dt_user_id = ?'
+              + 'AND dt_transaction_id = ? AND at_account_type = ? ORDER BY dt_account_id, tt_date ASC',
+              [req.user.username, transactionID, 'Balance'],
               (err, results2) => {
                 const start_amount = [];
                 const change_amount = [];
@@ -107,9 +109,11 @@ module.exports = function router() {
             } else {
               const transactionID = results1.transaction_id;
               
-              db.query('SELECT * FROM detail_table AND account_table WHERE at_user_id = dt_user_id AND at_account_id = dt_account_id'
-              + 'AND dt_transaction_id = ? AND at_account_type = ? ORDER BY dt_account_id, dt_date ASC)', 
-              [transactionID, 'Income'],
+              db.query('SELECT * FROM detail_table, transaction_table, account_table'
+              + 'WHERE at_user_id = dt_user_id AND at_account_id = dt_account_id'
+              + 'AND tt_user_id = dt_user_id AND tt_transaction_id = dt_transaction_id AND dt_user_id = ?'
+              + 'AND dt_transaction_id = ? AND at_account_type = ? ORDER BY dt_account_id, tt_date ASC',
+              [req.user.username, transactionID, 'Income'],
               (err, results2) => {
                 const end_amount = [];
                 const accountId = [];

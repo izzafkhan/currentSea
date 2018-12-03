@@ -15,6 +15,7 @@ class BalanceSheet extends Component{
             data: [],
             loading:true,
             filtered: [],
+          
             startDate: '',
             endDate: '',
             reportDropdownOpen: false,
@@ -31,23 +32,25 @@ class BalanceSheet extends Component{
         });
     }
 
+
     handleChangeEnd = (date) => {
-        this.setState({
+      this.setState({
             endDate: date
         });
+
     }
 
     fetchData(state,instance){
-        $.ajax({
+      /* $.ajax({
             url: "http://localhost:4000/balance",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
             dataType: 'json',
             xhrFields: { withCredentials: true },
-            data: 'userId=test',
-            success: function(data) {
-                this.setState({data:data});
+            data:   ,
+            success: function(receiveddata) {
+                this.setState({data:receiveddata});
             }.bind(this),
             error: (data) => {
                 //alert('error occurred')
@@ -56,12 +59,13 @@ class BalanceSheet extends Component{
         }
       
     ); 
-
+*/
     }
     onFilteredChange(){
       
         
     }
+
 
     toggleReport = () => {
         this.setState(prevState => ({
@@ -117,7 +121,6 @@ class BalanceSheet extends Component{
             })
         }
         return(
-
             <div className="gridContainer">
 
                 <div className="isgTop">
