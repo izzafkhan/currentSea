@@ -10,8 +10,7 @@ export default class Accounts extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          
-            conversion: "0.00",
+        
 
             showAddEntry: false,
             update: false,
@@ -19,13 +18,13 @@ export default class Accounts extends React.Component {
             editUpdate : false,
 
             currentData: [{
-                accountID : '1900',
+                accountId : '1900',
                 accountName : 'Food',
                 accountType: 'Balance',
                 edit : false,
 
             }, {
-                accountID : '1300',
+                accountId : '1300',
                 accountName : 'Rent',
                 accountType: 'Balance',
                 edit : false,
@@ -33,8 +32,6 @@ export default class Accounts extends React.Component {
 
         }
         this.get = this.get.bind(this);
-        this.income = this.income.bind(this);
-        this.expenses = this.expenses.bind(this);
         this.addRow = this.addRow.bind(this);
         this.editRow = this.editRow.bind(this);
         this.closeRow = this.closeRow.bind(this);
@@ -61,11 +58,10 @@ export default class Accounts extends React.Component {
         this.forceUpdate();
     } 
 
-    closeEdit(accountID, sum){
-        let index = this.state.currentData.findIndex(x=>x.accountID==accountID);
+    closeEdit(accountId){
+        let index = this.state.currentData.findIndex(x=>x.accountId==accountId);
         let editData = this.state.currentData;
         editData[index].edit = false;
-        editData[index].tt_balance = sum;
         this.setState({
             currentData : editData,
             update: true,  
@@ -73,8 +69,8 @@ export default class Accounts extends React.Component {
         {/*Line 80 (was: editUpdate: true, which does nothing) is probably singlehandedly responsible for the problems we had today. Pitfall?*/}
     }
 
-    deleteEdit(accountID){
-        let index = this.state.currentData.findIndex(x=>x.accountID==accountID);
+    deleteEdit(accountId){
+        let index = this.state.currentData.findIndex(x=>x.accountId==accountId);
         let editData = this.state.currentData;
         var editIndex = editData.indexOf(index);
         editData.splice(editIndex, 1);
@@ -85,8 +81,8 @@ export default class Accounts extends React.Component {
         this.forceUpdate();
     }
 
-    editRow = (e, accountID) => {
-        let index = this.state.currentData.findIndex(x=>x.accountID==accountID);
+    editRow = (e, accountId) => {
+        let index = this.state.currentData.findIndex(x=>x.accountId==accountId);
         let editData = this.state.currentData;
         if (editData[index].edit === false) {
             editData[index].edit = true;
@@ -114,21 +110,10 @@ export default class Accounts extends React.Component {
         })
     }
 
-    income() {
-        this.setState({
-            showIncome: true
-        })
-    }
-
-    expenses() {
-        this.setState({
-            showIncome: false
-        })
-    }
 
     componentWillMount(){
-       /* $.ajax({
-            url: "http://localhost:4000/transactions/get_transactions",
+        $.ajax({
+            url: "http://localhost:4000/accounts/get_accounts",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
@@ -142,14 +127,14 @@ export default class Accounts extends React.Component {
             error: () => {
                  console.log("Error: Could not update.");
             }
-        });*/
+        });
     }
 
 
     render() {
         if(this.state.update === true){
-           /* $.ajax({
-                url: "http://localhost:4000/transactions/get_transactions",
+           $.ajax({
+                url: "http://localhost:4000/bkAccountRoutes/get_accounts",
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,
@@ -167,11 +152,12 @@ export default class Accounts extends React.Component {
                          update : false
                      })
                 }
-            });*/
+            });
         }
         return (
             <div> <Header/> 
             <h1 align="center"> Accounts </h1>
+            <h6 align="center"> Here you can set up, edit and delete your accounts and events </h6>
             <div class="tableContainer">
                 <div className="account-table">
                     <table id='dataTableA'>
@@ -183,9 +169,8 @@ export default class Accounts extends React.Component {
                             </tr>
                             <tr>
                                 <th colSpan='6'>
-                                    <button id='addEntryButton' onClick={ e => this.addRow()}>+</button>
-                                    {this.state.showAddEntry ? <div><h1>hi</h1></div>: <span></span>}
-                                </th>
+                                    <button id='addAccountButton' onClick={ e => this.addRow()}>+</button>
+                                    {this.state.showAddEntry ? <div><AddAccount addEntry={this.state.showAddEntry} action={this.closeRow}/></div> : <span></span>}                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -196,9 +181,9 @@ export default class Accounts extends React.Component {
                                             <table>
                                                 <tbody>
                                                     <tr id='nested'>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.accountID)}}>{row.accountID}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.accountID)}}>{row.accountName}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.accountID)}}>{row.accountType}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.accountId)}}>{row.accountId}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.accountId)}}>{row.accountName}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.accountId)}}>{row.accountType}</button></td>
                                                     </tr>
                                                     {row.edit ?
                                                         <tr>

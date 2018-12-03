@@ -1,8 +1,8 @@
-#addTable th, #addTable input{
+#addTableA th, #addTableA input{
     width: 120px;
 }
 
-#addTable{
+#addTableA{
     margin: 12px;
 }
 
