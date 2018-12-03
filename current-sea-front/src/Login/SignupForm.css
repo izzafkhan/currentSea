@@ -1,94 +1,130 @@
-.container {
+.signUpRoot {
+
+}
+
+.navbarSignUp {
+    background: white;
+    height: 100px;
+}
+
+.navbarSignUpFormGap {
+    padding-top: 100px;
+}
+
+.signUpBody {
+    background-image: url("CurrentSea_bg.png");
+    height: 1024px;
+}
+
+.signUpContainerGird {
+    display: grid;
+    grid-template-rows: 25% 75%;
+
+    height:725px;
+    width: 500px;
+
+    margin-right: auto;
+    margin-left: auto;
+
+    background-color: white;
+}
+
+.sucTop {
     display: flex;
-    flex-direction: column;
-}
+    justify-content: center;
+    align-items: center;
 
-.loginLink {
-    color: black;
-}
-
-.titleLabelSignUpContainer {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    font-size: 50px;
-    margin-bottom: 30px;
-
-}
-
-.signUpTitle {
-    margin-bottom: -10px;
-    font-size: 50px;
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
-    color: #00ADA2;
+    font-size: 325%;
+    color: #051642;
 }
 
-.titleSubText {
-    text-align: center;
-    font-size: small;
-}
-
-.formContainer {
-
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-}
-
-.nameContainer {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 10px;
+.sucBottom {
 
 }
 
-.firstNameInput {
-    margin-right: 10px;
+.signUpFormFieldsContainer {
+    padding-top: 10px;
+    display: table;
+    margin: 0 auto;
+}
 
+.supUserNameDiv {
+
+}
+
+.firstNameField {
+    font-size: large;
     text-indent: 10px;
-    font-size: 20px;
     border: none;
+    width: 182px;
+    height: 50px;
     background-color: #E5E5E5;
+    font-family: 'Roboto', sans-serif;
 }
 
-.lastNameInput {
+.lastNameField {
+    font-size: large;
     text-indent: 10px;
-    font-size: 20px;
     border: none;
+    width: 182px;
+    height: 50px;
     background-color: #E5E5E5;
+    font-family: 'Roboto', sans-serif;
+    float: right;
 }
 
-.emailSignUp {
-    margin-bottom: 10px;
+.supNamesDiv {
 
-    text-indent: 10px;
-    font-size: 20px;
-    border: none;
-    background-color: #E5E5E5;
 }
 
-.passwordSignUp {
-    margin-bottom: 10px;
+.supEmailDiv {
 
-    text-indent: 10px;
-    font-size: 20px;
-    border: none;
-    background-color: #E5E5E5;
 }
 
-.confirmPasswordSignUp {
-    margin-bottom: 10px;
+.supPasswordDiv {
 
+}
+
+.supConfirmPasswordDiv {
+
+}
+
+.supFormField {
+    font-size: large;
     text-indent: 10px;
-    font-size: 20px;
     border: none;
+    width: 375px;
+    height: 50px;
     background-color: #E5E5E5;
-
-    margin-bottom: 20px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .signUpButton {
+    width: 130px;
+    height: 50px;
     color: white;
     background-color: #00ADA2;
+    font-size: large;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+
+    margin:30px auto;
+    display:block;
+}
+
+.supSignInDiv {
+    text-align: center;
+    margin-top: 80px;
+}
+
+.supsignInLink {
+    font-size: medium;
+    padding: 0px;
+    color: black;
+}
+
+.supSignInLink:hover {
+    color: blue;
 }
