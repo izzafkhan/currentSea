@@ -20,7 +20,7 @@ module.exports = function router() {
     });
   });
 
-  favCurRouter.route('/add_fav_curr')
+  favCurRouter.route('/add_fav_cur')
     .post((req, res) => {
       if (req.user) {
         const { currencyFrom, currencyTo } = req.body;
@@ -49,8 +49,39 @@ module.exports = function router() {
         res.status(401).json({ message: 'User is not logged in' });
       }
     });
-  favCurRouter.route('/getrate').get((req, res) => {
-    const { from, to, date } = req.query;
+
+  favCurRouter.route('/remove_fav_cur')
+    .post((req, res) => {
+      if (req.user) {
+        const { currencyFrom, currencyTo } = req.body;
+        db.query('SELECT * FROM favorite_currency_table WHERE ft_user_id = ? AND ft_from = ? AND ft_to = ?',
+          [req.user.username, currencyFrom, currencyTo], (err, results, fields) => {
+            if (err) {
+              debug(err);
+              res.status(500).json({ message: 'Some error occurred' });
+            }
+            debug(results);
+            if (results.length === 0) {
+              res.status(401).json({ message: 'Currency not found.' });
+            } else {
+              db.query('DELETE FROM favorite_currency_table WHERE ft_user_id = ? AND ft_from = ? AND ft_to = ?',
+                [req.user.username, currencyFrom, currencyTo], (err2, results2, fields2) => {
+                  if (err2) {
+                    debug(err2);
+                    res.status(500).json({ message: 'Some error occurred' });
+                  } else {
+                    res.status(201).json({ message: 'Currencies unfavorited.' });
+                  }
+                });
+            }
+          });
+      } else {
+        res.status(401).json({ message: 'User is not logged in' });
+      }
+    });
+
+  favCurRouter.route('/gethistoricrate').get((req, res) => {
+    const { from, to, date } = req.body;
     db.query('SELECT ct_rate FROM currency_table WHERE ct_from = ? AND ct_to = ? AND ct_date = ?',
       [from, to, date], (err, results, fields) => {
         if (err) {
@@ -61,6 +92,23 @@ module.exports = function router() {
           res.status(200).json({ rate: results[0].ct_rate });
         } else {
           res.status(200).json({ message: 'No rates for these currencies and this day' });
+        }
+      });
+  });
+
+  favCurRouter.route('/getrate').get((req, res) => {
+    const { from, to } = req.body;
+    debug('FROM: ', from, ', TO: ', to);
+    db.query('select * from currency_table where ct_from = ? AND ct_to = ? order by ct_date desc LIMIT 1;',
+      [from, to], (err, results, fields) => {
+        if (err) {
+          debug(err);
+          res.status(500).json({ message: 'Some error occurred' });
+        }
+        if (results.length > 0) {
+          res.status(200).json({ rate: results[0].ct_rate });
+        } else {
+          res.status(200).json({ message: 'No current rate for these currencies.' });
         }
       });
   });

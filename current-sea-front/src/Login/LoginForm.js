@@ -2,7 +2,7 @@ import React from 'react';
 import './LoginForm.css';
 import {Link, Redirect} from "react-router-dom";
 import $ from 'jquery';
-import {Form,BasicText,asField} from 'informed';
+import Transaction from "../Reports/Transaction";
 
 export default class LoginForm extends React.Component {
 
@@ -13,7 +13,9 @@ export default class LoginForm extends React.Component {
             email: "",
             password: "",
             toRegister: false,
-            loginSuccess: false
+            loginSuccess: false,
+
+            loginForDemo: false
         };
 
     }
@@ -25,34 +27,6 @@ export default class LoginForm extends React.Component {
     }
 
     
-    onSubmit = e => {
-        e.preventDefault();
-        const loginData = {
-            id: this.state.email,
-            password: this.state.password
-        }
-          $.ajax({
-            url: "http://localhost:4000/profile/login",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            dataType: 'json',
-            xhrFields: { withCredentials: true },
-            data: JSON.stringify(loginData),
-            success: (data) => {
-                this.setState({ loginSuccess: true });
-            },
-            error: (data) => {
-                this.setState({ password: '' });
-                alert('Invalid credentials');
-            }
-        }
-      
-    ); 
- 
-       
-    }
-
     redirectAfterLogin = () => {
         if (this.state.loginSuccess) return <Redirect to='/Transactions' />;
     }
@@ -86,8 +60,6 @@ export default class LoginForm extends React.Component {
             password: this.state.password
         }
 
-        console.log(loginData)
-
         $.ajax({
                 url: "http://localhost:4000/profile/login",
                 type: "POST",
@@ -96,47 +68,93 @@ export default class LoginForm extends React.Component {
                 dataType: 'json',
                 xhrFields: {withCredentials: true},
                 data: JSON.stringify(loginData),
-                success: (data) => {
+                success: (recivedData) => {
                     this.setState({loginSuccess: true});
-                    
+                    console.log('Successful Login')
                 },
                 error: (data) => {
-                    this.setState({password: ''});
                     alert('Invalid credentials');
                 }
             }
         );
     }
 
+    onSubmitDemo = () => {
+        this.setState({loginForDemo: true})
+    }
+
+    redirectDemo = () => {
+
+        if (this.state.loginForDemo == true) {
+            console.log("redirect demo")
+            return <Transaction/>
+        }
+    }
+
     render() {
+
+
         return (
-            <div class="rootContainer">
-            {this.redirectAfterLogin()}
-                <div class="container">
-                    <div class="titleLabel">
-                        <label>CurrentSea</label>
+
+            <div className="loginRoot">
+                {this.redirectAfterLogin()}
+                <div className="navbarLoginDiv">
+                    <nav className="navbarLogin"></nav>
+                </div>
+
+
+
+                <div className="loginBody">
+
+
+                    <div className="navbarLoginFormGap"></div>
+
+                    <div className="loginContainerGrid">
+          
+                        <div className="lcgTop">CurrentSea</div>
+
+                        <div className="lcgMiddle">
+
+
+                            <div className="loginFieldsContainer">
+                                <div>
+                                    <input type="text" className="loginFormField" placeholder="Username or Email"
+                                           onChange={this.handleEmailChange}/>
+                                </div>
+
+                                <div className="loginFieldGap">
+
+                                </div>
+
+                                <div>
+                                    <input type="password" className="loginFormField" placeholder="Password"
+                                           onChange={this.handlePasswordChange}/>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+
+                        <div className="lcgBottom">
+                            <div className="loginButtonContainer">
+                                <button className="loginButton" onClick={this.onSubmit}>Log In</button>
+                            </div>
+
+                            <div className="registerDiv">
+                                <Link class="regLink" to="/Register">Don't have an account? Sign Up</Link>
+                            </div>
+                        </div>
+
+
+
                     </div>
-                    <form class="userInfoForm">
-                        <fieldset>
-                            <input type="text" className="emailField" placeholder="Email" value={this.state.email}
-                                   onChange={this.handleEmailChange}/>
-                        </fieldset>
-                        <fieldset>
-                            <input class="passwordField" type="password" placeholder="Password"
-                                   value={this.state.password} onChange={this.handlePasswordChange}/>
-                        </fieldset>
-                    </form>
-                    <div class="loginButtonSignInDiv">
-                        <button class="loginButtonSignIn" onClick={e => this.onSubmit(e)}>Login</button>
-                    </div>
-                    <div class="registerDiv">
-                        <Link class="regLink" to="/Register">Not registered? Click here.</Link>
-                    </div>
-                    <div class="forgotDiv">
-                        <Link class="forgotLink" to="/">Forgot password?</Link>
-                    </div>
+
                 </div>
             </div>
+
+
         );
     }
 }

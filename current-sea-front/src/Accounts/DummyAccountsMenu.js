@@ -2,16 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import $ from 'jquery'
 
-class CurrencyMenu extends React.Component{
+export default class DummyAccountsMenu extends React.Component{
     
     constructor(props){
         super(props);
         this.state = {
-            buttonText : 'Select a Currency',
+            buttonText : 'Select an Account',
             menu : false,
+            currencySet : {},
         }
         this.showMenu = this.showMenu.bind(this);
         this.hideMenu = this.hideMenu.bind(this);
+        this.setText = this.setText.bind(this);
     }
 
     showMenu(event){
@@ -28,37 +30,13 @@ class CurrencyMenu extends React.Component{
             document.removeEventListener('click', this.hideMenu);
         });
     }
-    
-    
-    render(){
-        return(
-            <div>
-                <button onClick={this.showMenu}>{this.state.buttonText}</button>
-                { this.state.menu ? (
-                    <div id="currencyHolder">
-                        <button onClick={ () => {this.props.onSelectCurrency('USD');}}>USD</button>
-                        <button onClick={ () => {this.props.onSelectCurrency('EUR');}}>EUR</button>
-                        <button onClick={ () => {this.props.onSelectCurrency('GBP');}}>GBP</button>
-                        <button onClick={ () => {this.props.onSelectCurrency('JPY');}}>JPY</button>
-                    </div>
-                ) : (null) }
-            </div>
-        );
+
+    setText(account){
+        this.setState({
+            buttonText : account
+        });
     }
-    
-}
 
-
-{/* Right now for demo purposes I'm only going to have a few currencies to pick from. 
-    The idea is that later on more currencies can be added when we have a better grasp on
-    the next tasks.
-
-    What I think we'll do is have a button for all the currencies and only show the ones that the
-    user has selected. We can get the data for that from Currencies.js
-*/}
-
-
-{/*
     componentDidMount(){
         $.ajax({
             url: "http://localhost:4000/transactions/currencies",
@@ -77,5 +55,30 @@ class CurrencyMenu extends React.Component{
                  console.log("Error: Could not update.");
             }
         });
-    }*/}
-export default CurrencyMenu
+    }
+    
+    render(){
+        return(
+            <div>
+                <button onClick={this.showMenu}>{this.state.buttonText}</button>
+                { this.state.menu ? (
+                    <div id="currencyHolder">
+                        <button onClick={ () => this.setText('9000 Bank')}>9000 Bank</button>
+                        <button onClick={ () => this.setText('4500 Food')}>4500 Food</button>
+                        <button onClick={ () => this.setText('3001 Shoes')}>3001 Shoes</button>
+                        <button onClick={ () => this.setText('4400 Clothing')}>4400 Clothing</button>
+                    </div>
+                ) : (null) }
+            </div>
+        );
+    }
+    
+}
+
+{/* Right now for demo purposes I'm only going to have a few currencies to pick from. 
+    The idea is that later on more currencies can be added when we have a better grasp on
+    the next tasks.
+
+    What I think we'll do is have a button for all the currencies and only show the ones that the
+    user has selected. We can get the data for that from Currencies.js
+*/}
