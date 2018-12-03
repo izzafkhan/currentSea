@@ -1,6 +1,7 @@
 import React from 'react';
 import './Transaction.css';
 import CurrencyMenu from '../Currencies/CurrencyMenu';
+import Header from '../Header'
 import AddEntry from './Transactions/AddEntry';
 import EditEntry from './Transactions/EditEntry';
 import $ from 'jquery'
