@@ -38,6 +38,7 @@ export default class Accounts extends React.Component {
         this.closeEdit = this.closeEdit.bind(this);
         this.deleteEdit = this.deleteEdit.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
+        this.addToTable =this.addToTable.bind(this);
     }
 
     addRow = () => {
@@ -48,8 +49,20 @@ export default class Accounts extends React.Component {
         } else {
             this.setState({
                 showAddEntry: false
+                
             });
         }
+    }
+
+    addToTable(data){
+        var newArray = this.state.currentData.slice();
+           newArray.push(data);
+        this.setState({
+            currentData: newArray
+
+        });
+        this.forceUpdate();
+
     }
 
     closeRow(id){
@@ -69,6 +82,7 @@ export default class Accounts extends React.Component {
         {/*Line 80 (was: editUpdate: true, which does nothing) is probably singlehandedly responsible for the problems we had today. Pitfall?*/}
     }
 
+    
     deleteEdit(accountId){
         let index = this.state.currentData.findIndex(x=>x.accountId==accountId);
         let editData = this.state.currentData;
@@ -112,7 +126,7 @@ export default class Accounts extends React.Component {
 
 
     componentWillMount(){
-        $.ajax({
+   /*     $.ajax({
             url: "http://localhost:4000/accounts/get_accounts",
             type: "GET",
             contentType: "application/json; charset=utf-8",
@@ -127,14 +141,14 @@ export default class Accounts extends React.Component {
             error: () => {
                  console.log("Error: Could not update.");
             }
-        });
+        });*/
     }
 
 
     render() {
         if(this.state.update === true){
-           $.ajax({
-                url: "http://localhost:4000/bkAccountRoutes/get_accounts",
+          /* $.ajax({
+                url: "http://localhost:4000/accounts/get_accounts",
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,
@@ -152,12 +166,12 @@ export default class Accounts extends React.Component {
                          update : false
                      })
                 }
-            });
+            });*/
         }
         return (
             <div> <Header/> 
             <h1 align="center" background="#051642"> Accounts </h1>
-            <h6 align="center"> Here you can set up, edit and delete your accounts and events </h6>
+            <h6 align="center"> Here you can set up, edit and delete your accounts </h6>
             <div class="tableContainer">
                 <div className="account-table">
                     <table id='dataTableA'>
@@ -170,7 +184,8 @@ export default class Accounts extends React.Component {
                             <tr>
                                 <th colSpan='6'>
                                     <button id='addAccountButton' onClick={ e => this.addRow()}>+</button>
-                                    {this.state.showAddEntry ? <div><AddAccount addEntry={this.state.showAddEntry} action={this.closeRow}/></div> : <span></span>}                                </th>
+                                    {this.state.showAddEntry ? <div><AddAccount addEntry={this.state.showAddEntry} add={this.addToTable} action={this.closeRow}/></div> : <span></span>}                                </th>
+                                 
                             </tr>
                         </thead>
                         <tbody>

@@ -16,7 +16,7 @@ export default class AddAccount extends React.Component{
                 accountName: 'Description',
                 accountId: 'Account Number',
                 
-                type : 'Balance',
+                accountType : 'Balance',
                 internalEntries : [],
             },
             enteringData : false,
@@ -32,6 +32,7 @@ export default class AddAccount extends React.Component{
 
     
 
+
     addinfo = () => {
         
         this.forceUpdate();
@@ -44,7 +45,7 @@ export default class AddAccount extends React.Component{
     }
     handleType(e){
         let newData = Object.assign({}, this.state.newData);
-        newData.type = e.target.value;
+        newData.accountType = e.target.value;
         this.setState({newData});
     }
 
@@ -60,13 +61,16 @@ export default class AddAccount extends React.Component{
         
     }
 
+   
     submitData(){
         let newData = Object.assign({}, this.state.newData);
         this.setState({newData});
-
+        this.props.action(false);
+        
         /*
             Ajax magic 
-        */
+            
+        
        $.ajax({
            url: "http://localhost:4000/accounts/add_account",
            type: "POST",
@@ -83,6 +87,8 @@ export default class AddAccount extends React.Component{
                 this.props.action(false);
            }
        })
+
+       */
     
     }
     
@@ -106,7 +112,9 @@ export default class AddAccount extends React.Component{
                            
                         </tbody>     
                     </table>
-                    <button onClick={this.submitData}>Done</button>
+                    <button onClick={()=>{
+                            this.props.add(this.state.newData);
+                             this.submitData();}}>Done</button>
                 </div>
                 : (null) }
             </div>
