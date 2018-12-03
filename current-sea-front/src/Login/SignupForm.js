@@ -1,6 +1,6 @@
 import React, {Component, Link} from 'react';
 import './SignupForm.css';
-import {Redirect} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import $ from 'jquery';
 
 export default class SignupForm extends Component {
@@ -56,7 +56,7 @@ export default class SignupForm extends Component {
 
     redirectAfterRegistration = () => {
         if (this.state.registered == true) {
-            return <Redirect to='/Login'/>
+            return <Redirect to='/'/>
         }
     }
 
@@ -119,7 +119,7 @@ export default class SignupForm extends Component {
                 {this.redirectAfterRegistration()}
                 <div>
                     <nav className="navbarSignUp">
-
+                        <img className="logo" src={require('../Assets/CSLogo.png')}></img>
                     </nav>
                 </div>
 
@@ -171,11 +171,13 @@ export default class SignupForm extends Component {
                                            placeholder="Confirm Password" onChange={this.handleChange}/>
                                 </div>
 
-                                <button className="loginButton" onClick={e => this.onSubmit(e)}>Sign Up</button>
+                                <div className="signUpButtonDiv">
+                                    <button className="loginButton" onClick={e => this.onSubmit(e)}>Sign Up</button>
+                                </div>
 
                                 <div>
                                     <div className="supSignInDiv">
-                                        <Link className="supsignInLink" to="/Login">Already have an account? Sign
+                                        <Link className="supsignInLink" to="/">Already have an account? Sign
                                             in.</Link>
                                     </div>
                                 </div>

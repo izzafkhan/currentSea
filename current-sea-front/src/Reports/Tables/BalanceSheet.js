@@ -3,12 +3,9 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css'
 import './BalanceSheet.css'
 import $ from 'jquery';
-import { ActionTabUnselected } from 'material-ui/svg-icons';
-import DatePicker from 'react-datepicker'
-import moment from "moment"
-import "react-datepicker/dist/react-datepicker.css";
-import CurrencyMenu from '../../Currencies/CurrencyMenu';
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
+import moment from "moment"
+import DatePicker from "react-datepicker/es";
 
 class BalanceSheet extends Component{
     
@@ -18,37 +15,31 @@ class BalanceSheet extends Component{
             data: [],
             loading:true,
             filtered: [],
-            startDate: moment(),
-            endDate: moment(),
-            search: '',
-            rate: 1,
+          
+            startDate: '',
+            endDate: '',
             reportDropdownOpen: false,
             currencyDropdownOpen: false,
-            gotoHome: false,
-            demoExchangeRate: '1',
             demoDefaultCurrencyCode: 'USD',
+            search: ''
          
         };
         this.fetchData = this.fetchData.bind(this);
-        this.handleChangeStart = this.handleChangeStart.bind(this);
-        this.handleChangeEnd = this.handleChangeEnd.bind(this);
-    
-
     }
-    handleChangeStart(date){
+    handleChangeStart = (date) => {
         this.setState({
-            startDate : date
-     
+            startDate: date
         });
     }
-    handleChangeEnd(date){
-       
-        this.setState({
-            endDate : date
+
+
+    handleChangeEnd = (date) => {
+      this.setState({
+            endDate: date
         });
 
     }
-    
+
     fetchData(state,instance){
       /* $.ajax({
             url: "http://localhost:4000/balance",
@@ -75,52 +66,6 @@ class BalanceSheet extends Component{
         
     }
 
-    onCurrencyChange(startCurr, endCurr){
-
-    }
-
-    currencyChangedDemo = event => {
-        const currencyCode = event.target.value
-
-        if (currencyCode == "USD") {
-            this.setState({demoExchangeRate: "1"})
-            this.setState({demoDefaultCurrencyCode: 'USD'})
-        }
-
-        if (currencyCode == "GBP") {
-            this.setState({demoExchangeRate: ".78"})
-            this.setState({demoDefaultCurrencyCode: 'GBP'})
-        }
-
-        if (currencyCode == "EURO") {
-            this.setState({demoExchangeRate: ".88"})
-            this.setState({demoDefaultCurrencyCode: 'EURO'})
-        }
-    }
-    
-    currencyChanged = event => {
-        let currencyCode = event.target.value
-
-        $.ajax({
-                url: "http://localhost:4000/currencies/getrate",
-                type: "Get",
-                contentType: "application/json; charset=utf-8",
-                crossDomain: true,
-                dataType: 'json',
-                xhrFields: {withCredentials: true},
-                data: {currencyFrom: 'USD', currencyTo: 'USD', date: '2018-06-06'},
-                success: function (receivedData) {
-                    console.log("Successful Get")
-                    console.log(receivedData)
-                    this.setState({data: receivedData});
-                }.bind(this),
-                error: (receivedData) => {
-                    alert('error occurred')
-
-                }
-            }
-        );
-    }
 
     toggleReport = () => {
         this.setState(prevState => ({
@@ -134,13 +79,16 @@ class BalanceSheet extends Component{
         }));
     }
 
-    
     render(){
         
         var  data  = [{
-            number:'324', currency:'USD', account:'Food', start:'342',end:'39',change:'-302', date:''
+            number:'1000', currency:'USD', account:'Profit/Loss from previous year', start:'8250.55',end:'8306.18',change:'55.63', date:''
         },{
-            number:'331', currency:'USD', account:'Party', start:'34422',end:'32349',change:'-3034'
+            number:'1900', currency:'USD', account:'Union Bank of Switzerland ', start:'7607.15',end:'7662.78',change:'55.63'
+        },{
+            number:'1950', currency:'USD', account:'Bank of Finland', start:'643.40',end:'643.40',change:'0.00', date:''
+        },{
+            number:'6000', currency:'USD', account:'Food', start:'',end:'55.63',change:'', date:''
         }];
         var columns = [{
                 Header: 'Number',
@@ -151,6 +99,7 @@ class BalanceSheet extends Component{
             }, {
                 Header: 'Account',
                 accessor: 'account',
+                width: 250
             }, {
                 Header: 'Start',
                 accessor: 'start'
@@ -172,55 +121,66 @@ class BalanceSheet extends Component{
             })
         }
         return(
-            <div className="BalanceSheet-table">
-           {/* <CurrencyMenu/>
-            <label> Start Date: </label>
-            <DatePicker
-                selected={this.state.startDate}
-                selectsStart
-                startDate={this.state.startDate}
-                endDate={this.state.endDate}
-                onChange={this.handleChangeStart}
-            />
-            <label> End Date: </label>
+            <div className="gridContainer">
 
-            <DatePicker
-                selected={this.state.endDate}
-                selectsEnd
-                startDate={this.state.startDate}
-                endDate={this.state.endDate}
-                onChange={this.handleChangeEnd}
-           />*/}
-            <Dropdown className="isDropDownReports" isOpen={this.state.reportDropdownOpen}
+                <div className="isgTop">
+
+                    <Dropdown className="isDropDownReports" isOpen={this.state.reportDropdownOpen}
                               toggle={this.toggleReport}>
                         <DropdownToggle caret>
-                            Income Statement
+                            Balance Sheet
                         </DropdownToggle>
-                        <DropdownMenu className="isDropDownReportsMenu" >
-                            <DropdownItem>Balance Sheet</DropdownItem>
+                        <DropdownMenu className="isDropDownReportsMenu">
+                            <DropdownItem onClick={this.props.action}>Income Statement</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
 
-            <h1> </h1>
-            Search: <input value={this.state.search}
-							onChange={e => this.setState({search: e.target.value})}
-					/>
-
-            
-                   
-                <ReactTable
-                        data = {data}
-                        noDataText="Your spending will appear here"
-                        columns = {columns}
-                        onFetchData= {this.fetchData}
-                        defaultFilterMethod={(filter,row) => 
-                            String(row[filter.id]) === filter.value ||  String(row[filter.id]).toLowerCase() === filter.value.toLowerCase()
-                        }
-                        filtered = {this.state.filtered}
-                        onFilteredChange = {filtered => this.setState({filtered})}
-                        //resolveData={}
+                    <DatePicker className="isStartDatePicker"
+                                selected={this.state.startDate}
+                                onChange={this.handleChangeStart}
+                                placeholderText="Start Date"
                     />
-                
+
+                    <DatePicker className="isEndDatePicker"
+                                selected={this.state.endDate}
+                                onChange={this.handleChangeEnd}
+                                minDate={this.state.startDate}
+                                placeholderText="End Date"
+                    />
+
+                    <Dropdown className="isDropDownCurrency" isOpen={this.state.currencyDropdownOpen}
+                              toggle={this.toggleCurrency}>
+                        <DropdownToggle caret>
+                            {this.state.demoDefaultCurrencyCode}
+                        </DropdownToggle>
+
+                        <DropdownMenu className="isDropDownCurrencyMenu">
+                            <DropdownItem>
+                                <option onClick={this.currencyChangedDemo}>USD</option>
+                            </DropdownItem>
+                            <DropdownItem>
+                                <option onClick={this.currencyChangedDemo}>GBP</option>
+                            </DropdownItem>
+                            <DropdownItem>
+                                <option onClick={this.currencyChangedDemo}>EUR</option>
+                            </DropdownItem>
+                        </DropdownMenu>
+
+                    </Dropdown>
+
+
+
+                </div>
+
+                <div className="isgBottom">
+                    <ReactTable
+                        className="balanceDataTable"
+                        data={data}
+                        noDataText="Your balances will appear here"
+                        columns={columns}
+                    />
+                </div>
+
             </div>
         );
     }

@@ -1,39 +1,61 @@
-/*nav {*/
-  /*background-color: white;*/
-  /*overflow: hidden;*/
-  /*height: 40px;*/
+.headerRoot {
+  background-color: white;
+  overflow: hidden;
+  height: 55px;
 
-/*}*/
-
-/*a{*/
-  /*color: white;*/
-  /*font-weight: bold;*/
-  /*font: Tahoma;*/
-  /*padding: 0.8cm;*/
-  /*text-decoration: none; */
-/*}*/
-
-/*a:hover{*/
-  /*color:white;*/
-  /*opacity:0.7;*/
-/*}*/
-
-/*div.wideDiv{*/
-  /*text-align: right;*/
-/*}*/
-
-
-/*button.loginButton{*/
-  /*color: white;*/
-  /*background-color: palevioletred;*/
-  /*border-style: solid;*/
-  /*border-color: palevioletred;*/
-  /*border-radius: 4px;*/
-/*}*/
-
-div.wideDiv{
-  text-align: right;
 }
+
+.linkContainer {
+  display: block;
+  margin-right: 20px;
+}
+
+.headerRoot a {
+  float: right;
+  color: #051642;
+  text-align: center;
+  padding: 14px 14px;
+  text-decoration: none;
+  font-size: 17px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.logoutButton {
+  background-color: transparent;
+  border: none;
+  color: #051642;
+
+
+}
+
+.imageDiv {
+  background-color: #051642;
+  height: 30px;
+  width: 60px;
+}
+
+.logo {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 20px;
+    height: 58px;
+}
+
+.logoutHeader {
+    width: 100px;
+    height: 30px;
+    color: white;
+    background-color: #00ADA2;
+    font-size: large;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    margin-top: -10px;
+    margin-left: 10px;
+
+}
+
+
+
 
 
 
