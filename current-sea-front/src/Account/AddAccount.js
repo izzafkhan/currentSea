@@ -8,7 +8,7 @@ import Select from 'react-select';
 
 const options = [
     { value: "Balance", label: "Balance Sheet"},
-    { value: 'Income', label:"Income Statement"}
+    { value: "Income", label:"Income Statement"}
 ]
 export default class AddAccount extends React.Component{
 
@@ -20,7 +20,7 @@ export default class AddAccount extends React.Component{
                 accountName: 'Description',
                 accountId: 'Account Number',
                 
-                accountType : 'Balance',
+                accountType : '',
                 internalEntries : [],
             },
             enteringData : false,
@@ -47,9 +47,10 @@ export default class AddAccount extends React.Component{
         newData.accountName = e.target.value;
         this.setState({newData});
     }
-    handleType(e){
+    handleType(accountType){
         let newData = Object.assign({}, this.state.newData);
-        newData.accountType = e.target.label;
+        newData.accountType = accountType.value;
+        console.log(newData.accountType);
         this.setState({newData});
     }
 
@@ -109,8 +110,8 @@ export default class AddAccount extends React.Component{
                                 <th><input type="number" placeholder="Account Number" onChange={this.handleAcctID }/></th>
                                 <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
                                 {/*<th><input type="text" placeholder="Balance or Income" onChange={this.handleType} /></th>*/}
-                                <th><Select options={options} onChange={(e) => this.handleType}/></th>
-                           
+                                <th><Select options={options} onChange={this.handleType}/></th>
+                               
                             </tr>
                            
                         </thead>
