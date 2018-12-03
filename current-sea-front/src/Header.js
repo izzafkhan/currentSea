@@ -9,9 +9,11 @@ export class Header extends Component {
         this.state = {
             loggedIn: true // set to true by default for testing purposes
         };
+
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
 
-    componentDidMount = () => {
+    componentDidMount() {
         $.ajax({
             url: 'http://localhost:4000/profile/loggedin',
             type: 'GET',
@@ -52,7 +54,7 @@ export class Header extends Component {
 
                 <div className="linkContainer">
 
-                    {console.log(this.state.loggedIn)}
+                    <img className="logo" src={require('./Assets/CSLogo.png')}></img>
 
                     <Link to="/">
                         <button onClick={this.logout} class="logoutHeader"><img src={require('./Assets/lockwhite.png')}
