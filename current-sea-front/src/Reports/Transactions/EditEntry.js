@@ -1,6 +1,7 @@
 import React from 'react';
 import './EditEntry.css';
 import $ from 'jquery'
+import lineStyle from 'material-ui/svg-icons/action/line-style';
 
 export default class EditEntry extends React.Component{
     constructor(props){
@@ -45,6 +46,7 @@ export default class EditEntry extends React.Component{
             
             sum += this.state.data[i].dt_debit;
         }
+        console.log(sum);
         $.ajax({
             url: "http://localhost:4000/transactions/edit_transactions",
             type: "POST",
@@ -52,7 +54,8 @@ export default class EditEntry extends React.Component{
             crossDomain: true,
             dataType:"json",
             xhrFields: { withCredentials:true },
-            data: JSON.stringify({'tt_transaction_id' : this.state.action_id, 'data': this.state.data} ),
+            data: JSON.stringify({ 'tt_transaction_id' : this.state.action_id, 'data': this.state.data, 
+                'balance': sum}),
             success: () => {
                  this.props.closeAction(this.state.action_id, sum);
             },
