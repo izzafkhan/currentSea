@@ -30,11 +30,11 @@ export default class Transaction extends React.Component {
 
             currentData: [{
                 tt_transaction_id : 0,
-                tt_date : '2018 January 1',
-                tt_description: 'New Entries Go Here',
-                tt_balance: 0,
-                tt_currency: 'USD',
-                tt_user_id : 'This will later become categories',
+                tt_date : ' ',
+                tt_description: 'Start Balance',
+                tt_balance: ' ',
+                tt_currency: ' ',
+                tt_user_id : ' ',
                 edit : false,
 
             }],
