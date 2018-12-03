@@ -6,6 +6,10 @@ import './AddAccount.css'
 import $ from 'jquery'
 import Select from 'react-select';
 
+const options = [
+    { value: "Balance", label: "Balance Sheet"},
+    { value: 'Income', label:"Income Statement"}
+]
 export default class AddAccount extends React.Component{
 
     constructor(props){
@@ -45,7 +49,7 @@ export default class AddAccount extends React.Component{
     }
     handleType(e){
         let newData = Object.assign({}, this.state.newData);
-        newData.accountType = e.target.value;
+        newData.accountType = e.target.label;
         this.setState({newData});
     }
 
@@ -101,9 +105,12 @@ export default class AddAccount extends React.Component{
                     <table width='600' id='addTableA'>
                         <thead>
                             <tr>
+                                
                                 <th><input type="number" placeholder="Account Number" onChange={this.handleAcctID }/></th>
                                 <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
-                                <th><input type="text" placeholder="Balance or Income" onChange={this.handleType} /></th>
+                                {/*<th><input type="text" placeholder="Balance or Income" onChange={this.handleType} /></th>*/}
+                                <th><Select options={options} onChange={(e) => this.handleType}/></th>
+                           
                             </tr>
                            
                         </thead>
