@@ -68,7 +68,7 @@ module.exports = function router() {
               else
                 change_amount.push(total_change);
             }
-            //deal with return object
+            // deal with return object
             const obj = {};
             const output = [];
             for (let i = 0; i < accountId.length; i += 1) {
