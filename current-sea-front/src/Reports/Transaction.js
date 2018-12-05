@@ -312,7 +312,7 @@ export default class Transaction extends React.Component {
                                 {this.state.currentData.slice(0).reverse().map(row => {
                                     let index = this.state.currentData.indexOf(row);
                                     let display = 1 + index; 
-                                    return (
+                                    return (    
                                         <tr key={`row-${row.tt_transaction_id}`}>
                                             <td colSpan='6'>
                                                 <table>
@@ -328,7 +328,7 @@ export default class Transaction extends React.Component {
                                                         {row.edit ?
                                                             <tr>
                                                                 <td colSpan='6'>
-                                                                    <EditEntry editData={this.state.editableData} id={row.tt_transaction_id} makeEdit={row.edit} deleteAction={this.deleteEdit} closeAction={this.closeEdit}/>
+                                                                    <EditEntry editData={this.state.editableData} id={row.tt_transaction_id} makeEdit={row.edit} deleteAction={this.deleteEdit} accounts={this.state.accounts} closeAction={this.closeEdit}/>
                                                                 </td>
                                                             </tr> : <tr></tr>}
                                                     </tbody>
