@@ -57,9 +57,10 @@ export class Header extends Component {
                     <img className="logo" src={require('./Assets/CSLogo.png')}></img>
 
                     <Link to="/">
-                        <button onClick={this.logout} class="logoutHeader"><img src={require('./Assets/lockwhite.png')}
-                                                                                alt="lockwhite" width="15"
-                                                                                height="15"></img>{this.state.loggedIn ? 'Logout' : 'Login'}
+                        <button onClick={this.logout} class="logoutHeader">
+                        <img src={require('./Assets/lockwhite.png')}
+                            alt="lockwhite" width="15"
+                            height="15"></img>{this.state.loggedIn ? 'Logout' : 'Login'}
                         </button>
                     </Link>
                     

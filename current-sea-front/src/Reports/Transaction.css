@@ -8,6 +8,10 @@ div.myContainer{
     padding: 8px;
 }
 
+div.conversion input {
+    color: black;
+}
+
 div.bigContainer{
     display: flex;
     flex-direction: column;
@@ -130,4 +134,5 @@ div.conversion p, div.conversion h2, div.conversion h3, div.conversion input{
     height: auto;
 }
 
+button:focus {outline:0;}
 
