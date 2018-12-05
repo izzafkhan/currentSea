@@ -1,4 +1,6 @@
 import React from 'react';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 import './EditEntry.css';
 import $ from 'jquery'
 
@@ -21,7 +23,7 @@ export default class EditEntry extends React.Component{
         var internalEntries = this.state.data.slice(0);
 
         let newRow = {
-            dt_accountID : '9000 Bank',
+            dt_accountID : ' ',
             dt_debit : 0,
             dt_credit : 0,
             dt_eventID : '',
@@ -34,8 +36,11 @@ export default class EditEntry extends React.Component{
     }
 
     handleChange(row, entry, event) {
-        row[entry] = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
-        console.log('Here');
+        if (entry == "account") {
+            row[entry] = event.value.substr(0, event.value.indexOf(' '));
+        } else {
+            row[entry] = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
+        }
     }
 
     save(){
@@ -126,10 +131,11 @@ export default class EditEntry extends React.Component{
                         </tr>
                     </thead>
                     <tbody>
+                        <tr></tr>   
                         {this.state.data.map( (row, index) => {
                             return (
                                 <tr key={`row-${index}`}>
-                                    <td><input type="text" defaultValue={row.dt_accountID} onChange={(e) => this.handleChange(row, 'dt_accountID', e)}/></td>
+                                    <td><Select options={this.state.accounts} onChange={(e) => this.handleChange(row, 'account', e)}/></td>
                                     <td><input type="number"  defaultValue={row.dt_debit} onChange={(e) => this.handleChange(row, 'dt_debit', e)}/></td>
                                     <td><input type="number" defaultValue={row.dt_credit} onChange={(e) => this.handleChange(row, 'dt_credit', e)}/></td>
                                     <td><input type="text"  defaultValue={row.dt_eventID} onChange={(e) => this.handleChange(row, 'dt_eventID', e)}/></td>
