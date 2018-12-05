@@ -311,7 +311,7 @@ export default class Transaction extends React.Component {
                             <tbody>
                                 {this.state.currentData.slice(0).reverse().map(row => {
                                     let index = this.state.currentData.indexOf(row);
-                                    let display = this.state.currentData.length - index; 
+                                    let display = 1 + index; 
                                     return (
                                         <tr key={`row-${row.tt_transaction_id}`}>
                                             <td colSpan='6'>
