@@ -44,7 +44,7 @@ export default class Transaction extends React.Component {
             original: 0,
             rate : 1,
             conversion: 0,
-
+            accounts: []
         }
         this.convert = this.convert.bind(this);
         this.income = this.income.bind(this);
@@ -214,6 +214,29 @@ export default class Transaction extends React.Component {
                 console.log("Error: Could not fetch data");
            }
         });
+        $.ajax({
+            url: "http://localhost:4000/accounts/get_accounts",
+           type: "GET",
+           contentType: "application/json; charset=utf-8",
+           crossDomain: true,
+           dataType:"json",
+           xhrFields: { withCredentials:true },
+           success: (data) => {
+                const accounts = [];
+                for (let i = 0; i < data.results.length; i++) {
+                    const newRow = {value: '', label: ''};
+                    newRow.value = data.results[i].at_account_name;
+                    newRow.label = data.results[i].at_account_name;
+                    accounts[i] = newRow;
+                }
+                this.setState({
+                    accounts: accounts
+                });
+           },
+           error: () => {
+                console.log("Error: Could not fetch data");
+           }
+        });
     }
 
 
@@ -258,7 +281,7 @@ export default class Transaction extends React.Component {
                                 <tr>
                                     <th colSpan='6'>
                                         <button id='addEntryButton' onClick={ e => this.addRow()}>+</button>
-                                        {this.state.showAddEntry ? <div><AddEntry addEntry={this.state.showAddEntry} action={this.closeRow}/></div> : <span></span>}
+                                        {this.state.showAddEntry ? <div><AddEntry addEntry={this.state.showAddEntry} action={this.closeRow} currencies={this.state.convertCurrencies} accounts={this.state.accounts}/></div> : <span></span>}
                                     </th>
                                 </tr>
                             </thead>

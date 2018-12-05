@@ -5,7 +5,6 @@ const db = require('./db');
 const bkAccountRouter = express.Router();
 
 module.exports = function router() {
-
   bkAccountRouter.route('/get_accounts')
     .get((req, res) => {
       if (req.user) {
