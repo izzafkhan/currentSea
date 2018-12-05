@@ -108,7 +108,6 @@ module.exports = function router() {
             res.status(500).json({ message: 'An error has occurred when getting data from database' });
           } else {
             let start = 0;
-            let total_change = 0;
             for (let i = 0; i < results.length - 1; i += 1) {
               let end = 0;
               accountId.push(results[i].dt_accountID);
