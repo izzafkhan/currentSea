@@ -5,19 +5,11 @@ const db = require('./db');
 const transactionsRouter = express.Router();
 
 module.exports = function router() {
-  /*transactionsRouter.use((req, res, next) => {
-    if (req.user) {
-      next();
-    } else {
-      res.status(401).json({ message: 'User is not logged in' });
-    }
-  }); */
-
   transactionsRouter.route('/get_transactions')
     .get((req, res) => {
       if (req.user) {
         db.query('SELECT * FROM transaction_table WHERE tt_user_id = ?', [req.user.username],
-          (err, results, fields) => {
+          (err, results) => {
             if (err) {
               debug('Error occurred in /get_transactions', err);
               res.status(500).json({ message: 'Error occurred getting transactions' });
@@ -39,7 +31,7 @@ module.exports = function router() {
 
         db.query('INSERT INTO transaction_table (tt_user_id, tt_date, tt_currency, tt_balance, tt_description) VALUES (?,?,?,?,?)',
           [req.user.username, startDate, currencyId, balance, description],
-          (err, results, fields) => {
+          (err, results) => {
             if (err) {
               debug('Error occurred in /add_transactions', err);
               res.status(500).json({ message: 'Error occurred adding a transaction' });
@@ -56,7 +48,7 @@ module.exports = function router() {
               }
               debug(query);
               db.query('INSERT INTO details_table (dt_transactionID, dt_userID, dt_accountID, dt_eventID, dt_debit, dt_credit) VALUES ' + query,
-                (err2, results2, fields2) => {
+                (err2) => {
                   if (err2) {
                     debug('Error occurred in /add_transactions', err2);
                     res.status(500).json({ message: 'Error occurred adding a transaction' });
