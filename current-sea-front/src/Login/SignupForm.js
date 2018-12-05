@@ -1,6 +1,6 @@
-import React, {Component, Link} from 'react';
+import React, {Component} from 'react';
 import './SignupForm.css';
-import {Link, Redirect} from "react-router-dom";
+import { Link, Redirect} from "react-router-dom";
 import $ from 'jquery';
 
 export default class SignupForm extends Component {

@@ -20,6 +20,23 @@ module.exports = function router() {
     });
   });
 
+  favCurRouter.route('/get_fav_cur')
+    .get((req, res) => {
+      if (req.user) {
+        db.query('SELECT * FROM favorite_currency_table WHERE ft_user_id = ?', [req.user.username],
+          (err, results) => {
+            if (err) {
+              debug(err);
+              res.status(500).json({ message: 'Some error occurred' });
+            } else {
+              res.status(200).json({ results });
+            }
+          });
+      } else {
+        res.status(401).json({ message: 'User is not logged in' });
+      }
+    });
+
   favCurRouter.route('/add_fav_cur')
     .post((req, res) => {
       if (req.user) {
@@ -96,7 +113,7 @@ module.exports = function router() {
       });
   });
 
-  favCurRouter.route('/getrate').get((req, res) => {
+  favCurRouter.route('/getrate').post((req, res) => {
     const { from, to } = req.body;
     debug('FROM: ', from, ', TO: ', to);
     db.query('select * from currency_table where ct_from = ? AND ct_to = ? order by ct_date desc LIMIT 1;',

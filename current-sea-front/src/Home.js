@@ -8,8 +8,8 @@ import Login from './Login/Login';
 class Home extends Component {
   render() {
     return (
-      <div>
-        {/*<Link to="/Reports/Report">View Reports</Link>*/}
+      <div id='homepage'>
+        {/*<Link to="/Reports/Report">View Reports</Link> -- I can't believe this has lasted for so long!!!*/}
         <Header/>
         <Transaction/>
       </div>

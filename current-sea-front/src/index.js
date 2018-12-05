@@ -9,7 +9,7 @@ import Login from './Login/Login';
 import SignUpForm from './Login/SignupForm'
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Route } from "react-router-dom";
-import Accounts from './Accounts/Accounts';
+import Accounts from './Account/Accounts';
 
 
 class App extends React.Component{
@@ -26,6 +26,7 @@ class App extends React.Component{
               <Route path="/Transactions" exact component={Home}/>
               <Route path="/Register" exact component = {SignUpForm}/>
               <Route path="/Accounts" exact component = {Accounts}/>
+            
       
             </div>
           </BrowserRouter>

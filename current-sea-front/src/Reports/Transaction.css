@@ -1,15 +1,34 @@
-.myContainer{
+div.myContainer{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    height: 100vh;
     background-color: #051642;
+    height: auto;
+    color: white;
+    padding: 8px;
+}
+
+div.conversion input {
+    color: black;
+}
+
+div.bigContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #051642;
+    height: auto;
+}
+
+div.bigContainer h1{
+    color: white;
+    text-align: center;
+    padding: 16px;
 }
 
 div.transaction-table{
     margin-inline-end: 40px;
-    margin-top: 40px;
-
+    height: auto;
 
 }
 
@@ -57,8 +76,12 @@ div.other {overflow: hidden;}
 Styling to make the table readable
 */
 
-#dataTable td, #dataTable th {
+#dataTable td{
     background-color: #ffffff;
+    color: black;
+    width: 100px;
+    
+    text-align: left;
 }
 
 #dataTable tr:nth-child(even){background-color: #f2f2f2;}
@@ -68,15 +91,18 @@ Styling to make the table readable
     padding-bottom: 12px;
     
     padding: 8px;
-    text-align: left;
-    background-color:white;
+    
+    background-color: #ffffff;
     color: black;
     width: 100px;
 }
 
 #nested td {
-    text-align: left;
     width: 100px;
+    background-color: white;
+    border-color: white;
+    border-style: solid;
+    text-align: left;
 }
 
 #nested button {
@@ -92,7 +118,21 @@ Styling to make the table readable
     text-align: center;
     color: white;
     background-color: #00ADA2;
+    border: #00ADA2;
 }
 
+div.conversion p, div.conversion h2, div.conversion h3, div.conversion input{
+    margin-top: 8px;
+    margin-bottom: 8px;
+    color: white;
+}
 
+#start-currency, #end-currency {
+    color: black;
+    padding: 8px;
+    width: 200px;
+    height: auto;
+}
+
+button:focus {outline:0;}
 

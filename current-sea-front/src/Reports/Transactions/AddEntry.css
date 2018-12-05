@@ -1,13 +1,14 @@
 #addTable th, #addTable input{
-    width: 120px;
+    table-layout: fixed;
+    width: 100px;
+    text-align: left;
 }
 
 #addTable{
-    margin: 12px;
-    
-    height: 200vh;
+    margin-top: 12px;
+    height: auto;
 }
 
 #newEntry td{
-    width: 120px;
+    width: 100px;
 }

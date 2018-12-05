@@ -85,35 +85,41 @@ export default class AddEntry extends React.Component{
 
     submitData(){
         var sum = 0;
+        var balanceCheck = 0;
         let newData = Object.assign({}, this.state.newData);
         for(let i = 0; i < newData.internalEntries.length; i++){
             
             sum += newData.internalEntries[i].debit;
+            balanceCheck += newData.internalEntries[i].credit;
         }
         //console.log(sum);
-        this.state.newData.balance = sum;     
-        this.setState({newData});
+        if(balanceCheck == sum){
+            this.state.newData.balance = sum;     
+            this.setState({newData});
 
-        /*
-            Ajax magic 
-            Maybe we should send the internal entries back home instead of newData? We need to avoid losing information one way or another.
-        */
-       $.ajax({
-           url: "http://localhost:4000/transactions/add_transactions",
-           type: "POST",
-           contentType: "application/json; charset=utf-8",
-           crossDomain: true,
-           dataType:"json",
-           xhrFields: { withCredentials:true },
-           data: JSON.stringify(this.state.newData),
-           success: () => {
-                this.props.action(false);
-           },
-           error: () => {
-                console.log("Error: Could not submit");
-                this.props.action(false);
-           }
-       })
+            /*
+                Ajax magic 
+                Maybe we should send the internal entries back home instead of newData? We need to avoid losing information one way or another.
+            */
+            $.ajax({
+                url: "http://localhost:4000/transactions/add_transactions",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType:"json",
+                xhrFields: { withCredentials:true },
+                data: JSON.stringify(this.state.newData),
+                success: () => {
+                        this.props.action(false);
+                },
+                error: () => {
+                        console.log("Error: Could not submit");
+                        this.props.action(false);
+                }
+            })
+        } else {
+            alert("Make sure your credit and debit are equal...")
+        }
     
     }
     componentDidMount = () => {
@@ -171,16 +177,12 @@ export default class AddEntry extends React.Component{
                     <table width='600' id='addTable'>
                         <thead>
                             <tr>
+                                <th></th>
                                 <th><DatePicker id='date' selected={this.state.dateSetter} onChange={this.setDate} popperPlacement='right-start'/></th>
                                 <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
+                                <th></th>
                                 {/*<th><input type="text" placeholder="Currency"  onChange={this.handleCurrency} /></th> */}
                                 <th><Select options={this.state.currencies} onChange={this.handleCurrency}/></th>
-                            </tr>
-                            <tr>
-                                <th>Account</th>
-                                <th>Debit</th>
-                                <th>Credit</th>
-                                <th>Event</th>
                             </tr>
                         </thead>
                     
@@ -188,7 +190,8 @@ export default class AddEntry extends React.Component{
                             {this.state.newData.internalEntries.map(row => {
                                 return (
                                     <tr key={`row-${row.id}`}>
-                                        <td><Select options={this.state.accounts} onChange={(e) => this.handleChange(row, 'account', e)}/></td>
+                                        {/*<td><Select options={this.state.accounts} onChange={(e) => this.handleChange(row, 'account', e)}/></td> */}
+                                        <td><input type="text"  placeholder="Account" onChange={(e) => this.handleChange(row, 'account', e)}/></td>
                                         <td><input type="number"  placeholder="Debit" onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
                                         <td><input type="number" placeholder="Credit" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
                                         <td><input type="text"  placeholder="Event" onChange={(e) => this.handleChange(row, 'event', e)}/></td>

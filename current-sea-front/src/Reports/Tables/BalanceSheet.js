@@ -15,12 +15,14 @@ class BalanceSheet extends Component{
             data: [],
             loading:true,
             filtered: [],
+          
             startDate: '',
             endDate: '',
             reportDropdownOpen: false,
             currencyDropdownOpen: false,
             demoDefaultCurrencyCode: 'USD',
-            search: ''
+            search: '',
+            demoExchangeRate:1
          
         };
         this.fetchData = this.fetchData.bind(this);
@@ -31,23 +33,44 @@ class BalanceSheet extends Component{
         });
     }
 
+
     handleChangeEnd = (date) => {
-        this.setState({
+      this.setState({
             endDate: date
         });
+
+    }
+
+    currencyChangedDemo = event => {
+        const currencyCode = event.target.value
+
+        if (currencyCode == "USD") {
+            this.setState({demoExchangeRate: "1"})
+            this.setState({demoDefaultCurrencyCode: 'USD'})
+        }
+
+        if (currencyCode == "GBP") {
+            this.setState({demoExchangeRate: ".78"})
+            this.setState({demoDefaultCurrencyCode: 'GBP'})
+        }
+
+        if (currencyCode == "EUR") {
+            this.setState({demoExchangeRate: ".88"})
+            this.setState({demoDefaultCurrencyCode: 'EURO'})
+        }
     }
 
     fetchData(state,instance){
-        $.ajax({
+      /* $.ajax({
             url: "http://localhost:4000/balance",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
             dataType: 'json',
             xhrFields: { withCredentials: true },
-            data: 'userId=test',
-            success: function(data) {
-                this.setState({data:data});
+            data:   ,
+            success: function(receiveddata) {
+                this.setState({data:receiveddata});
             }.bind(this),
             error: (data) => {
                 //alert('error occurred')
@@ -56,12 +79,13 @@ class BalanceSheet extends Component{
         }
       
     ); 
-
+*/
     }
     onFilteredChange(){
       
         
     }
+
 
     toggleReport = () => {
         this.setState(prevState => ({
@@ -78,20 +102,15 @@ class BalanceSheet extends Component{
     render(){
         
         var  data  = [{
-            number:'1000', currency:'USD', account:'Profit/Loss from previous year', start:'8250.55',end:'8306.18',change:'55.63', date:''
+            number:'1000', account:'Profit/Loss from previous year', start:(8250.55 * this.state.demoExchangeRate).toFixed(2),end:(8306.18 * this.state.demoExchangeRate).toFixed(2),change:(55.63 * this.state.demoExchangeRate).toFixed(2), date:''
         },{
-            number:'1900', currency:'USD', account:'Union Bank of Switzerland ', start:'7607.15',end:'7662.78',change:'55.63'
+            number:'1900', account:'Union Bank of Switzerland ', start:(7607.15* this.state.demoExchangeRate).toFixed(2),end:(7662.78 * this.state.demoExchangeRate).toFixed(2),change:(55.63 * this.state.demoExchangeRate).toFixed(2), date: ''
         },{
-            number:'1950', currency:'USD', account:'Bank of Finland', start:'643.40',end:'643.40',change:'0.00', date:''
-        },{
-            number:'6000', currency:'USD', account:'Food', start:'',end:'55.63',change:'', date:''
+            number:'1950', account:'Bank of Finland', start:(643.40 * this.state.demoExchangeRate).toFixed(2),end:(643.40 * this.state.demoExchangeRate).toFixed(2),change:'0.00', date:''
         }];
         var columns = [{
-                Header: 'Number',
+                Header: 'No.',
                 accessor: 'number'
-            }, {
-                Header: 'Currency',
-                accessor: 'currency',
             }, {
                 Header: 'Account',
                 accessor: 'account',
@@ -100,11 +119,11 @@ class BalanceSheet extends Component{
                 Header: 'Start',
                 accessor: 'start'
             }, {
-                Header: 'End',
-                accessor: 'end'
-            }, {
                 Header: 'Change',
                 accessor: 'change'
+            },  {
+                Header: 'End',
+                accessor: 'end'
             }
             
         ]
@@ -117,7 +136,6 @@ class BalanceSheet extends Component{
             })
         }
         return(
-
             <div className="gridContainer">
 
                 <div className="isgTop">
