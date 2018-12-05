@@ -29,7 +29,7 @@ module.exports = function router() {
           } else {
             let start = 0;
             let total_change = 0;
-            for (let i = 0; i < results.length - 1; i += 1) {
+            for (let i = 0; i < results.length; i += 1) {
               let end = 0;
               accountId.push(results[i].dt_accountID);
               accountName.push(results[i].at_account_name);
@@ -44,6 +44,19 @@ module.exports = function router() {
                 end += results[i].dt_debit;
                 start_amount.push(results[i].dt_debit);
                 start = results[i].dt_debit;
+              }
+              if ( i === results.length - 1) {
+                if (end < 0) {
+                  start_amount.push('(' + math.abs(end) + ')');
+                  change_amount.push('(' + math.abs(end) + ')');
+                  end_amount.push('(' + math.abs(end) + ')');
+                }
+                else{
+                  start_amount.push(end);
+                  change_amount.push(end);
+                  end_amount.push(end);
+                }
+                break;
               }
               // loop through same account_id
               while (results[i].dt_accountID === results[i + 1].dt_accountID) {
@@ -108,7 +121,7 @@ module.exports = function router() {
             res.status(500).json({ message: 'An error has occurred when getting data from database' });
           } else {
             let start = 0;
-            for (let i = 0; i < results.length - 1; i += 1) {
+            for (let i = 0; i < results.length; i += 1) {
               let end = 0;
               accountId.push(results[i].dt_accountID);
               accountName.push(results[i].at_account_name);
@@ -121,6 +134,13 @@ module.exports = function router() {
               else if (results[i].dt_debit) {
                 end += results[i].dt_debit;
                 start = results[i].dt_debit;
+              }
+              if ( i === results.length - 1) {
+                if (end < 0)
+                  end_amount.push('(' + math.abs(end) + ')');
+                else
+                  end_amount.push(end);
+                break;
               }
               // loop through same account_id
               while (results[i].dt_accountID === results[i + 1].dt_accountID) {
