@@ -145,7 +145,7 @@ export default class EditEntry extends React.Component{
                         })}
                     </tbody>
                 </table>
-                <button onClick={this.addRow}>Add +</button>
+                <button onClick={this.addinfo}>Add +</button>
                 <button onClick={this.save}>Save</button>
                 <button id='entryButton' onClick={this.remove}>Delete</button>
             </div>
