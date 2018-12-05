@@ -8,12 +8,10 @@ const userAccountRouter = express.Router();
 
 
 module.exports = function router() {
-  // UserAccount Flows
   userAccountRouter.route('/')
     .get((req, res) => {
-      // Render respective html, ejs, or pug
       res.send('Accounts');
-      db.query('SELECT * FROM user_table where ut_user_id = "Test2" ', (err, results, fields) => {
+      db.query('SELECT * FROM user_table where ut_user_id = "Test2" ', (err, results) => {
         if (err) res.send(err);
         debug(results.length);
       });
@@ -31,7 +29,7 @@ module.exports = function router() {
       } else if (!validateEmail(emailID)) {
         res.status(401).json({ message: 'Invalid email' });
       } else {
-        db.query('SELECT ut_user_id FROM user_table WHERE ut_email=? OR ut_user_id=?', [emailID, username], (err, results, fields) => {
+        db.query('SELECT ut_user_id FROM user_table WHERE ut_email=? OR ut_user_id=?', [emailID, username], (err, results) => {
           if (err) {
             debug(err);
             res.status(500).json({ message: 'Server error' });
@@ -39,7 +37,7 @@ module.exports = function router() {
           if (results.length === 0) {
             db.query('INSERT INTO user_table (ut_user_id, ut_password, ut_first_name, ut_last_name, ut_email) VALUES (?, ?, ?, ?, ?)',
               [username, MD5(username + password), firstName, lastName, emailID],
-              (err3, results3, fields) => {
+              (err3) => {
                 if (err3) {
                   debug(err3);
                   res.status(500).json({ message: 'Server error' });
@@ -57,7 +55,7 @@ module.exports = function router() {
     .post((req, res, next) => {
       if (req.user) res.status(200).json({ message: 'User already logged in' });
       else {
-        passport.authenticate('local', (err, user, info) => {
+        passport.authenticate('local', (err, user) => {
           if (err) return res.status(500).json({ message: 'Server error' });
           if (!user) return res.status(401).json({ message: 'Invalid credentials' });
           req.login(user, (err2) => {
@@ -80,7 +78,7 @@ module.exports = function router() {
 
   userAccountRouter.route('/change_password')
     .post((req, res, next) => {
-      passport.authenticate('local', (err, user, info) => {
+      passport.authenticate('local', (err, user) => {
         if (!user) return res.status(401).json({ message: 'Invalid credentials' });
         const { utEmail, newPassword, confirmPassword } = req.body;
         if (confirmPassword === newPassword) {

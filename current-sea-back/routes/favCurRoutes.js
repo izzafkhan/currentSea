@@ -6,7 +6,7 @@ const favCurRouter = express.Router();
 
 module.exports = function router() {
   favCurRouter.route('/currencies').get((req, res) => {
-    db.query('SELECT DISTINCT ct_from FROM currency_table', (err, results, fields) => {
+    db.query('SELECT DISTINCT ct_from FROM currency_table', (err, results) => {
       if (err) {
         debug(err);
         res.status(500).json({ message: 'Some error occurred' });
@@ -42,7 +42,7 @@ module.exports = function router() {
       if (req.user) {
         const { currencyFrom, currencyTo } = req.body;
         db.query('SELECT * FROM favorite_currency_table WHERE ft_user_id = ? AND ft_from = ? AND ft_to = ?',
-          [req.user.username, currencyFrom, currencyTo], (err, results, fields) => {
+          [req.user.username, currencyFrom, currencyTo], (err, results) => {
             if (err) {
               debug(err);
               res.status(500).json({ message: 'Some error occurred' });
@@ -50,7 +50,7 @@ module.exports = function router() {
             debug(results);
             if (results.length === 0) {
               db.query('INSERT INTO favorite_currency_table (ft_user_id, ft_from, ft_to, ft_change_in_amount) VALUES (?, ?, ?, ?);',
-                [req.user.username, currencyFrom, currencyTo, 0], (err2, results2, fields2) => {
+                [req.user.username, currencyFrom, currencyTo, 0], (err2) => {
                   if (err2) {
                     debug(err2);
                     res.status(500).json({ message: 'Some error occurred' });
@@ -72,7 +72,7 @@ module.exports = function router() {
       if (req.user) {
         const { currencyFrom, currencyTo } = req.body;
         db.query('SELECT * FROM favorite_currency_table WHERE ft_user_id = ? AND ft_from = ? AND ft_to = ?',
-          [req.user.username, currencyFrom, currencyTo], (err, results, fields) => {
+          [req.user.username, currencyFrom, currencyTo], (err, results) => {
             if (err) {
               debug(err);
               res.status(500).json({ message: 'Some error occurred' });
@@ -82,7 +82,7 @@ module.exports = function router() {
               res.status(401).json({ message: 'Currency not found.' });
             } else {
               db.query('DELETE FROM favorite_currency_table WHERE ft_user_id = ? AND ft_from = ? AND ft_to = ?',
-                [req.user.username, currencyFrom, currencyTo], (err2, results2, fields2) => {
+                [req.user.username, currencyFrom, currencyTo], (err2) => {
                   if (err2) {
                     debug(err2);
                     res.status(500).json({ message: 'Some error occurred' });
@@ -100,7 +100,7 @@ module.exports = function router() {
   favCurRouter.route('/gethistoricrate').get((req, res) => {
     const { from, to, date } = req.body;
     db.query('SELECT ct_rate FROM currency_table WHERE ct_from = ? AND ct_to = ? AND ct_date = ?',
-      [from, to, date], (err, results, fields) => {
+      [from, to, date], (err, results) => {
         if (err) {
           debug(err);
           res.status(500).json({ message: 'Some error occurred' });
@@ -115,9 +115,8 @@ module.exports = function router() {
 
   favCurRouter.route('/getrate').post((req, res) => {
     const { from, to } = req.body;
-    debug('FROM: ', from, ', TO: ', to);
     db.query('select * from currency_table where ct_from = ? AND ct_to = ? order by ct_date desc LIMIT 1;',
-      [from, to], (err, results, fields) => {
+      [from, to], (err, results) => {
         if (err) {
           debug(err);
           res.status(500).json({ message: 'Some error occurred' });
