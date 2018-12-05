@@ -7,7 +7,7 @@ export class Header extends Component {
     constructor() {
         super();
         this.state = {
-            loggedIn: true // set to true by default for testing purposes
+            loggedIn: false // set to true by default for testing purposes
         };
 
         this.componentDidMount = this.componentDidMount.bind(this);

@@ -4,6 +4,7 @@ import CurrencyMenu from '../Currencies/CurrencyMenu';
 import Header from '../Header'
 import AddEntry from './Transactions/AddEntry';
 import EditEntry from './Transactions/EditEntry';
+import StartBalance from './Transactions/StartBalance';
 import $ from 'jquery'
 import moment from "moment"
 import Select from 'react-select';   
@@ -44,6 +45,7 @@ export default class Transaction extends React.Component {
             original: 0,
             rate : 1,
             conversion: 0,
+            startBalance: false,
 
         }
         this.convert = this.convert.bind(this);
@@ -56,6 +58,7 @@ export default class Transaction extends React.Component {
         this.deleteEdit = this.deleteEdit.bind(this);
         this.handleStartCurrency = this.handleStartCurrency.bind(this);
         this.handleEndCurrency = this.handleEndCurrency.bind(this);
+        this.setBalance = this.setBalance.bind(this);
     }
 
     addRow = () => {
@@ -130,6 +133,18 @@ export default class Transaction extends React.Component {
         })
     }
 
+    setBalance(){
+        if (this.state.startBalance === false){
+            this.setState({
+                startBalance: true
+            });
+        } else {
+            this.setState({
+                startBalance: false
+            });
+        }
+    }
+
     convert(event) {
         var from = this.state.startCurrency.value;
         var to = this.state.endCurrency.value;
@@ -153,7 +168,7 @@ export default class Transaction extends React.Component {
         });
         this.state.original = parseFloat(event.target.value);
         this.setState({
-            conversion : (typeof (this.state.rate * this.state.original) == 'number') ? (this.state.rate * this.state.original) : 0
+            conversion : isNaN(this.state.rate * this.state.original) ? 0 : (this.state.rate * this.state.original).toFixed(4) 
         })
         var test = event.target.value;
         console.log(test);
@@ -296,12 +311,16 @@ export default class Transaction extends React.Component {
                                         <table>
                                             <tbody>
                                                 <tr id='nested'>
-                                                    <td color='black'><button>0</button></td>
+                                                    <td color='black'><button  onClick={this.setBalance}>0</button></td>
                                                     <td><button></button></td>
-                                                    <td color='black'><button>Start Balance</button></td>
+                                                    <td color='black'><button onClick={this.setBalance} >Start Balance</button></td>
                                                     <td><button></button></td>
                                                     <td><button></button></td>
                                                     <td><button></button></td>
+                                                </tr>
+                                                <tr>
+                                                    {this.state.startBalance ?
+                                                        <td><StartBalance /></td> : (null) }
                                                 </tr>
                                             </tbody>
                                         </table>

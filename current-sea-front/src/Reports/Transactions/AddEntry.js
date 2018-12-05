@@ -3,8 +3,6 @@ import DatePicker from 'react-datepicker'
 import moment from "moment"
 import './AddEntry.css'
 import $ from 'jquery'
-import DummyAccountsMenu from '../../Accounts/DummyAccountsMenu';
-import CurrencyMenu from '../../Currencies/CurrencyMenu';
 import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select';
 
