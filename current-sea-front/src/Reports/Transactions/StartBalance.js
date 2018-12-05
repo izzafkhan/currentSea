@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
+import Select from 'react-select';   
 
 export default class StartBalance extends React.Component{
     constructor(props){
@@ -9,6 +10,7 @@ export default class StartBalance extends React.Component{
             }],
             action_id : 0,
             update : false,
+            accounts: this.props.accounts,
         }
         this.addinfo = this.addinfo.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -92,8 +94,8 @@ export default class StartBalance extends React.Component{
 
     render(){
         return(
-            <div width='400'>
-                <table id='editTable' width='300'>
+            <div width='300'>
+                <table id='startTable' width='300'>
                     <thead id='headEntry'>
                         <tr>
                             <th>Account</th>
@@ -105,7 +107,7 @@ export default class StartBalance extends React.Component{
                         {this.state.data.map( (row, index) => {
                             return (
                                 <tr key={`row-${index}`}>
-                                    <td><input type="text" defaultValue={row.dt_accountID} onChange={(e) => this.handleChange(row, 'dt_accountID', e)}/></td>
+                                    <td><Select options={this.state.accounts} onChange={(e) => this.handleChange(row, 'dt_accountID', e)}/></td>
                                     <td><input type="number"  defaultValue={row.dt_balance} onChange={(e) => this.handleChange(row, 'dt_balance', e)}/></td>
                                     <td><button>Delete</button></td>
                                 </tr>

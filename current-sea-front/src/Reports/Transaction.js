@@ -55,6 +55,7 @@ export default class Transaction extends React.Component {
         this.editRow = this.editRow.bind(this);
         this.closeRow = this.closeRow.bind(this);
         this.closeEdit = this.closeEdit.bind(this);
+        this.closeStart = this.closeStart.bind(this);
         this.deleteEdit = this.deleteEdit.bind(this);
         this.handleStartCurrency = this.handleStartCurrency.bind(this);
         this.handleEndCurrency = this.handleEndCurrency.bind(this);
@@ -89,6 +90,13 @@ export default class Transaction extends React.Component {
             update: true,  
         });
         {/*Line 80 (was: editUpdate: true, which does nothing) is probably singlehandedly responsible for the problems we had today. Pitfall?*/}
+    }
+
+    closeStart(){
+        this.setState({
+            startBalance : false,
+            update: true,
+        })
     }
 
     deleteEdit(tt_transaction_id){
@@ -301,7 +309,7 @@ export default class Transaction extends React.Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.state.currentData.map(row => {
+                                {this.state.currentData.slice(0).reverse().map(row => {
                                     let index = this.state.currentData.indexOf(row);
                                     let display = this.state.currentData.length - index; 
                                     return (
@@ -343,7 +351,7 @@ export default class Transaction extends React.Component {
                                                 </tr>
                                                 <tr>
                                                     {this.state.startBalance ?
-                                                        <td><StartBalance /></td> : (null) }
+                                                        <td><StartBalance accounts={this.state.accounts} closeAction={this.closeStart}/></td> : (null) }
                                                 </tr>
                                             </tbody>
                                         </table>
