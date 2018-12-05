@@ -25,7 +25,7 @@ module.exports = function router() {
           const accountName = [];
           if (err) {
             debug(err);
-            res.status(500).json({ message: 'An error has occurred when getting transactions from detail_table' });
+            res.status(500).json({ message: 'An error has occurred when getting data from database' });
           } else {
             let start = 0;
             let total_change = 0;
@@ -105,7 +105,7 @@ module.exports = function router() {
           const accountName = [];
           if (err) {
             debug(err);
-            res.status(500).json({ message: 'An error has occurred when getting transactions from detail_table' });
+            res.status(500).json({ message: 'An error has occurred when getting data from database' });
           } else {
             let start = 0;
             let total_change = 0;
