@@ -13,7 +13,6 @@ export default class StartBalance extends React.Component{
         this.addinfo = this.addinfo.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.save = this.save.bind(this);
-        this.remove = this.remove.bind(this);
     }
 
     addinfo = () => {
