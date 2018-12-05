@@ -248,8 +248,8 @@ export default class Transaction extends React.Component {
                 const accounts = [];
                 for (let i = 0; i < data.results.length; i++) {
                     const newRow = {value: '', label: ''};
-                    newRow.value = data.results[i].at_account_name;
-                    newRow.label = data.results[i].at_account_name;
+                    newRow.value = data.results[i].at_account_id;
+                    newRow.label = data.results[i].at_account_id + " " + data.results[i].at_account_name;
                     accounts[i] = newRow;
                 }
                 this.setState({
