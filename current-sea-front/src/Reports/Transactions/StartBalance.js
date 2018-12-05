@@ -1,8 +1,7 @@
 import React from 'react';
-import './EditEntry.css';
-import $ from 'jquery'
+import $ from 'jquery';
 
-export default class EditEntry extends React.Component{
+export default class StartBalance extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -21,10 +20,8 @@ export default class EditEntry extends React.Component{
         var internalEntries = this.state.data.slice(0);
 
         let newRow = {
-            dt_accountID : '9000 Bank',
-            dt_debit : 0,
-            dt_credit : 0,
-            dt_eventID : '',
+            dt_accountID : '',
+            dt_balance: 0,
         };
 
         internalEntries.push(newRow);
@@ -42,7 +39,7 @@ export default class EditEntry extends React.Component{
         var sum = 0;
         for(let i = 0; i < this.state.data.length; i++){
             
-            sum += this.state.data[i].dt_debit;
+            sum += this.state.data[i].dt_balance;
         }
         console.log(sum);
         $.ajax({
@@ -60,25 +57,6 @@ export default class EditEntry extends React.Component{
             error: () => {
                  console.log("Error: Could not submit");
                  this.props.closeAction(this.state.action_id, 0);
-            }
-        })
-    }
-
-    remove(){
-        $.ajax({
-            url: "http://localhost:4000/transactions/delete_transactions",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            dataType:"json",
-            xhrFields: { withCredentials:true },
-            data: JSON.stringify({'tt_transaction_id': this.state.action_id}),
-            success: () => {
-                 this.props.deleteAction(this.state.action_id);
-            },
-            error: () => {
-                 console.log("Error: Could not submit");
-                 this.props.deleteAction(this.state.action_id);
             }
         })
     }
@@ -116,13 +94,12 @@ export default class EditEntry extends React.Component{
     render(){
         return(
             <div width='400'>
-                <table id='editTable' width='400'>
+                <table id='editTable' width='300'>
                     <thead id='headEntry'>
                         <tr>
                             <th>Account</th>
-                            <th>Debit</th>
-                            <th>Credit</th>
-                            <th>Event</th>
+                            <th>Balance</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -130,9 +107,8 @@ export default class EditEntry extends React.Component{
                             return (
                                 <tr key={`row-${index}`}>
                                     <td><input type="text" defaultValue={row.dt_accountID} onChange={(e) => this.handleChange(row, 'dt_accountID', e)}/></td>
-                                    <td><input type="number"  defaultValue={row.dt_debit} onChange={(e) => this.handleChange(row, 'dt_debit', e)}/></td>
-                                    <td><input type="number" defaultValue={row.dt_credit} onChange={(e) => this.handleChange(row, 'dt_credit', e)}/></td>
-                                    <td><input type="text"  defaultValue={row.dt_eventID} onChange={(e) => this.handleChange(row, 'dt_eventID', e)}/></td>
+                                    <td><input type="number"  defaultValue={row.dt_balance} onChange={(e) => this.handleChange(row, 'dt_balance', e)}/></td>
+                                    <td><button>Delete</button></td>
                                 </tr>
                             )
                         })}
@@ -140,7 +116,6 @@ export default class EditEntry extends React.Component{
                 </table>
                 <button onClick={this.addinfo}>Add +</button>
                 <button onClick={this.save}>Save</button>
-                <button id='entryButton' onClick={this.remove}>Delete</button>
             </div>
             
         );
