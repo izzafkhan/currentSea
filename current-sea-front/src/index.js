@@ -36,7 +36,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 )
 
 const Auth = withRouter(({history}) => (
-  log.loggedIn ? ( <Link to="/Transactions">Bookkeeping</Link> ) : (<Redirect to={{pathname: "/"}} />)
+  log.loggedIn ? ( <Link to="/Transactions"></Link> ) : (<Redirect to={{pathname: "/"}} />)
 ))
 
 export default class App extends React.Component{
