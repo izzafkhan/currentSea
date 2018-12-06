@@ -26,8 +26,8 @@ class BalanceSheet extends Component{
             demoExchangeRate:1
          
         };
-        this.fetchData = this.fetchData.bind(this);
         this.currencyChanged = this.currencyChanged.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
     handleChangeStart = (date) => {
         this.setState({
@@ -87,27 +87,6 @@ class BalanceSheet extends Component{
         }
     }
 
-    fetchData(state,instance){
-      /* $.ajax({
-            url: "http://localhost:4000/balance",
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            dataType: 'json',
-            xhrFields: { withCredentials: true },
-            data:   ,
-            success: function(receiveddata) {
-                this.setState({data:receiveddata});
-            }.bind(this),
-            error: (data) => {
-                //alert('error occurred')
-                
-            }
-        }
-      
-    ); 
-*/
-    }
     onFilteredChange(){
       
         
@@ -125,7 +104,24 @@ class BalanceSheet extends Component{
             currencyDropdownOpen: !prevState.currencyDropdownOpen
         }));
     }
-
+    componentDidMount = () => {
+        $.ajax({
+            url: "http://localhost:4000/statement/balance",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: 'json',
+            xhrFields: { withCredentials: true },
+            success: (receiveddata) => {
+                this.setState({data:receiveddata});
+            },
+            error: (data) => {
+                //alert('error occurred')
+                
+            }
+        }
+    ); 
+    }
     render(){
         
         var  data  = [{
@@ -201,7 +197,7 @@ class BalanceSheet extends Component{
                 <div className="isgBottom">
                     <ReactTable
                         className="balanceDataTable"
-                        data={data}
+                        data={this.state.data}
                         noDataText="Your balances will appear here"
                         columns={columns}
                     />
