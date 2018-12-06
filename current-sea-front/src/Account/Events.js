@@ -1,14 +1,12 @@
 import React from 'react';
-import './Accounts.css';
+import './Events.css';
 import CurrencyMenu from '../Currencies/CurrencyMenu';
-import AddAccount from './AddAccount';
+import AddEvent from './AddEvent';
 import $ from 'jquery'
 import moment from "moment"   
 import Header from '../Header'
-import Events from './Events';
-import update from 'react-addons-update';
 
-export default class Accounts extends React.Component {
+export default class Events extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,13 +18,17 @@ export default class Accounts extends React.Component {
             editUpdate : false,
 
             currentData: [{
-                at_account_id: '',
-              
-                at_account_name : '',
-                at_user_id: '',
-                account_type: '',
+                accountId : '',
+                accountName : '',
+                accountType: '',
+                edit : false,
 
-            },]
+            }, {
+                accountId : '',
+                accountName : '',
+                accountType: '',
+                edit : false,
+            }]
 
         }
         this.get = this.get.bind(this);
@@ -35,7 +37,7 @@ export default class Accounts extends React.Component {
         this.closeRow = this.closeRow.bind(this);
         this.closeEdit = this.closeEdit.bind(this);
         this.deleteEdit = this.deleteEdit.bind(this);
-        this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
         this.addToTable =this.addToTable.bind(this);
     }
 
@@ -53,7 +55,7 @@ export default class Accounts extends React.Component {
     }
 
     addToTable(data){
-        /*var newArray = this.state.currentData.slice();
+       /* var newArray = this.state.currentData.slice();
            newArray.unshift(data);
         this.setState({
             currentData: newArray
@@ -68,9 +70,7 @@ export default class Accounts extends React.Component {
             xhrFields: { withCredentials:true },
             data: JSON.stringify(data),
             success: () => {
-                 this.action(false)
-               
-
+                 this.action(false);
             },
             error: () => {
                  console.log("Error: Could not submit");
@@ -141,7 +141,7 @@ export default class Accounts extends React.Component {
     }
 
 
-    componentDidMount(){
+    componentWillMount(){/*
        $.ajax({
             url: "http://localhost:4000/accounts/get_accounts",
             type: "GET",
@@ -150,26 +150,20 @@ export default class Accounts extends React.Component {
             dataType:"json",
             xhrFields: {withCredentials:true},
             success: (data) => {
-                
                 this.setState({
-                    
-                    currentData: data.results
-                
+                    currentData : data
                 });
-               
-                
-                
             },
             error: () => {
                  console.log("Error: Could not update.");
             }
-        }); 
+        }); */
     }
 
 
     render() {
         if(this.state.update === true){
-          $.ajax({
+          /* $.ajax({
                 url: "http://localhost:4000/accounts/get_accounts",
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
@@ -178,26 +172,23 @@ export default class Accounts extends React.Component {
                 xhrFields: {withCredentials:true},
                 success: (data) => {
                     this.setState({
-                        currentData : data.results,
+                        currentData : data,
                         update: false
                     });
-
                 },
                 error: () => {
                      console.log("Error: Could not update.");
                      this.setState({
                          update : false
                      })
-                    }
-            });
+                }
+            });*/
         }
         return (
-            <div> <Header/> 
-            <h1 align="center" background="#051642"><br /> Accounts </h1>
-            <h6 align="center"> Here you can set up, edit and delete your accounts<br /><br />. </h6>
-            <div class="tableContainer">
-                <div className="account-table">
-                    <table id='dataTableA'>
+            <div> 
+            <div class="eventContainer">
+                <div className="event-table">
+                    <table id='dataTableE'>
                         <thead>
                             <tr>
                                 <th>No.</th>
@@ -207,21 +198,21 @@ export default class Accounts extends React.Component {
                             <tr>
                                 <th colSpan='6'>
                                     <button id='addAccountButton' onClick={ e => this.addRow()}>+</button>
-                                    {this.state.showAddEntry ? <div><AddAccount addEntry={this.state.showAddEntry} add={this.addToTable} action={this.closeRow}/></div> : <span></span>}                                </th>
+                                    {this.state.showAddEntry ? <div><AddEvent addEntry={this.state.showAddEntry} add={this.addToTable} action={this.closeRow}/></div> : <span></span>}                                </th>
                                  
                             </tr>
                         </thead>
                         <tbody>
-                           { this.state.currentData.map(row => {
+                            {this.state.currentData.map(row => {
                                 return (
                                     <tr key={`row-${row.accountID}`}>
                                         <td colSpan='6'>
                                             <table>
                                                 <tbody>
                                                     <tr id='nested'>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.at_account_id)}}>{row.at_account_id}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.at_account_id)}}>{row.at_account_name}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.at_account_id)}}>{row.account_type}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.accountId)}}>{row.accountId}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.accountId)}}>{row.accountName}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.accountId)}}>{row.accountType}</button></td>
                                                     </tr>
                                                     {row.edit ?
                                                         <tr>

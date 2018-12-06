@@ -17,10 +17,11 @@ export default class AddAccount extends React.Component{
 
         this.state = {
             newData : {
-                accountName: 'Description',
-                accountId: 'Account Number',
+                at_account_id: 'Account Number',
+                at_account_name: 'Description',
                 
-                accountType : '',
+                
+                account_type : 'Balancetest',
                 internalEntries : [],
             },
             enteringData : false,
@@ -44,19 +45,19 @@ export default class AddAccount extends React.Component{
 
     handleDescription(e){
         let newData = Object.assign({}, this.state.newData);
-        newData.accountName = e.target.value;
+        newData.at_account_name = e.target.value;
         this.setState({newData});
     }
     handleType(accountType){
         let newData = Object.assign({}, this.state.newData);
-        newData.accountType = accountType.value;
-        console.log(newData.accountType);
+       // console.log(accountType.value);
+        newData.account_type = accountType.value;
         this.setState({newData});
     }
 
     handleAcctID(e){
         let newData = Object.assign({}, this.state.newData);
-        newData.accountId = e.target.value;
+        newData.at_account_id = e.target.value;
         this.setState({newData});
     }
 
@@ -72,10 +73,11 @@ export default class AddAccount extends React.Component{
         this.setState({newData});
         this.props.action(false);
         
+        
         /*
             Ajax magic 
             
-        
+        */
        $.ajax({
            url: "http://localhost:4000/accounts/add_account",
            type: "POST",
@@ -85,6 +87,7 @@ export default class AddAccount extends React.Component{
            xhrFields: { withCredentials:true },
            data: JSON.stringify(this.state.newData),
            success: () => {
+                console.log("SUCCESS!")
                 this.props.action(false);
            },
            error: () => {
@@ -93,7 +96,7 @@ export default class AddAccount extends React.Component{
            }
        })
 
-       */
+       
     
     }
     
@@ -121,7 +124,7 @@ export default class AddAccount extends React.Component{
                         </tbody>     
                     </table>
                     <button onClick={()=>{
-                            this.props.add(this.state.newData);
+                            //this.props.add(this.state.newData);
                              this.submitData();}}>Done</button>
                 </div>
                 : (null) }
