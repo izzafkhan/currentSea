@@ -115,7 +115,22 @@ export default class IncomeStatement extends Component {
             currencyDropdownOpen: !prevState.currencyDropdownOpen
         }));
     }
-
+    componentDidMount = () => {
+        $.ajax({
+            url: "http://localhost:4000/statement/statement",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: 'json',
+                xhrFields: {withCredentials: true},
+                success: (data) => {
+                    this.setState({data: data});
+                },
+                error: (data) => {
+                    console.log(data);
+                }
+        })
+    }
 
     render() {
 
@@ -180,7 +195,7 @@ export default class IncomeStatement extends Component {
                 <div className="isgBottom">
                     <ReactTable
                         className="isDataTable"
-                        data={data}
+                        data={this.state.data}
                         noDataText="Your income and expenses will appear here"
                         columns={columns}
                     />
