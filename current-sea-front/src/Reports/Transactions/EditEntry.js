@@ -20,6 +20,25 @@ export default class EditEntry extends React.Component{
         this.handleChange = this.handleChange.bind(this);
         this.save = this.save.bind(this);
         this.remove = this.remove.bind(this);
+        this.submitDelete = this.submitDelete.bind(this);
+    }
+
+    submitDelete = () => {
+        confirmAlert({
+            title: 'Confirm Deletion',
+            message: 'Deleting Entry Permanently',
+            buttons: [
+                {
+                    label: 'Ok',
+                    onClick: () => this.remove
+                },
+                {
+                    label: 'Cancel',
+                    onClick: () => this.forceUpdate()
+                }
+            ]
+        })
+        
     }
 
     addinfo = () => {
@@ -149,7 +168,7 @@ export default class EditEntry extends React.Component{
                 </table>
                 <button onClick={this.addinfo}>Add +</button>
                 <button onClick={this.save}>Save</button>
-                <button id='entryButton' onClick={this.remove}>Delete</button>
+                <button id='entryButton' onClick={this.submitDelete}>Delete</button>
             </div>
             
         );

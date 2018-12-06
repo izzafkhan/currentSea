@@ -288,7 +288,7 @@ export default class Transaction extends React.Component {
         }
         return (
             <div class="bigContainer">
-                <h1>Bookkeeping</h1>
+                <h1 id='h1title'>Bookkeeping</h1>
                 <div class="myContainer">
                     <div className="transaction-table">
                         <table id='dataTable' width="600">
