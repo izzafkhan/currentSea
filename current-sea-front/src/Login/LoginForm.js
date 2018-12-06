@@ -1,5 +1,6 @@
 import React from 'react';
 import './LoginForm.css';
+import Header from '../Header'
 import {Link, Redirect} from "react-router-dom";
 import $ from 'jquery';
 import Transaction from "../Reports/Transaction";
@@ -46,6 +47,11 @@ export default class LoginForm extends React.Component {
     handlePasswordChange = event => {
         event.preventDefault()
         this.setState({password: event.target.value});
+    }
+
+    mouseOver = event => {
+        event.mouseOver()
+        this.setState()
     }
 
     onSubmit = e => {
@@ -133,20 +139,21 @@ export default class LoginForm extends React.Component {
             <div className="loginRoot">
 
                 {this.redirectAfterLogin()}
+
                 <div className="navbarLoginDiv">
                     <nav className="navbarLogin">
-
-                        <Link to="/Register">
-                            <button className="signUpButtonToolbar">Sign Up</button>
+                        <Link to="/">
+                            <img className="logo" src={require('../Assets/CSLogo.png')}></img>
                         </Link>
-
-                        <img className="logo" src={require('../Assets/CSLogo.png')}></img>
-
-
+                        
+                        <Link to="/Register">
+                            <button className="signUpButtonToolbar"><img src={require('../Assets/lockblue.png')}
+                            alt="lockblue" width="15"
+                            height="15"></img>Sign Up</button>
+                        </Link>
                     </nav>
                 </div>
-
-
+                
 
                 <div className="loginBody">
 
