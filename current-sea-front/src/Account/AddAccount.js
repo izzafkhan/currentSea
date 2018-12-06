@@ -17,10 +17,11 @@ export default class AddAccount extends React.Component{
 
         this.state = {
             newData : {
-                accountName: 'Description',
                 accountId: 'Account Number',
+                accountName: 'Description',
                 
-                accountType : '',
+                
+                accountType : 'Balancetest',
                 internalEntries : [],
             },
             enteringData : false,
@@ -49,8 +50,8 @@ export default class AddAccount extends React.Component{
     }
     handleType(accountType){
         let newData = Object.assign({}, this.state.newData);
+       // console.log(accountType.value);
         newData.accountType = accountType.value;
-        console.log(newData.accountType);
         this.setState({newData});
     }
 
@@ -72,10 +73,11 @@ export default class AddAccount extends React.Component{
         this.setState({newData});
         this.props.action(false);
         
+        
         /*
             Ajax magic 
             
-        
+        */
        $.ajax({
            url: "http://localhost:4000/accounts/add_account",
            type: "POST",
@@ -87,13 +89,13 @@ export default class AddAccount extends React.Component{
            success: () => {
                 this.props.action(false);
            },
-           error: () => {
-                console.log("Error: Could not submit");
+           error: (data) => {
+                alert(data.responseJSON.message);
                 this.props.action(false);
            }
        })
 
-       */
+       
     
     }
     
