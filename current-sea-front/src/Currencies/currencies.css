@@ -2,5 +2,23 @@
     top:100px;
     background-image: url("Capture.PNG");
     height: 1000px;
-    background-size: cover 
+    background-size: cover;
+    display: inline-block;
+}
+
+.test {
+    flex-direction: row;
+    display:flex;
+
+
+}
+.test2{
+    position:right;
+    width:50%;
+}
+.test3{
+    border-left: 30px;
+    margin-left: 10%;
+
+     
 }

@@ -11,6 +11,7 @@ import 'react-linechart/dist/styles.css';
 import currencyMenu from './CurrencyMenu';
 import Select from 'react-select';
 import './currencies.css'
+/////////////
 //import {CurrencyMenu} from 'CurrenciesMenu.js'
 //import CurrenciesGraph from 'CurrenciesGraph.js'
 //import ReactChartkick, { LineChart} from 'react-native-chart-kit';
@@ -18,8 +19,8 @@ import './currencies.css'
 //var CanvasJS = CanvasJSReact.CanvasJS;
 //var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-
-/*function createGraph()
+/////////////
+function createGraph()
 {
     const options = {
         animationEnabled: true,
@@ -58,8 +59,8 @@ import './currencies.css'
         }]
     }
     return options;
-}*/
-
+}
+///////////
 var fav_currencies = [
     { currency: 'USD', conversion: '0.342', change: '0.23%' },
     { currency: 'SEK', conversion: '1.00', change: '0.01%' }
@@ -117,13 +118,15 @@ export default class Currencies extends React.Component {
                     },
                     error: () => {
                         console.log("Error: Could not submit");
-                        //this.props.action(false);
+                        ////////
+                        this.props.action(false);
                     }
                 })
         }
         fav_currencies.push(newRow);
-        //{currency: 'USD', conversion : '0.342', change: '0.23%'},
-        //{currency: 'SEK', conversion : '1.00',change:'0.01%'}
+        ///////
+        // {currency: 'USD', conversion: '0.342', change: '0.23%'},
+        // {currency: 'SEK', conversion: '1.00',change:'0.01%'}
     }
     componentDidMount () {
         $.ajax({
@@ -145,23 +148,26 @@ export default class Currencies extends React.Component {
             },
             error: () => {
                 console.log("Error: Could not submit");
-                //this.props.action(false);
+                /////////
+               // this.props.action(false);
             }
         });
     }
     render() {
-        /*
+        //////
         const cellEditP = {
             mode: 'click',
         }
-        */
+        ////////
+        //<div class="bodyImage">
+        //<Header /> 
         return (
 
             <div class="body">
-            <Header />
-            <div class="bodyImage"></div>
-                {/*
+                    
+                 
                 <h1 align="center">Currencies</h1>
+
                 <div>
                     <div>
                         <button onClick={this.showMenu}>+New</button>
@@ -177,14 +183,15 @@ export default class Currencies extends React.Component {
                                 )
                         }
                     </div>
-                    <div class="col-sm-12">
+                    <div class="test">
+                    <div class="test2">
                         <BootstrapTable data={fav_currencies}
                             insertRow={true}
                             pagination={true}
                             //cellEdit = {cellEditP}
                             containerStyle={
                                 {
-                                    width: "40%"
+                                    width: "80%"
                                 }
                             }
 
@@ -210,17 +217,28 @@ export default class Currencies extends React.Component {
                         </BootstrapTable>
 
                     </div>
+                    
+                    
+                   
                     <div>
                         <h2>My Exchange Rates</h2>
+                        <div class="test3">
                         <Linechart
-                            width={1500}
-                            height={500}
+                            width={500}
+                            height={400}
                             data={monthlyData}
+                            isDate= "true"
+                            
+                    
                         />
+                        </div>
                     </div>
-
-                        </div>*/}
+         
+                    </div>
+                </div>
+                
             </div>
+
         );
     }
 }
