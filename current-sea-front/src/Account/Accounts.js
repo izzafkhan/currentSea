@@ -169,9 +169,10 @@ export default class Accounts extends React.Component {
             });*/
         }
         return (
-            <div> <Header/> 
-            <h1 align="center" background="#051642"><br /> Accounts </h1>
-            <h6 align="center"> Here you can set up, edit and delete your accounts<br /><br />. </h6>
+            <div class="bigContainer"> 
+            <Header/> 
+            <h1>Accounts</h1>
+            <h6> Here you can set up, edit and delete your accounts</h6>
             <div class="tableContainer">
                 <div className="account-table">
                     <table id='dataTableA'>

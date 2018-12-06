@@ -5,7 +5,7 @@ div.myContainer{
     background-color: #051642;
     height: auto;
     color: white;
-    padding: 8px;
+    padding: 40px;
 }
 
 div.bigContainer{
@@ -19,13 +19,12 @@ div.bigContainer{
 div.bigContainer h1{
     color: white;
     text-align: center;
-    padding: 16px;
+    padding: 40px;
 }
 
 div.transaction-table{
     margin-inline-end: 40px;
     height: auto;
-
 }
 
 .header-name{
