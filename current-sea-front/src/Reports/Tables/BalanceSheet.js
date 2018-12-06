@@ -6,6 +6,7 @@ import $ from 'jquery';
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import moment from "moment"
 import DatePicker from "react-datepicker/es";
+import Select from 'react-select';
 
 class BalanceSheet extends Component{
     
@@ -26,6 +27,7 @@ class BalanceSheet extends Component{
          
         };
         this.fetchData = this.fetchData.bind(this);
+        this.currencyChanged = this.currencyChanged.bind(this);
     }
     handleChangeStart = (date) => {
         this.setState({
@@ -39,6 +41,31 @@ class BalanceSheet extends Component{
             endDate: date
         });
 
+    }
+
+    currencyChanged = event => {
+        let currencyCode = this.state.demoDefaultCurrencyCode;
+        currencyCode = event.value;
+        console.log(currencyCode);
+
+        $.ajax({
+                url: "http://localhost:4000/currencies/getrate",
+                type: "Get",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: 'json',
+                xhrFields: {withCredentials: true},
+                data: {currencyFrom: 'USD', currencyTo: 'USD'},
+                success: function (receivedData) {
+                    console.log("Successful Get")
+                    this.setState({data: receivedData});
+                }.bind(this),
+                error: (receivedData) => {
+                    alert('error occurred')
+
+                }
+            }
+        );
     }
 
     currencyChangedDemo = event => {
@@ -163,25 +190,9 @@ class BalanceSheet extends Component{
                                 placeholderText="End Date"
                     />
 
-                    <Dropdown className="isDropDownCurrency" isOpen={this.state.currencyDropdownOpen}
-                              toggle={this.toggleCurrency}>
-                        <DropdownToggle caret>
-                            {this.state.demoDefaultCurrencyCode}
-                        </DropdownToggle>
+                    <Select options={this.props.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.demoDefaultCurrencyCode}
+                    className="dropdownContainer" />
 
-                        <DropdownMenu className="isDropDownCurrencyMenu">
-                            <DropdownItem>
-                                <option onClick={this.currencyChangedDemo}>USD</option>
-                            </DropdownItem>
-                            <DropdownItem>
-                                <option onClick={this.currencyChangedDemo}>GBP</option>
-                            </DropdownItem>
-                            <DropdownItem>
-                                <option onClick={this.currencyChangedDemo}>EUR</option>
-                            </DropdownItem>
-                        </DropdownMenu>
-
-                    </Dropdown>
 
 
 
