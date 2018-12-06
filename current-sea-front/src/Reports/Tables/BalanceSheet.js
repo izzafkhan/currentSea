@@ -21,9 +21,9 @@ class BalanceSheet extends Component{
             endDate: '',
             reportDropdownOpen: false,
             currencyDropdownOpen: false,
-            demoDefaultCurrencyCode: 'USD',
+            defaultCurrencyCode: 'USD',
             search: '',
-            demoExchangeRate:1
+            exchangeRate:1
          
         };
         this.currencyChanged = this.currencyChanged.bind(this);
@@ -50,16 +50,27 @@ class BalanceSheet extends Component{
 
         $.ajax({
                 url: "http://localhost:4000/currencies/getrate",
-                type: "Get",
+                type: "POST",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,
                 dataType: 'json',
                 xhrFields: {withCredentials: true},
-                data: {currencyFrom: 'USD', currencyTo: 'USD'},
-                success: function (receivedData) {
-                    console.log("Successful Get")
-                    this.setState({data: receivedData});
-                }.bind(this),
+                data: JSON.stringify({from: this.state.defaultCurrencyCode, to: currencyCode}),
+                success:  (receivedData) => {
+                    console.log(receivedData);
+                    this.setState({exchangeRate: receivedData.rate, defaultCurrencyCode: currencyCode});
+                    let data = this.state.data;
+                    for (let i = 0; i < data.length; i++){
+                        let {start, change, end} = data[i];
+                        start = start * this.state.exchangeRate;
+                        change = change * this.state.exchangeRate;
+                        end = end * this.state.exchangeRate;
+                        data[i].start = start;
+                        data[i].change = change;
+                        data[i].end = end;
+                    };
+                    this.setState({data: data});
+                },
                 error: (receivedData) => {
                     alert('error occurred')
 
@@ -112,8 +123,9 @@ class BalanceSheet extends Component{
             crossDomain: true,
             dataType: 'json',
             xhrFields: { withCredentials: true },
-            success: (receiveddata) => {
-                this.setState({data:receiveddata});
+            success: (receivedData) => {
+                this.setState({data:receivedData});
+                
             },
             error: (data) => {
                 //alert('error occurred')
@@ -186,7 +198,7 @@ class BalanceSheet extends Component{
                                 placeholderText="End Date"
                     />
 
-                    <Select options={this.props.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.demoDefaultCurrencyCode}
+                    <Select options={this.props.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.defaultCurrencyCode}
                     className="dropdownContainer" />
 
 
