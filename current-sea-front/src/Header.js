@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './Header.css';
-import {Link} from "react-router-dom";
+import {Redirect, Link} from "react-router-dom";
 import $ from 'jquery';
 
 export class Header extends Component {
