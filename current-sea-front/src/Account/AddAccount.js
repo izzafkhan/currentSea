@@ -17,11 +17,11 @@ export default class AddAccount extends React.Component{
 
         this.state = {
             newData : {
-                at_account_id: 'Account Number',
-                at_account_name: 'Description',
+                accountId: 'Account Number',
+                accountName: 'Description',
                 
                 
-                account_type : 'Balancetest',
+                accountType : 'Balancetest',
                 internalEntries : [],
             },
             enteringData : false,
@@ -45,19 +45,19 @@ export default class AddAccount extends React.Component{
 
     handleDescription(e){
         let newData = Object.assign({}, this.state.newData);
-        newData.at_account_name = e.target.value;
+        newData.accountName = e.target.value;
         this.setState({newData});
     }
     handleType(accountType){
         let newData = Object.assign({}, this.state.newData);
        // console.log(accountType.value);
-        newData.account_type = accountType.value;
+        newData.accountType = accountType.value;
         this.setState({newData});
     }
 
     handleAcctID(e){
         let newData = Object.assign({}, this.state.newData);
-        newData.at_account_id = e.target.value;
+        newData.accountId = e.target.value;
         this.setState({newData});
     }
 
@@ -89,8 +89,8 @@ export default class AddAccount extends React.Component{
            success: () => {
                 this.props.action(false);
            },
-           error: () => {
-                console.log("Error: Could not submit");
+           error: (data) => {
+                alert(data.responseJSON.message);
                 this.props.action(false);
            }
        })

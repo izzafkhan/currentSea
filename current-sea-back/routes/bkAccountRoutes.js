@@ -27,8 +27,8 @@ module.exports = function router() {
         const {
           accountName, accountId, accountType,
         } = req.body;
-        db.query('SELECT at_account_name from account_table where at_user_id = ? and at_account_name = ? and at_account_id = ?',
-          [req.user.username, accountName, accountId], (err, result) => {
+        db.query('SELECT at_account_name from account_table where at_user_id = ? and at_account_id = ?',
+          [req.user.username, accountId], (err, result) => {
             if (err) {
               debug(err);
               res.status(500).json({ message: 'Some error occurred' });
