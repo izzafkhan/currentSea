@@ -76,7 +76,11 @@
 .isDataTable {
     width: 795px;
 }
-
+.dropdownContainer {
+    width: 100px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
 
 
 

@@ -75,7 +75,7 @@ export default class AddEntry extends React.Component{
 
     handleChange(row, entry, event) {
         if (entry == "account") {
-            row[entry] = event.value.substr(0, event.value.indexOf(' '));
+            row[entry] = event.value;
         } else {
         row[entry] = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
         }
