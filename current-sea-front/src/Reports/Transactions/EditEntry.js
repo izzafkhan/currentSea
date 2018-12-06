@@ -30,7 +30,7 @@ export default class EditEntry extends React.Component{
             buttons: [
                 {
                     label: 'Ok',
-                    onClick: () => this.remove
+                    onClick: () => this.remove()
                 },
                 {
                     label: 'Cancel',
@@ -45,7 +45,9 @@ export default class EditEntry extends React.Component{
         var internalEntries = this.state.data.slice(0);
 
         let newRow = {
-            dt_accountID : ' ',
+            dt_transactionID: this.state.action_id,
+            dt_userID: this.state.data[0].dt_userID,
+            dt_accountID : '',
             dt_debit : 0,
             dt_credit : 0,
             dt_eventID : '',
@@ -82,6 +84,7 @@ export default class EditEntry extends React.Component{
             data: JSON.stringify({ 'tt_transaction_id' : this.state.action_id, 'data': this.state.data, 
                 'balance': sum}),
             success: () => {
+                console.log(this.state.data);
                  this.props.closeAction(this.state.action_id, sum);
             },
             error: () => {
