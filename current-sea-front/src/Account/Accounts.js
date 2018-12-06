@@ -59,7 +59,7 @@ export default class Accounts extends React.Component {
             currentData: newArray
 
         });*/
-        $.ajax({
+       /* $.ajax({
             url: "http://localhost:4000/accounts/add_account",
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -68,7 +68,10 @@ export default class Accounts extends React.Component {
             xhrFields: { withCredentials:true },
             data: JSON.stringify(data),
             success: () => {
-                 this.action(false)
+                this.action(false);
+                 this.setState({
+                     update:true
+                 });
                
 
             },
@@ -77,7 +80,10 @@ export default class Accounts extends React.Component {
                  this.action(false);
             }
         })
-        this.forceUpdate();
+        this.forceUpdate();*/
+        this.setState({
+            update:true
+        })
 
     }
 
@@ -155,8 +161,7 @@ export default class Accounts extends React.Component {
                     
                     currentData: data.results
                 
-                });
-               
+                });   
                 
                 
             },

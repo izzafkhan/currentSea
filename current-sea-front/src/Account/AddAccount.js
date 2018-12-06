@@ -87,7 +87,6 @@ export default class AddAccount extends React.Component{
            xhrFields: { withCredentials:true },
            data: JSON.stringify(this.state.newData),
            success: () => {
-                console.log("SUCCESS!")
                 this.props.action(false);
            },
            error: () => {
@@ -124,7 +123,7 @@ export default class AddAccount extends React.Component{
                         </tbody>     
                     </table>
                     <button onClick={()=>{
-                            //this.props.add(this.state.newData);
+                            this.props.add(this.state.newData);
                              this.submitData();}}>Done</button>
                 </div>
                 : (null) }
