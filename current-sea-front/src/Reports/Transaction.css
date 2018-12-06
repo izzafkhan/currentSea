@@ -16,7 +16,7 @@ div.bigContainer{
     height: auto;
 }
 
-div.bigContainer h1{
+#h1title{
     color: white;
     text-align: center;
     padding: 16px;

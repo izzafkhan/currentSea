@@ -84,39 +84,46 @@ export default class AddEntry extends React.Component{
     submitData(){
         var sum = 0;
         var balanceCheck = 0;
+        var entriesFilled = true;
         let newData = Object.assign({}, this.state.newData);
         for(let i = 0; i < newData.internalEntries.length; i++){
             
             sum += newData.internalEntries[i].debit;
             balanceCheck += newData.internalEntries[i].credit;
+            if(newData.internalEntries[i].event === ''){
+                entriesFilled = false;
+            }
         }
         //console.log(sum);
-        if(balanceCheck == sum){
+        if(balanceCheck == sum && (balanceCheck != 0)){
             this.state.newData.balance = sum;     
             this.setState({newData});
-
-            /*
-                Ajax magic 
-                Maybe we should send the internal entries back home instead of newData? We need to avoid losing information one way or another.
-            */
-            $.ajax({
-                url: "http://localhost:4000/transactions/add_transactions",
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                crossDomain: true,
-                dataType:"json",
-                xhrFields: { withCredentials:true },
-                data: JSON.stringify(this.state.newData),
-                success: () => {
-                        this.props.action(false);
-                },
-                error: () => {
-                        console.log("Error: Could not submit");
-                        this.props.action(false);
-                }
-            })
+            if(entriesFilled == true){
+                /*
+                    Ajax magic 
+                    Maybe we should send the internal entries back home instead of newData? We need to avoid losing information one way or another.
+                */
+                $.ajax({
+                    url: "http://localhost:4000/transactions/add_transactions",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    crossDomain: true,
+                    dataType:"json",
+                    xhrFields: { withCredentials:true },
+                    data: JSON.stringify(this.state.newData),
+                    success: () => {
+                            this.props.action(false);
+                    },
+                    error: () => {
+                            console.log("Error: Could not submit");
+                            this.props.action(false);
+                    }
+                })
+            } else {
+                alert("Make sure every account has a category: for what reason the money was spent.")
+            }
         } else {
-            alert("Make sure your credit and debit are equal...")
+            alert("Make sure your credit and debit are equal and filled out.")
         }
     
     }

@@ -3,6 +3,7 @@ import './LoginForm.css';
 import {Link, Redirect} from "react-router-dom";
 import $ from 'jquery';
 import Transaction from "../Reports/Transaction";
+import {log} from '../index';
 
 export default class LoginForm extends React.Component {
 
@@ -15,7 +16,8 @@ export default class LoginForm extends React.Component {
             toRegister: false,
             loginSuccess: false,
 
-            loginForDemo: false
+            loginForDemo: false,
+            redirectRef : false,
         };
 
     }
@@ -79,6 +81,10 @@ export default class LoginForm extends React.Component {
 
         );
 
+        log.authenticate( () => {
+            this.setState({redirectRef: true})
+        })
+
 
     }
 
@@ -126,7 +132,11 @@ export default class LoginForm extends React.Component {
     }
 
     render() {
-
+        if(this.state.redirectRef){
+            return(
+                <Redirect to={this.props.location.state || {from: {pathname: "/"}}} />
+            );       
+        }
 
         return (
 
