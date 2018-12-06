@@ -120,6 +120,9 @@ export default class SignupForm extends Component {
                 <div>
                     <nav className="navbarSignUp">
                         <img className="logo" src={require('../Assets/CSLogo.png')}></img>
+                        <Link to="/">
+                            <button className="logInButtonToolbar">Log In</button>
+                        </Link> 
                     </nav>
                 </div>
 
