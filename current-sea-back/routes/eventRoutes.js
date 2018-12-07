@@ -7,8 +7,8 @@ module.exports = function router() {
 
     eventRouter.route('/create_event')
         .post((req, res) => {
-            const { eventAbv, transactionId, eventName } = req.body;
-            db.query('INSERT INTO event_table (et_event_abv, et_transaction_id, et_event_name, et_user_id) VALUES (?, ?, ?, ?);', [eventAbv, transactionId, eventName, req.user.username], (err,results) => {
+            const { eventAbv, eventName } = req.body;
+            db.query('INSERT INTO event_table (et_event_abv, et_event_name, et_user_id) VALUES (?, ?, ?);', [eventAbv, eventName, req.user.username], (err,results) => {
                 if (err) {
                     debug('Error occurred while inserting to event_table in create_event route', err);
                     res.status(500).json({message: 'Some error occurred'});
