@@ -18,6 +18,7 @@ export default class AddEntry extends React.Component{
                 description: 'Description',
                 balance : 0.00,
                 internalEntries : [],
+                startBalance: false,
             },
             enteringData : false,
             dateSetter : moment(),
