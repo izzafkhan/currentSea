@@ -17,7 +17,7 @@ module.exports = function router() {
             query += ` OR at_account_id = ${data[i].bt_accountID}`;
           }
         }
-        db.query(`SELECT * FROM account_table WHERE account_type = "Balance" AND at_user_id = ? AND (${  query  })`,
+        db.query(`SELECT * FROM account_table WHERE account_type = "Balance" AND at_user_id = ? AND (${query})`,
           [req.user.username], (err, results) => {
             if (err) {
               debug(err);
@@ -26,23 +26,40 @@ module.exports = function router() {
               let insert = '';
               for (let i = 0; i < data.length; i += 1) {
                 if (i === data.length - 1) {
-                  insert += `(${ data[i].bt_accountID }, ${data[i].bt_initialBalance}, "${  
-                    data[i].bt_currency_abv  }", "${  req.user.username  }")`;
+                  insert += `(${data[i].bt_accountID}, ${data[i].bt_initialBalance}, "${
+                    data[i].bt_currency_abv}", "${req.user.username}")`;
                 } else {
-                  insert += `("${  data[i].bt_accountID  }", ${ data[i].bt_initialBalance }, "${  
-                    data[i].bt_currency_abv  }", "${  req.user.username  }"), `;
+                  insert += `("${data[i].bt_accountID}", ${data[i].bt_initialBalance}, "${
+                    data[i].bt_currency_abv}", "${req.user.username}"), `;
                 }
               }
-              db.query(`INSERT INTO initial_balance_table(bt_account_id, bt_initialBalance, bt_currency_abv, bt_user_id) VALUES ${  insert
-               } ON DUPLICATE KEY UPDATE bt_currency_abv=VALUES(bt_currency_abv), bt_initialBalance=VALUES(bt_initialBalance);`,
+              db.query(`INSERT INTO initial_balance_table(bt_account_id, bt_initialBalance, bt_currency_abv, bt_user_id) VALUES ${insert
+              } ON DUPLICATE KEY UPDATE bt_currency_abv=VALUES(bt_currency_abv), bt_initialBalance=VALUES(bt_initialBalance);`,
               (err2, results2) => {
                 if (err2) {
                   debug(err2);
                   res.status(500).json({ message: 'Some error occurred' });
                 } else {
-                  res.status(201).json({ message: 'Initial balance set'});
+                  res.status(201).json({ message: 'Initial balance set' });
                 }
               });
+            }
+          });
+      } else {
+        res.status(401).json({ message: 'User not authenticated' });
+      }
+    });
+
+  startBalanceRouter.route('/get_balance')
+    .get((req, res) => {
+      if (req.user) {
+        db.query('SELECT * FROM initial_balance_table WHERE bt_user_id',
+          [req.user.username], (err, results) => {
+            if (err) {
+              debug(err);
+              res.status(500).json({ message: 'Some error occurred' });
+            } else {
+              res.status(200).json({ results });
             }
           });
       } else {
