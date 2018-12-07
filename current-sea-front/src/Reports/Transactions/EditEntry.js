@@ -14,10 +14,14 @@ export default class EditEntry extends React.Component{
             action_id : 0,
             update : false,
             accounts : this.props.accounts,
+            currencies : this.props.currencies,
             myAccounts : [],
+            transactionInfo : this.props.transactionInfo,
         }
         this.addinfo = this.addinfo.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleDescription = this.handleDescription.bind(this);
+        this.handleCurrency = this.handleCurrency.bind(this);
         this.save = this.save.bind(this);
         this.remove = this.remove.bind(this);
         this.submitDelete = this.submitDelete.bind(this);
@@ -67,6 +71,13 @@ export default class EditEntry extends React.Component{
         }
     }
 
+    handleDescription(event){
+        this.state.transactionInfo.tt_description = event.target.value;
+    }
+
+    handleCurrency(event){
+        this.state.transactionInfo.tt_currency = event.label;
+    }
     save(){
         var sum = 0;
         for(let i = 0; i < this.state.data.length; i++){
@@ -152,6 +163,8 @@ export default class EditEntry extends React.Component{
                             <th>Debit</th>
                             <th>Credit</th>
                             <th>Event</th>
+                            <th><input type="text" defaultValue={this.state.transactionInfo.tt_description} onChange={(e) => this.handleDescription(e)}></input></th>
+                            <th><Select options={this.state.currencies} placeholder={this.state.transactionInfo.tt_currency} onChange={(e) => this.handleCurrency(e)} /></th>
                         </tr>
                     </thead>
                     <tbody>

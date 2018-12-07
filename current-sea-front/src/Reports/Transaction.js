@@ -429,7 +429,14 @@ export default class Transaction extends React.Component {
                                                         {row.edit ?
                                                             <tr>
                                                                 <td colSpan='6'>
-                                                                    <EditEntry editData={this.state.editableData} id={row.tt_transaction_id} makeEdit={row.edit} deleteAction={this.deleteEdit} accounts={this.state.accounts} closeAction={this.closeEdit}/>
+                                                                    <EditEntry editData={this.state.editableData} 
+                                                                               id={row.tt_transaction_id} 
+                                                                               makeEdit={row.edit} 
+                                                                               deleteAction={this.deleteEdit} 
+                                                                               accounts={this.state.accounts} 
+                                                                               currencies={this.state.convertCurrencies} 
+                                                                               closeAction={this.closeEdit} 
+                                                                               transactionInfo={row} />
                                                                 </td>
                                                             </tr> : <tr></tr>}
                                                     </tbody>
