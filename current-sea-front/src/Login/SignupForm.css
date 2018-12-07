@@ -114,3 +114,17 @@
 .signUpButtonDiv {
     margin-top: 50px;
 }
+
+.logInButtonToolbar {
+    width: 115px;
+    height: 35px;
+    color: #051642;
+    background-color: transparent;
+    border: none;
+    font-size: large;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    display:block;
+    float: right;
+    margin-top: 13px;
+}
