@@ -32,8 +32,13 @@ export default class StartBalance extends React.Component{
     }
 
     handleChange(row, entry, event) {
-        row[entry] = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
-        console.log('Here');
+        console.log(event);
+        if(entry == "dt_accountID"){
+            row[entry] = event.label;
+        } else {
+            row[entry] = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
+            console.log('Here');
+        }
     }
 
     save(){

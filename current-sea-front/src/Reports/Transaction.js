@@ -1,29 +1,37 @@
 import React from 'react';
 import './Transaction.css';
-import CurrencyMenu from '../Currencies/CurrencyMenu';
-import Header from '../Header'
 import AddEntry from './Transactions/AddEntry';
 import EditEntry from './Transactions/EditEntry';
 import StartBalance from './Transactions/StartBalance';
 import $ from 'jquery'
 import moment from "moment"
 import Select from 'react-select';   
+import {HorizontalBar} from 'react-chartjs-2';
+
+const options = {
+    scales: {
+         xAxes: [{
+             stacked: true,
+             display: false,
+         }],
+         yAxes: [{
+             stacked: true,
+             display: false,
+         }]
+     },
+     legend: {
+        display : true,
+        position: 'bottom',
+        labels: {
+            fontColor: 'rgb(255, 99, 132)'
+        }
+    }
+}
 
 export default class Transaction extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showIncome: true,
-            income1: "Income 1",
-            income2: "Income 2",
-            income3: "Income 3",
-
-            expense1: "Expense 1",
-            expense2: "Expense 2",
-            expense3: "Expense 3",
-
-            other: "Other",
-
             showAddEntry: false,
             update: false,
             editableData : {},
@@ -33,7 +41,7 @@ export default class Transaction extends React.Component {
                 tt_transaction_id : 0,
                 tt_date : ' ',
                 tt_description: 'Start Balance',
-                tt_balance: ' ',
+                tt_balance: 0,
                 tt_currency: ' ',
                 tt_user_id : ' ',
                 edit : false,
@@ -46,7 +54,36 @@ export default class Transaction extends React.Component {
             rate : 1,
             conversion: 0,
             startBalance: false,
-            accounts: []
+            accounts: [],
+
+            chartData : { 
+                datasets:[{
+                  label: 'event1',
+                  backgroundColor: 'rgba(0,99,132,0.2)',
+                     hoverBackgroundColor: 'rgba(0,99,132,0.4)',
+                    data :[1]
+                  },
+                  {
+                    label: 'event2',
+                    backgroundColor: 'rgba(255,0,132,0.2)',
+                     hoverBackgroundColor: 'rgba(255,0,132,0.4)',  
+                    data:  [2]   
+                  },
+                  {
+                     label: 'event3',
+                     backgroundColor: 'rgba(255,99,0,0.2)',
+                      hoverBackgroundColor: 'rgba(255,99,0,0.4)',    
+                     data:  [2]   
+                   },
+                   {
+                     label: 'event4',
+                     backgroundColor: 'rgba(255,99,132,0.2)',
+                      hoverBackgroundColor: 'rgba(255,99,132,0.4)',     
+                     data:  [2]   
+                   }
+                 ],
+                labels:['label']
+              }
         }
         this.convert = this.convert.bind(this);
         this.income = this.income.bind(this);
@@ -60,6 +97,65 @@ export default class Transaction extends React.Component {
         this.handleStartCurrency = this.handleStartCurrency.bind(this);
         this.handleEndCurrency = this.handleEndCurrency.bind(this);
         this.setBalance = this.setBalance.bind(this);
+        this.updateChart = this.updateChart.bind(this);
+    }
+
+    updateChart(){
+        let dataSetCopy = this.state.chartData.datasets.slice(0);
+        let dataCopy1 = dataSetCopy[0].data.slice(0);
+        let labelCopy1 = dataSetCopy[0].label;
+        let dataCopy2 = dataSetCopy[1].data.slice(0);
+        let labelCopy2 = dataSetCopy[1].label;
+        let dataCopy3 = dataSetCopy[2].data.slice(0);
+        let labelCopy3 = dataSetCopy[2].label;
+        let dataCopy4 = dataSetCopy[3].data.slice(0);
+        let labelCopy4 = dataSetCopy[3].label;
+
+        let max1 = 0;
+        let label1 = '';
+        let max2 = 0;
+        let label2 = '';
+        let max3 = 0;
+        let label3 = '';
+        let total = 1;
+        let other = 'Other';
+        for(let i = 0; i < this.state.currentData.length; i++){
+            console.log(this.state.currentData);
+            if(this.state.currentData[i].tt_balance >= max1){
+                max3 = max2;
+                label3 = label2;
+                max2 = max1;
+                label2 = label1;
+                max1 = this.state.currentData[i].tt_balance;
+                label1 = this.state.currentData[i].tt_description; 
+            }
+            total += this.state.currentData[i].tt_balance;
+        }
+
+        dataCopy1[0] = (max1*100 / total);
+        labelCopy1 = (label1);
+        dataCopy2[0] = (max2*100 / total);
+        labelCopy2 = (label2);
+        dataCopy3[0] = (max3*100 / total);
+        labelCopy3 = (label3);
+        dataCopy4[0] = ((total - (max1 + max2 + max3))*100/total);
+        labelCopy4 = (other);
+
+        dataSetCopy[0].data = dataCopy1;
+        dataSetCopy[1].data = dataCopy2;
+        dataSetCopy[2].data = dataCopy3;
+        dataSetCopy[3].data = dataCopy4;
+
+        dataSetCopy[0].label = labelCopy1;
+        dataSetCopy[1].label = labelCopy2;
+        dataSetCopy[2].label = labelCopy3;
+        dataSetCopy[3].label = labelCopy4;
+        console.log(dataSetCopy);
+        this.setState({
+            chartData : Object.assign({}, this.state.chartData, {
+                datasets: dataSetCopy
+            })
+        })
     }
 
     addRow = () => {
@@ -78,6 +174,7 @@ export default class Transaction extends React.Component {
         this.state.showAddEntry = id;
         this.state.update = true;
         this.forceUpdate();
+        this.updateChart();
     } 
 
     closeEdit(tt_transaction_id, sum){
@@ -89,7 +186,7 @@ export default class Transaction extends React.Component {
             currentData : editData,
             update: true,  
         });
-        {/*Line 80 (was: editUpdate: true, which does nothing) is probably singlehandedly responsible for the problems we had today. Pitfall?*/}
+        this.updateChart();
     }
 
     closeStart(){
@@ -109,6 +206,7 @@ export default class Transaction extends React.Component {
             update: true,
         });
         this.forceUpdate();
+        this.updateChart();
     }
 
     editRow = (e, tt_transaction_id) => {
@@ -207,6 +305,9 @@ export default class Transaction extends React.Component {
                 this.setState({
                     currentData : data
                 });
+                console.log(this.state.currentData);
+                console.log('Update');
+                this.updateChart();
             },
             error: () => {
                  console.log("Error: Could not update.");
@@ -363,49 +464,16 @@ export default class Transaction extends React.Component {
 
                     <div class="quick">
                         <div class="summary">
-                            <h2>Summary</h2>
-                            <button onClick={this.income} >Income</button>
-                            <button onClick={this.expenses}>Expenses</button>
-                            <div class="row1">
-                                <div class="summary1">
-                                    <span class="dot"></span>
-                                    <span class="text">
-                                        {this.state.showIncome ?
-                                            <p>{this.state.income1}</p> :
-                                            <p>{this.state.expense1}</p>}
-                                    </span>
-                                </div>
-                                <div class="summary2">
-                                    <span class="dot"></span>
-                                    <span class="text">
-                                        {this.state.showIncome ?
-                                            <p>{this.state.income2}</p> :
-                                            <p>{this.state.expense2}</p>}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="row2">
-                                <div class="summary3">
-                                    <span class="dot"></span>
-                                    <span class="text">
-                                        {this.state.showIncome ?
-                                            <p>{this.state.income3}</p> :
-                                            <p>{this.state.expense3}</p>}
-                                    </span>
-                                </div>
-                                <div class="other">
-                                    <span class="dot"></span>
-                                    <span class="text"><p>{this.state.other}</p> </span>
-                                </div>
-                            </div>
+                            <h2>Events</h2>
+                            <HorizontalBar id="myChart" data={this.state.chartData} options={options}/>
                         </div>
                         <div class="conversion">
                             <h2>Currency Conversion</h2>
                             <input type="number" defaultValue={this.state.original} onInput={this.convert} />
-                            <Select id='start-currency' options={this.state.convertCurrencies} defaultValue={this.state.startCurrency} onChange={this.handleStartCurrency}/>
+                            <Select id='start-currency' options={this.state.convertCurrencies} placeholder={this.state.startCurrency.value} onChange={this.handleStartCurrency}/>
                             <h3>=</h3>
                             <p>{this.state.conversion}</p>
-                            <Select id='end-currency' options={this.state.convertCurrencies} defaultValue={this.state.endCurrency} onChange={this.handleEndCurrency}/>
+                            <Select id='end-currency' options={this.state.convertCurrencies} placeholder={this.state.endCurrency.value} onChange={this.handleEndCurrency}/>
                         </div>
                     </div>
                 </div>
