@@ -44,7 +44,7 @@ class BalanceSheet extends Component{
     }
 
     currencyChanged = event => {
-        let currencyCode = this.state.demoDefaultCurrencyCode;
+        let currencyCode = this.state.defaultCurrencyCode;
         currencyCode = event.value;
         console.log(currencyCode);
 
