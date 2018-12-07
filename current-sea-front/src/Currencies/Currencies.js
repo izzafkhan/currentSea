@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../Header';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 //import SplitPane from 'react-split-pane'
@@ -10,7 +11,10 @@ import { monthlyData } from 'react-linechart/example/constants/points'
 import 'react-linechart/dist/styles.css';
 import currencyMenu from './CurrencyMenu';
 import Select from 'react-select';
-import './currencies.css'
+import './currencies.css';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import DatePicker from "react-datepicker/es";
+import BalanceSheet from "../Reports/Tables/BalanceSheet.js";
 /////////////
 //import {CurrencyMenu} from 'CurrenciesMenu.js'
 //import CurrenciesGraph from 'CurrenciesGraph.js'
@@ -20,13 +24,12 @@ import './currencies.css'
 //var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 /////////////
-function createGraph()
-{
+function createGraph() {
     const options = {
         animationEnabled: true,
         exportEnabled: true,
         theme: "light2", // "light1", "dark1", "dark2"
-        title:{
+        title: {
             text: "Exchange Rates Change"
         },
         axisY: {
@@ -128,7 +131,7 @@ export default class Currencies extends React.Component {
         // {currency: 'USD', conversion: '0.342', change: '0.23%'},
         // {currency: 'SEK', conversion: '1.00',change:'0.01%'}
     }
-    componentDidMount () {
+    componentDidMount() {
         $.ajax({
             url: "http://localhost:4000/currencies/currencies",
             type: "GET",
@@ -149,95 +152,94 @@ export default class Currencies extends React.Component {
             error: () => {
                 console.log("Error: Could not submit");
                 /////////
-               // this.props.action(false);
+                // this.props.action(false);
             }
         });
     }
     render() {
-        //////
         const cellEditP = {
             mode: 'click',
         }
-        ////////
-        //<div class="bodyImage">
-        //<Header /> 
+        var columns = [{
+            Header: 'Cuurrency',
+            accessor: 'currency',
+            width: '200px'
+        }, {
+            Header: '1 Sek',
+            accessor: 'amount',
+            width: '200px'
+        }, {
+            Header: 'Change(day)',
+            accessor: 'rate',
+            width: '200px'
+        }]
         return (
+            <body className="currencyreportsContainer">
+                <Header />
 
-            <div class="body">
-                    
-                 
-                <h1 align="center">Currencies</h1>
+                <div class="body">
 
-                <div>
+
+                    <h1 align="center">Currencies</h1>
+
                     <div>
-                        <button onClick={this.showMenu}>+New</button>
-                        {
-                            this.state.showMenu
-                                ? (
-                                    <div id="currencyHolder">
-                                        <Select options={this.state.currencies} />
-                                    </div>
-                                )
-                                : (
-                                    null
-                                )
-                        }
-                    </div>
-                    <div class="test">
-                    <div class="test2">
-                        <BootstrapTable data={fav_currencies}
-                            insertRow={true}
-                            pagination={true}
-                            //cellEdit = {cellEditP}
-                            containerStyle={
-                                {
-                                    width: "80%"
-                                }
+                        <div>
+                            <button onClick={this.showMenu}>+New</button>
+                            {
+                                this.state.showMenu
+                                    ? (
+                                        <div id="currencyHolder">
+                                            <Select options={this.state.currencies} />
+                                        </div>
+                                    )
+                                    : (
+                                        null
+                                    )
                             }
-
-                        >
-                            <TableHeaderColumn isKey dataField='currencyFrom'
-                                headerAlign="center"
-                                width="40%"
-                                dataAlign="right">
-
-                                Currency From
-                    </TableHeaderColumn>
-
-                            <TableHeaderColumn dataField='conversion'
-                                dataAlign="right">
-                                "Rate"
-                    </TableHeaderColumn>
-
-                            <TableHeaderColumn dataField='change'
-                                dataAlign="right">
-                                Change(day)
-                    </TableHeaderColumn>
-
-                        </BootstrapTable>
-
-                    </div>
-                    
-                    
-                   
-                    <div>
-                        <h2>My Exchange Rates</h2>
-                        <div class="test3">
-                        <Linechart
-                            width={500}
-                            height={400}
-                            data={monthlyData}
-                            isDate= "true"
-                            
-                    
-                        />
                         </div>
-                    </div>
-         
+                        <div class="bottomBody">
+
+                            {/* <div class="table"> */}
+                                <div className="gridContainer">
+
+                                    <div className="tableTop"> 
+                                        <Dropdown className="isDropDownReports" isOpen={this.state.reportDropdownOpen}
+                                            toggle={this.toggleReport}>
+                                            <DropdownToggle caret>Balance Sheet</DropdownToggle>
+                                            <DropdownMenu className="isDropDownReportsMenu">
+                                                <DropdownItem onClick={this.props.action}>Income Statement</DropdownItem>
+                                            </DropdownMenu>
+                                        </Dropdown>
+                                    </div>
+
+                                    <div className="tableBottom">
+                                        <ReactTable
+                                            className="currencyDataTable"
+                                            data={this.state.data}
+                                            noDataText="Your balances will appear here"
+                                            columns={columns}
+                                        />
+                                    </div>
+
+                                </div>
+                            {/* </div> */}
+                            <div class="linechart">
+                                <h2 align="center" style={{ color: "white" }}>My Exchange Rates</h2>
+                                <Linechart
+                                    width={600}
+                                    height={400}
+                                    data={monthlyData}
+                                    isDate="true"
+                                    style={{ backgroundColor: "white", width: "600px" }}
+                                />
+                            </div>
+
+
+                        </div>
+
                     </div>
                 </div>
-                
-            </div>
+            </body>
 
         );
     }
