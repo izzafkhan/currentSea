@@ -74,9 +74,9 @@ export default class IncomeStatement extends Component {
                     let data = this.state.data;
                     for (let i = 0; i < data.length; i++){
                         let {start, change, end} = data[i];
-                        start = start * this.state.exchangeRate;
-                        change = change * this.state.exchangeRate;
-                        end = end * this.state.exchangeRate;
+                        start = (start * this.state.exchangeRate).toFixed(4);
+                        change = (change * this.state.exchangeRate).toFixed(4);
+                        end = (end * this.state.exchangeRate).toFixed(4);
                         data[i].start = start;
                         data[i].change = change;
                         data[i].end = end;
