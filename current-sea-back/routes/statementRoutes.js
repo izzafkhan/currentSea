@@ -34,7 +34,7 @@ module.exports = function router() {
               accountName.push(results[i].at_account_name);
               // credit not null for first transaction
               if (results[i].dt_credit) {
-                end -= results[i].dt_credit;
+                end -= results[i].dt_credit * results[i].ct_rate;
                 start_amount.push(results[i].dt_credit * results[i].ct_rate);
                 start = -results[i].dt_credit * results[i].ct_rate;
               }
@@ -58,10 +58,10 @@ module.exports = function router() {
               }
               // loop through same account_id
               while (results[i].dt_accountID === results[i + 1].dt_accountID) {
-                if (results[i + 1].dt_credit) {end -= results[i + 1].dt_credit * results[i + 1].ct_rate;}
-                else if (results[i + 1].dt_debit) {end += results[i + 1].dt_debit * results[i + 1].ct_rate;}
+                if (results[i + 1].dt_credit) { end -= results[i + 1].dt_credit * results[i + 1].ct_rate; }
+                else if (results[i + 1].dt_debit) { end += results[i + 1].dt_debit * results[i + 1].ct_rate; }
                 i++;
-                if (i >= results.length - 1) {break;}
+                if (i >= results.length - 1) { break; }
               }
               // push the end amount for each account
               if (end < 0) {
