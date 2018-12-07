@@ -48,10 +48,10 @@ export default class AddAccount extends React.Component{
         newData.accountName = e.target.value;
         this.setState({newData});
     }
-    handleType(accountType){
+    handleType(e){
         let newData = Object.assign({}, this.state.newData);
        // console.log(accountType.value);
-        newData.accountType = accountType.value;
+        newData.accountType = e.value;
         this.setState({newData});
     }
 

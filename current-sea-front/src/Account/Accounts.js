@@ -7,6 +7,7 @@ import moment from "moment"
 import Header from '../Header'
 import Events from './Events';
 import update from 'react-addons-update';
+import EditAccount from './EditAccount'
 
 export default class Accounts extends React.Component {
     constructor(props) {
@@ -198,8 +199,10 @@ export default class Accounts extends React.Component {
         }
         return (
             <div> <Header/> 
-            <h1 align="center" background="#051642"><br /> Accounts </h1>
-            <h6 align="center"> Here you can set up, edit and delete your accounts<br /><br />. </h6>
+            
+            <h1 align="center" background="#051642"><br /> Account Settings </h1>
+            <h6 align="center"> Here you can set up, edit and delete your accounts and events<br /><br /> </h6>
+            <Events/>
             <div class="tableContainer">
                 <div className="account-table">
                     <table id='dataTableA'>
@@ -231,7 +234,7 @@ export default class Accounts extends React.Component {
                                                     {row.edit ?
                                                         <tr>
                                                             <td colSpan='6'>
-                                                            </td>
+                                                            <EditAccount editData={this.state.editableData} id={row.at_account_id} makeEdit={row.edit} deleteAction={this.deleteEdit} accounts={this.state.accounts} closeAction={this.closeEdit}/>                                                            </td>
                                                         </tr> : <tr></tr>}
                                                 </tbody>
                                             </table>

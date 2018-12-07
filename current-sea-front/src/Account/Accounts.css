@@ -3,9 +3,10 @@ div.tableContainer{
     margin-block-start: 20px;
     height: 100vh; /* Magic here */
     display: flex;    
-    justify-content: center;
+    justify-content: left;
     background: #051642;
-    margin:0
+    margin:0;
+    margin-block-start: 0;
   
 }
 
