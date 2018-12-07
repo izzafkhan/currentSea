@@ -17,6 +17,25 @@ export default class StartBalance extends React.Component{
         this.handleCurrency = this.handleCurrency.bind(this);
     }
 
+    componentDidMount(){
+        $.ajax({
+            url: "http://localhost:4000/startBalance/get_balance",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType:"json",
+            xhrFields: { withCredentials:true },
+            success: (receivedData) => {
+                 this.setState({
+                     data: receivedData,
+                 })
+            },
+            error: () => {
+                 console.log("Error: Could not submit");
+            }
+        })
+    }
+
     addinfo = () => {
         var internalEntries = this.state.data.slice(0);
 
