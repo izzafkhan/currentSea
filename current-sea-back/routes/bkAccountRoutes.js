@@ -37,11 +37,22 @@ module.exports = function router() {
               if (accountId === '' || accountName === '') {
                 res.status(401).json({ message: 'Please fill in the blank spaces of the parameters.' });
               } else {
-                db.query('INSERT INTO account_table(at_account_name, at_account_id, at_user_id, account_type) VALUES (?, ?, ?, ?);', [accountName, accountId, req.user.username, accountType],
+                db.query('INSERT INTO account_table(at_account_name, at_account_id, at_user_id, account_type) VALUES (?, ?, ?, ?);',
+                  [accountName, accountId, req.user.username, accountType],
                   (err2) => {
                     if (err2) {
                       debug(err2);
                       res.status(500).json({ message: 'Some error occurred' });
+                    } else if (accountType === 'Balance') {
+                      db.query('INSERT INTO initial_balance_table(bt_account_id, bt_user_id, bt_initialBalance) VALUES (?,?,?)',
+                        [accountId, req.user.username, 0], (err3, results) => {
+                          if (err3) {
+                            debug(err3);
+                            res.status(500).json({ message: 'Some error occurred' });
+                          } else {
+                            res.status(201).json({ message: 'Account created' });
+                          }
+                        });
                     } else {
                       res.status(201).json({ message: 'Account created' });
                     }
@@ -70,7 +81,7 @@ module.exports = function router() {
                   if (err2) {
                     debug(err2);
                     res.status(500).json({ message: 'Some error occurred' });
-                  } 
+                  }
                 }));
               }
               if (newAccountName !== accountName) {

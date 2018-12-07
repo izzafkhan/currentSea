@@ -6,8 +6,7 @@ export default class StartBalance extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            data : [{                
-            }],
+            data : [],
             update : false,
             accounts: this.props.accounts,
             currencies : this.props.currencies,
@@ -33,25 +32,25 @@ export default class StartBalance extends React.Component{
         this.forceUpdate();
     }
 
-    handleCurrency(e){
+    handleCurrency(row, entry, event){
         let newData = Object.assign({}, this.state.data);
-        newData.bt_currency_abv = e.value;
-        this.setState({data : newData})
+        row[entry] = event.value;
     }
 
     handleChange(row, entry, event) {
         console.log(event);
-        if(entry == "dt_accountID"){
-            row[entry] = event.label;
+        if(entry == "bt_accountID"){
+            row[entry] = event.value;
         } else {
             row[entry] = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
             console.log('Here');
         }
     }
 
-    save(){;
+    save(){
+        console.log('SAVE');
         $.ajax({
-            url: "http://localhost:4000/transactions/edit_transactions",
+            url: "http://localhost:4000/startBalance/set_balance",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
@@ -115,7 +114,7 @@ export default class StartBalance extends React.Component{
                                 <tr key={`row-${index}`}>
                                     <td><Select options={this.state.accounts} onChange={(e) => this.handleChange(row, 'bt_accountID', e)}/></td>
                                     <td><input type="number"  defaultValue={row.bt_initialBalance} onChange={(e) => this.handleChange(row, 'bt_initialBalance', e)}/></td>
-                                    <td><Select options={this.state.currencies} onChange={this.handleCurrency}/></td>
+                                    <td><Select options={this.state.currencies} onChange={(e) => this.handleCurrency(row, 'bt_currency_abv', e)}/></td>
                                 </tr>
                             )
                         })}
