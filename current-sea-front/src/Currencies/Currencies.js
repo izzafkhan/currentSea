@@ -14,8 +14,7 @@ import Select from 'react-select';
 import './currencies.css';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import DatePicker from "react-datepicker/es";
-import BalanceSheet from "../Reports/Tables/BalanceSheet.js";
-/////////////
+import AddAccount from '../Account/AddAccount';
 //import {CurrencyMenu} from 'CurrenciesMenu.js'
 //import CurrenciesGraph from 'CurrenciesGraph.js'
 //import ReactChartkick, { LineChart} from 'react-native-chart-kit';
@@ -23,51 +22,47 @@ import BalanceSheet from "../Reports/Tables/BalanceSheet.js";
 //var CanvasJS = CanvasJSReact.CanvasJS;
 //var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-/////////////
-function createGraph() {
-    const options = {
-        animationEnabled: true,
-        exportEnabled: true,
-        theme: "light2", // "light1", "dark1", "dark2"
-        title: {
-            text: "Exchange Rates Change"
-        },
-        axisY: {
-            title: "Percentage",
-            includeZero: true,
-            suffix: "%"
-        },
-        axisX: {
-            title: "Month of Year",
-            prefix: "M",
-            interval: 1
-        },
-        data: [{
-            type: "line",
-            toolTipContent: "Month {x}: {y}%",
-            dataPoints: [
-                { x: 1, y: 64 },
-                { x: 2, y: 61 },
-                { x: 3, y: 64 },
-                { x: 4, y: 62 },
-                { x: 5, y: 64 },
-                { x: 6, y: 60 },
-                { x: 7, y: 58 },
-                { x: 8, y: 59 },
-                { x: 9, y: 53 },
-                { x: 10, y: 54 },
-                { x: 11, y: 61 },
-                { x: 12, y: 60 }
-            ]
-        }]
-    }
-    return options;
-}
-///////////
-var fav_currencies = [
-    { currency: 'USD', conversion: '0.342', change: '0.23%' },
-    { currency: 'SEK', conversion: '1.00', change: '0.01%' }
-];
+
+// function createGraph() {
+//     const options = {
+//         animationEnabled: true,
+//         exportEnabled: true,
+//         theme: "light2", // "light1", "dark1", "dark2"
+//         title: {
+//             text: "Exchange Rates Change"
+//         },
+//         axisY: {
+//             title: "Percentage",
+//             includeZero: true,
+//             suffix: "%"
+//         },
+//         axisX: {
+//             title: "Month of Year",
+//             prefix: "M",
+//             interval: 1
+//         },
+//         data: [{
+//             type: "line",
+//             toolTipContent: "Month {x}: {y}%",
+//             dataPoints: [
+//                 { x: 1, y: 64 },
+//                 { x: 2, y: 61 },
+//                 { x: 3, y: 64 },
+//                 { x: 4, y: 62 },
+//                 { x: 5, y: 64 },
+//                 { x: 6, y: 60 },
+//                 { x: 7, y: 58 },
+//                 { x: 8, y: 59 },
+//                 { x: 9, y: 53 },
+//                 { x: 10, y: 54 },
+//                 { x: 11, y: 61 },
+//                 { x: 12, y: 60 }
+//             ]
+//         }]
+//     }
+//     return options;
+// }
+
 
 function onInsert(row) {
     let newRow = '';
@@ -80,18 +75,61 @@ export default class Currencies extends React.Component {
         this.onSelectCurrency = this.onSelectCurrency.bind(this);
         this.state = {
             showMenu: false,
-            currencies: []
+            fav_currencies: [],
+            currencies: [],
+            defaultCurrencyCode: 'USD'
         };
 
         this.showMenu = this.showMenu.bind(this);
         this.closeMenu = this.closeMenu.bind(this);
+        this.currencyChanged = this.currencyChanged.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+
     }
+
+    //getting different currencies rate
+    currencyChanged = event => {
+        let currencyCode = this.state.defaultCurrencyCode;
+        currencyCode = event.value;
+        console.log(currencyCode);
+
+        $.ajax({
+                url: "http://localhost:4000/currencies/getrate",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: 'json',
+                xhrFields: {withCredentials: true},
+                data: JSON.stringify({from: this.state.defaultCurrencyCode, to: currencyCode}),
+                success:  (receivedData) => {
+                    console.log(receivedData);
+                    this.setState({exchangeRate: receivedData.rate, defaultCurrencyCode: currencyCode});
+                    let data = this.state.data;
+                    for (let i = 0; i < data.length; i++){
+                        let {start, change, end} = data[i];
+                        start = (start * this.state.exchangeRate).toFixed(4);
+                        change = (change * this.state.exchangeRate).toFixed(4);
+                        end = (end * this.state.exchangeRate).toFixed(4);
+                        data[i].start = start;
+                        data[i].change = change;
+                        data[i].end = end;
+                    };
+                    this.setState({data: data});
+                },
+                error: (receivedData) => {
+                    alert('error occurred')
+
+                }
+            }
+        );
+    }
+    
 
     showMenu(event) {
         event.preventDefault();
 
         this.setState({ showMenu: true }, () => {
-            document.addEventListener('click', this.closeMenu);
+            // document.addEventListener('click', this.closeMenu);
         });
     }
 
@@ -126,10 +164,7 @@ export default class Currencies extends React.Component {
                     }
                 })
         }
-        fav_currencies.push(newRow);
-        ///////
-        // {currency: 'USD', conversion: '0.342', change: '0.23%'},
-        // {currency: 'SEK', conversion: '1.00',change:'0.01%'}
+        // fav_currencies.push(newRow);
     }
     componentDidMount() {
         $.ajax({
@@ -151,27 +186,27 @@ export default class Currencies extends React.Component {
             },
             error: () => {
                 console.log("Error: Could not submit");
-                /////////
                 // this.props.action(false);
             }
         });
     }
     render() {
-        const cellEditP = {
-            mode: 'click',
-        }
+        // var fav_currencies = [
+        //     { currency: 'USD', conversion: '0.342', change: '0.23%' },
+        //     { currency: 'SEK', conversion: '1.00', change: '0.01%' }
+        // ];
+        // const cellEditP = {
+        //     mode: 'click',
+        // }
         var columns = [{
-            Header: 'Cuurrency',
-            accessor: 'currency',
-            width: '200px'
+            Header: 'Currency',
+            accessor: 'currency'
         }, {
             Header: '1 Sek',
-            accessor: 'amount',
-            width: '200px'
+            accessor: 'conversion'
         }, {
             Header: 'Change(day)',
-            accessor: 'rate',
-            width: '200px'
+            accessor: 'change'
         }]
         return (
             <body className="currencyreportsContainer">
@@ -183,48 +218,43 @@ export default class Currencies extends React.Component {
                     <h1 align="center">Currencies</h1>
 
                     <div>
-                        <div>
-                            <button onClick={this.showMenu}>+New</button>
-                            {
-                                this.state.showMenu
-                                    ? (
-                                        <div id="currencyHolder">
-                                            <Select options={this.state.currencies} />
-                                        </div>
-                                    )
-                                    : (
-                                        null
-                                    )
-                            }
-                        </div>
+
                         <div class="bottomBody">
 
-                            {/* <div class="table"> */}
-                                <div className="gridContainer">
+                            <div className="gridContainer">
 
-                                    <div className="tableTop"> 
-                                        <Dropdown className="isDropDownReports" isOpen={this.state.reportDropdownOpen}
-                                            toggle={this.toggleReport}>
-                                            <DropdownToggle caret>Balance Sheet</DropdownToggle>
-                                            <DropdownMenu className="isDropDownReportsMenu">
-                                                <DropdownItem onClick={this.props.action}>Income Statement</DropdownItem>
-                                            </DropdownMenu>
-                                        </Dropdown>
-                                    </div>
-
-                                    <div className="tableBottom">
-                                        <ReactTable
-                                            className="currencyDataTable"
-                                            data={this.state.data}
-                                            noDataText="Your balances will appear here"
-                                            columns={columns}
-                                        />
+                                <div className="tableTop" >
+                                    <div class = "clickButton">
+                                        <button onClick={this.showMenu}>+Add New Currency</button>
+                                        {
+                                            this.state.showMenu
+                                                ? (
+                                                    <div id="currencyHolder" style={{ display: "inline-flex" }}>
+                                                        <Select options={this.props.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.defaultCurrencyCode}
+                                                        className="dropdownContainer" />
+                                                        <button onClick={this.closeMenu}>Done</button>
+                                                    </div>
+                                                )
+                                                : (
+                                                    null
+                                                )
+                                        }
                                     </div>
 
                                 </div>
-                            {/* </div> */}
+
+                                <div className="tableBottom">
+                                    <ReactTable
+                                        className="currencyDataTable"
+                                        data={this.state.fav_currencies}
+                                        noDataText="Your favorite currencies will appear here"
+                                        columns={columns}
+                                    />
+                                </div>
+
+                            </div>
                             <div class="linechart">
-                                <h2 align="center" style={{ color: "white" }}>My Exchange Rates</h2>
+                                <h2 align="center" style={{ color: "black" }}>My Exchange Rates</h2>
                                 <Linechart
                                     width={600}
                                     height={400}
