@@ -8,30 +8,62 @@ import Help from './Help';
 import Login from './Login/Login';
 import SignUpForm from './Login/SignupForm'
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Redirect, Link, withRouter } from "react-router-dom";
 import Accounts from './Account/Accounts';
+import $ from 'jquery';
 
+export const log = {
+  loggedIn : false,
+  authenticate(cb){
+    this.loggedIn = true
+  },
+  signout(cb){
+    this.loggedIn = false
+  }
+}
 
-class App extends React.Component{
-    render() {
-        return (
-          <BrowserRouter>
-            <div>
-              <Route path="/Reports/Report" exact component={Report}/>
-              <Route path="/Account/Accounts" exact component={Accounts}/>
-              <Route path="/Currencies/Currencies" exact component={Currencies}/>
-              <Route path="/Help" exact component={Help}/>
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={props => (
+    log.loggedIn ? (
+      <Component {...props}/>
+    ) : (
+      <Redirect to={{
+        pathname: "/",
+        state: { from: props.location }
+      }}/>
+    )
+  )}/>
+)
 
-              <Route path="/" exact component={Login}/>
-              <Route path="/Transactions" exact component={Home}/>
-              <Route path="/Register" exact component = {SignUpForm}/>
-              <Route path="/Accounts" exact component = {Accounts}/>
-            
-      
-            </div>
-          </BrowserRouter>
-        );
-      }    
+const Auth = withRouter(({history}) => (
+  log.loggedIn ? ( <Link to="/Transactions"></Link> ) : (<Redirect to={{pathname: "/"}} />)
+))
+
+export default class App extends React.Component{
+  render() {
+
+    return (
+      <BrowserRouter>
+        <div>
+          <Auth/>
+          <Route exact path="/Reports/Report"  component={Report}/>
+          <Route exact path="/Account/Accounts"  component={Accounts}/>
+          <Route exact path="/Currencies/Currencies"  component={Currencies}/>
+          <Route exact path="/Help"  component={Help}/>
+          <Route exact path="/Transactions"  render={(props) => (
+              log.loggedIn === true ? <Home {...props} /> : <Redirect to={{
+                  pathname: "/",
+                  state: {from: props.location}
+              }} />
+          )} />
+          <Route exact path="/Register"  component = {SignUpForm}/>
+          <Route exact path="/Accounts"  component = {Accounts}/>
+          <Route exact path="/"  component={Login}/>
+  
+        </div>
+      </BrowserRouter>
+    );
+  }    
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));
@@ -40,3 +72,15 @@ ReactDOM.render(<App />, document.getElementById('root'));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+
+{/*
+<Route exact path="/Reports/Report"  component={Report}/>
+          <Route exact path="/Account/Accounts"  component={Accounts}/>
+          <Route exact path="/Currencies/Currencies"  component={Currencies}/>
+          <Route exact path="/Help"  component={Help}/>
+          <Route exact path="/Transactions"  component={Home}/>
+          <Route exact path="/Register"  component = {SignUpForm}/>
+          <Route exact path="/Accounts"  component = {Accounts}/>
+          <Route exact path="/"  component={Login} render/>
+*/}

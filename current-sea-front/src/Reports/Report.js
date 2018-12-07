@@ -89,7 +89,7 @@ class Report extends Component {
         return(
             <body className="reportsRootContainer">
                 <Header/>
-                <div className="reportsTitle">Reports</div>
+                <div className="reportsTitle"><h1>Reports</h1></div>
 
                 {currentSheet()}
 

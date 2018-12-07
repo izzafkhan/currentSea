@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './Header.css';
-import {Link} from "react-router-dom";
+import {Redirect, Link} from "react-router-dom";
 import $ from 'jquery';
 
 export class Header extends Component {
@@ -54,20 +54,25 @@ export class Header extends Component {
 
                 <div className="linkContainer">
 
-                    <img className="logo" src={require('./Assets/CSLogo.png')}></img>
-
-                    <Link to="/">
+                    <Link to="/Transactions">
+                        <img className="logo" src={require('./Assets/CSLogo.png')}></img>
+                    </Link>
+                    
+                    <Link to="/" className="l">
                         <button onClick={this.logout} class="logoutHeader">
                         <img src={require('./Assets/lockwhite.png')}
                             alt="lockwhite" width="15"
                             height="15"></img>{this.state.loggedIn ? 'Logout' : 'Login'}
                         </button>
                     </Link>
-                    
-                    <Link to="/Account/Accounts">Settings</Link>
-                    <Link to="/Currencies/Currencies">Currencies</Link>  
-                    <Link to="/Reports/Report"> Reports</Link>
-                    <Link to="/Transactions">Bookkeeping</Link>
+
+                    <Link to="/Account/Accounts" className="l">Settings</Link>
+                    <Link to="/Currencies/Currencies" className="l">Currencies</Link>  
+                    <Link to="/Reports/Report" className="l">Reports</Link>
+                    <Link to="/Transactions" className="l">Bookkeeping</Link>
+
+
+                
                 </div>
 
 

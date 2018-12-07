@@ -1,8 +1,10 @@
 import React from 'react';
 import './LoginForm.css';
+import Header from '../Header'
 import {Link, Redirect} from "react-router-dom";
 import $ from 'jquery';
 import Transaction from "../Reports/Transaction";
+import {log} from '../index';
 
 export default class LoginForm extends React.Component {
 
@@ -15,7 +17,8 @@ export default class LoginForm extends React.Component {
             toRegister: false,
             loginSuccess: false,
 
-            loginForDemo: false
+            loginForDemo: false,
+            redirectRef : false,
         };
 
     }
@@ -48,6 +51,11 @@ export default class LoginForm extends React.Component {
         this.setState({password: event.target.value});
     }
 
+    mouseOver = event => {
+        event.mouseOver()
+        this.setState()
+    }
+
     onSubmit = e => {
         e.preventDefault();
 
@@ -78,6 +86,10 @@ export default class LoginForm extends React.Component {
             }
 
         );
+
+        log.authenticate( () => {
+            this.setState({redirectRef: true})
+        })
 
 
     }
@@ -126,27 +138,32 @@ export default class LoginForm extends React.Component {
     }
 
     render() {
-
+        if(this.state.redirectRef){
+            return(
+                <Redirect to={this.props.location.state || {from: {pathname: "/"}}} />
+            );       
+        }
 
         return (
 
             <div className="loginRoot">
 
                 {this.redirectAfterLogin()}
+
                 <div className="navbarLoginDiv">
                     <nav className="navbarLogin">
-
-                        <Link to="/Register">
-                            <button className="signUpButtonToolbar">Sign Up</button>
+                        <Link to="/">
+                            <img className="logo" src={require('../Assets/CSLogo.png')}></img>
                         </Link>
-
-                        <img className="logo" src={require('../Assets/CSLogo.png')}></img>
-
-
+                        
+                        <Link to="/Register">
+                            <button className="signUpButtonToolbar"><img src={require('../Assets/lockblue.png')}
+                            alt="lockblue" width="15"
+                            height="15"></img>Sign Up</button>
+                        </Link>
                     </nav>
                 </div>
-
-
+                
 
                 <div className="loginBody">
 

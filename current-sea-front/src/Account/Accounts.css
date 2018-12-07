@@ -9,32 +9,20 @@ div.tableContainer{
   
 }
 
-
-
-.header-name{
-    margin-inline-start: 8px;
-    margin-inline-end: 8px;
-    background: #051642;
+div.bigContainer h1 {
+    font-family: 'Roboto',sans-serif;
+    color: white;
+    text-align: center; 
+    padding-bottom: 5px; 
+    padding-top: 40px; 
 }
 
-
-h1 {
-    
-    font-family: 'Roboto', sans-serif;
-    margin:0;
-    padding:0;
-    background: #051642;
-    color:white
-}
-
-h6 {
-   
+div.bigContainer h6 {
     font-family: 'Roboto',sans-serif;
     font:bold;
-    background:#051642;
-    margin: 0;
-    padding:0;
+    text-align: center; 
     color:white;
+    margin-bottom: 40px; 
 }
 
 div.accounts-table, div.quick { float: left;}
