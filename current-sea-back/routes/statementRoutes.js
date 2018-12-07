@@ -81,9 +81,9 @@ module.exports = function router() {
               obj.i = {
                 account: accountName[i],
                 number: accountId[i],
-                start: start_amount[i],
-                change: change_amount[i],
-                end: end_amount[i],
+                start: start_amount[i].toFixed(4),
+                change: change_amount[i].toFixed(4),
+                end: end_amount[i].toFixed(4),
               };
               output.push(obj.i);
             }
