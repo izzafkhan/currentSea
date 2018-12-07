@@ -21,32 +21,11 @@ export default class IncomeStatement extends Component {
             endDate: '',
             reportDropdownOpen: false,
             currencyDropdownOpen: false,
-            demoExchangeRate: '1',
-            demoDefaultCurrencyCode: 'USD'
-
+            exchangeRate: 1,
+            currencyCode: 'USD'
         };
 
     }
-
-    fetchData(state, instance) {
-        $.ajax({
-                url: "http://localhost:4000/statement/statement",
-                type: "GET",
-                contentType: "application/json; charset=utf-8",
-                crossDomain: true,
-                dataType: 'json',
-                xhrFields: {withCredentials: true},
-                success: function (receivedData) {
-                    this.setState({data: receivedData});
-                }.bind(this),
-                error: (receivedData) => {
-                    alert('error occurred')
-
-                }
-            }
-        );
-    }
-
 
     handleChangeStart = (date) => {
         this.setState({
@@ -80,22 +59,30 @@ export default class IncomeStatement extends Component {
     }
 
     currencyChanged = event => {
-        let currencyCode = this.state.demoDefaultCurrencyCode;
-        currencyCode = event.value;
-        console.log(currencyCode);
+        let currencyCode = event.value;
 
         $.ajax({
                 url: "http://localhost:4000/currencies/getrate",
-                type: "Get",
+                type: "POST",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,
                 dataType: 'json',
                 xhrFields: {withCredentials: true},
-                data: {currencyFrom: 'USD', currencyTo: 'USD'},
-                success: function (receivedData) {
-                    console.log("Successful Get")
-                    this.setState({data: receivedData});
-                }.bind(this),
+                data: JSON.stringify({from: this.state.currencyCode, to: currencyCode}),
+                success: (receivedData) => {
+                    this.setState({exchangeRate: receivedData.rate, currencyCode: currencyCode});
+                    let data = this.state.data;
+                    for (let i = 0; i < data.length; i++){
+                        let {start, change, end} = data[i];
+                        start = (start * this.state.exchangeRate).toFixed(4);
+                        change = (change * this.state.exchangeRate).toFixed(4);
+                        end = (end * this.state.exchangeRate).toFixed(4);
+                        data[i].start = start;
+                        data[i].change = change;
+                        data[i].end = end;
+                    }
+                    this.setState({data: data});
+                },
                 error: (receivedData) => {
                     alert('error occurred')
 
@@ -185,7 +172,7 @@ export default class IncomeStatement extends Component {
                                 placeholderText="End Date"
                     />
 
-                <Select options={this.props.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.demoDefaultCurrencyCode}
+                <Select options={this.props.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.currencyCode}
                 className='dropdownContainer'/>
                     
 
