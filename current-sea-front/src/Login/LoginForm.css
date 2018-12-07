@@ -90,7 +90,8 @@
     font-size: large;
     font-family: 'Roboto', sans-serif;
     font-weight: bold;
-
+    border: #00ADA2;
+    border-radius: 2px;
     margin:0 auto;
     display:block;
 

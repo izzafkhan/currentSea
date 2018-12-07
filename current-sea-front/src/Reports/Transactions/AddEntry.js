@@ -3,8 +3,6 @@ import DatePicker from 'react-datepicker'
 import moment from "moment"
 import './AddEntry.css'
 import $ from 'jquery'
-import DummyAccountsMenu from '../../Accounts/DummyAccountsMenu';
-import CurrencyMenu from '../../Currencies/CurrencyMenu';
 import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select';
 
@@ -23,8 +21,8 @@ export default class AddEntry extends React.Component{
             },
             enteringData : false,
             dateSetter : moment(),
-            accounts: [],
-            currencies: []
+            accounts: this.props.accounts,
+            currencies: this.props.currencies
         }
         this.setDate = this.setDate.bind(this);
         this.addinfo = this.addinfo.bind(this);
@@ -86,87 +84,50 @@ export default class AddEntry extends React.Component{
     submitData(){
         var sum = 0;
         var balanceCheck = 0;
+        var entriesFilled = true;
         let newData = Object.assign({}, this.state.newData);
         for(let i = 0; i < newData.internalEntries.length; i++){
             
             sum += newData.internalEntries[i].debit;
             balanceCheck += newData.internalEntries[i].credit;
+            if(newData.internalEntries[i].event === ''){
+                entriesFilled = false;
+            }
         }
         //console.log(sum);
-        if(balanceCheck == sum){
+        if(balanceCheck == sum && (balanceCheck != 0)){
             this.state.newData.balance = sum;     
             this.setState({newData});
-
-            /*
-                Ajax magic 
-                Maybe we should send the internal entries back home instead of newData? We need to avoid losing information one way or another.
-            */
-            $.ajax({
-                url: "http://localhost:4000/transactions/add_transactions",
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                crossDomain: true,
-                dataType:"json",
-                xhrFields: { withCredentials:true },
-                data: JSON.stringify(this.state.newData),
-                success: () => {
-                        this.props.action(false);
-                },
-                error: () => {
-                        console.log("Error: Could not submit");
-                        this.props.action(false);
-                }
-            })
+            if(entriesFilled == true){
+                /*
+                    Ajax magic 
+                    Maybe we should send the internal entries back home instead of newData? We need to avoid losing information one way or another.
+                */
+                $.ajax({
+                    url: "http://localhost:4000/transactions/add_transactions",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    crossDomain: true,
+                    dataType:"json",
+                    xhrFields: { withCredentials:true },
+                    data: JSON.stringify(this.state.newData),
+                    success: () => {
+                            this.props.action(false);
+                    },
+                    error: () => {
+                            console.log("Error: Could not submit");
+                            this.props.action(false);
+                    }
+                })
+            } else {
+                alert("Make sure every account has a category: for what reason the money was spent.")
+            }
         } else {
-            alert("Make sure your credit and debit are equal...")
+            alert("Make sure your credit and debit are equal and filled out.")
         }
     
     }
     componentDidMount = () => {
-        $.ajax({
-            url: "http://localhost:4000/accounts/get_accounts",
-           type: "GET",
-           contentType: "application/json; charset=utf-8",
-           crossDomain: true,
-           dataType:"json",
-           xhrFields: { withCredentials:true },
-           success: (data) => {
-                const accounts = [];
-                for (let i = 0; i < data.results.length; i++) {
-                    const newRow = {value: '', label: ''};
-                    newRow.value = data.results[i].at_account_name;
-                    newRow.label = data.results[i].at_account_name;
-                    accounts[i] = newRow;
-                }
-                this.setState({
-                    accounts: accounts
-                });
-           },
-           error: () => {
-                console.log("Error: Could not fetch data");
-           }
-        });
-        $.ajax({
-            url: "http://localhost:4000/currencies/currencies",
-           type: "GET",
-           contentType: "application/json; charset=utf-8",
-           crossDomain: true,
-           dataType:"json",
-           xhrFields: { withCredentials:true },
-           success: (data) => {
-               let currencies = []
-                for (let i = 0; i < data.currencies.length; i++) {
-                    const newRow = {value: '', label: ''};
-                    newRow.value = data.currencies[i];
-                    newRow.label = data.currencies[i];
-                    currencies[i] = newRow;
-                }
-                this.setState({currencies: currencies})
-           },
-           error: () => {
-                console.log("Error: Could not fetch data");
-           }
-        });
     } 
 
     render(){
@@ -190,8 +151,8 @@ export default class AddEntry extends React.Component{
                             {this.state.newData.internalEntries.map(row => {
                                 return (
                                     <tr key={`row-${row.id}`}>
-                                        {/*<td><Select options={this.state.accounts} onChange={(e) => this.handleChange(row, 'account', e)}/></td> */}
-                                        <td><input type="text"  placeholder="Account" onChange={(e) => this.handleChange(row, 'account', e)}/></td>
+                                        <td><Select options={this.state.accounts} onChange={(e) => this.handleChange(row, 'account', e)}/></td>
+                                        {/*<td><input type="text"  placeholder="Account" onChange={(e) => this.handleChange(row, 'account', e)}/></td>*/}
                                         <td><input type="number"  placeholder="Debit" onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
                                         <td><input type="number" placeholder="Credit" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
                                         <td><input type="text"  placeholder="Event" onChange={(e) => this.handleChange(row, 'event', e)}/></td>

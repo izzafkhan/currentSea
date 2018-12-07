@@ -119,7 +119,15 @@ export default class SignupForm extends Component {
                 {this.redirectAfterRegistration()}
                 <div>
                     <nav className="navbarSignUp">
+                        <Link to="/">
                         <img className="logo" src={require('../Assets/CSLogo.png')}></img>
+                        </Link>
+
+                        <Link to="/">
+                            <button className="logInButtonToolbar"><img src={require('../Assets/lockblue.png')}
+                            alt="lockblue" width="15"
+                            height="15"></img>Log In</button>
+                        </Link> 
                     </nav>
                 </div>
 

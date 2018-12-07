@@ -5,11 +5,7 @@ div.myContainer{
     background-color: #051642;
     height: auto;
     color: white;
-    padding: 8px;
-}
-
-div.conversion input {
-    color: black;
+    padding: 40px;
 }
 
 div.bigContainer{
@@ -20,16 +16,15 @@ div.bigContainer{
     height: auto;
 }
 
-div.bigContainer h1{
+#h1title{
     color: white;
     text-align: center;
-    padding: 16px;
+    padding: 40px;
 }
 
 div.transaction-table{
     margin-inline-end: 40px;
     height: auto;
-
 }
 
 .header-name{
@@ -64,7 +59,7 @@ div.summary1, div.summary2 {float: left;}
 div.summary3, div.other {float: left;}
 span.dot, span.text {float:left;}
 
-div.myContainer {overflow: hidden;}
+
 div.row1 {overflow: hidden;}
 div.row2 {overflow: hidden;}
 div.summary1 {overflow: hidden;}
@@ -121,10 +116,16 @@ Styling to make the table readable
     border: #00ADA2;
 }
 
-div.conversion p, div.conversion h2, div.conversion h3, div.conversion input{
+div.conversion p, div.conversion h2, div.conversion h3{
     margin-top: 8px;
     margin-bottom: 8px;
     color: white;
+}
+
+div.conversion input {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    color: black;
 }
 
 #start-currency, #end-currency {

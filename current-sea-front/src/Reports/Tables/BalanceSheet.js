@@ -6,6 +6,7 @@ import $ from 'jquery';
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import moment from "moment"
 import DatePicker from "react-datepicker/es";
+import Select from 'react-select';
 
 class BalanceSheet extends Component{
     
@@ -25,7 +26,8 @@ class BalanceSheet extends Component{
             demoExchangeRate:1
          
         };
-        this.fetchData = this.fetchData.bind(this);
+        this.currencyChanged = this.currencyChanged.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
     handleChangeStart = (date) => {
         this.setState({
@@ -39,6 +41,31 @@ class BalanceSheet extends Component{
             endDate: date
         });
 
+    }
+
+    currencyChanged = event => {
+        let currencyCode = this.state.demoDefaultCurrencyCode;
+        currencyCode = event.value;
+        console.log(currencyCode);
+
+        $.ajax({
+                url: "http://localhost:4000/currencies/getrate",
+                type: "Get",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: 'json',
+                xhrFields: {withCredentials: true},
+                data: {currencyFrom: 'USD', currencyTo: 'USD'},
+                success: function (receivedData) {
+                    console.log("Successful Get")
+                    this.setState({data: receivedData});
+                }.bind(this),
+                error: (receivedData) => {
+                    alert('error occurred')
+
+                }
+            }
+        );
     }
 
     currencyChangedDemo = event => {
@@ -60,27 +87,6 @@ class BalanceSheet extends Component{
         }
     }
 
-    fetchData(state,instance){
-      /* $.ajax({
-            url: "http://localhost:4000/balance",
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            dataType: 'json',
-            xhrFields: { withCredentials: true },
-            data:   ,
-            success: function(receiveddata) {
-                this.setState({data:receiveddata});
-            }.bind(this),
-            error: (data) => {
-                //alert('error occurred')
-                
-            }
-        }
-      
-    ); 
-*/
-    }
     onFilteredChange(){
       
         
@@ -98,7 +104,24 @@ class BalanceSheet extends Component{
             currencyDropdownOpen: !prevState.currencyDropdownOpen
         }));
     }
-
+    componentDidMount = () => {
+        $.ajax({
+            url: "http://localhost:4000/statement/balance",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: 'json',
+            xhrFields: { withCredentials: true },
+            success: (receiveddata) => {
+                this.setState({data:receiveddata});
+            },
+            error: (data) => {
+                //alert('error occurred')
+                
+            }
+        }
+    ); 
+    }
     render(){
         
         var  data  = [{
@@ -163,25 +186,9 @@ class BalanceSheet extends Component{
                                 placeholderText="End Date"
                     />
 
-                    <Dropdown className="isDropDownCurrency" isOpen={this.state.currencyDropdownOpen}
-                              toggle={this.toggleCurrency}>
-                        <DropdownToggle caret>
-                            {this.state.demoDefaultCurrencyCode}
-                        </DropdownToggle>
+                    <Select options={this.props.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.demoDefaultCurrencyCode}
+                    className="dropdownContainer" />
 
-                        <DropdownMenu className="isDropDownCurrencyMenu">
-                            <DropdownItem>
-                                <option onClick={this.currencyChangedDemo}>USD</option>
-                            </DropdownItem>
-                            <DropdownItem>
-                                <option onClick={this.currencyChangedDemo}>GBP</option>
-                            </DropdownItem>
-                            <DropdownItem>
-                                <option onClick={this.currencyChangedDemo}>EUR</option>
-                            </DropdownItem>
-                        </DropdownMenu>
-
-                    </Dropdown>
 
 
 
@@ -190,7 +197,7 @@ class BalanceSheet extends Component{
                 <div className="isgBottom">
                     <ReactTable
                         className="balanceDataTable"
-                        data={data}
+                        data={this.state.data}
                         noDataText="Your balances will appear here"
                         columns={columns}
                     />

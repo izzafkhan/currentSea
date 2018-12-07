@@ -1,7 +1,7 @@
 .headerRoot {
   background-color: white;
   overflow: hidden;
-  height: 55px;
+  height: 60px;
 
 }
 
@@ -10,8 +10,9 @@
   margin-right: 20px;
 }
 
+
+
 .headerRoot a {
-  float: right;
   color: #051642;
   text-align: center;
   padding: 14px 14px;
@@ -19,6 +20,11 @@
   font-size: 17px;
   font-family: 'Montserrat', sans-serif;
 }
+
+.l {
+  float: right; 
+}
+
 
 .logoutButton {
   background-color: transparent;

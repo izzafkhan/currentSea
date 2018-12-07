@@ -9,6 +9,7 @@ import 'react-table/react-table.css'
 import "react-datepicker/dist/react-datepicker.css";
 import './IncomeStatement.css';
 import {Link} from "react-router-dom";
+import Select from 'react-select';
 
 export default class IncomeStatement extends Component {
     constructor(props) {
@@ -79,7 +80,9 @@ export default class IncomeStatement extends Component {
     }
 
     currencyChanged = event => {
-        let currencyCode = event.target.value
+        let currencyCode = this.state.demoDefaultCurrencyCode;
+        currencyCode = event.value;
+        console.log(currencyCode);
 
         $.ajax({
                 url: "http://localhost:4000/currencies/getrate",
@@ -112,7 +115,22 @@ export default class IncomeStatement extends Component {
             currencyDropdownOpen: !prevState.currencyDropdownOpen
         }));
     }
-
+    componentDidMount = () => {
+        $.ajax({
+            url: "http://localhost:4000/statement/statement",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: 'json',
+                xhrFields: {withCredentials: true},
+                success: (data) => {
+                    this.setState({data: data});
+                },
+                error: (data) => {
+                    console.log(data);
+                }
+        })
+    }
 
     render() {
 
@@ -133,7 +151,7 @@ export default class IncomeStatement extends Component {
             {
                 Header: 'End',
                 accessor: 'change'
-            }]
+            }];        
 
         return (
 
@@ -167,26 +185,9 @@ export default class IncomeStatement extends Component {
                                 placeholderText="End Date"
                     />
 
-
-                    <Dropdown className="isDropDownCurrency" isOpen={this.state.currencyDropdownOpen}
-                              toggle={this.toggleCurrency}>
-                        <DropdownToggle caret>
-                            {this.state.demoDefaultCurrencyCode}
-                        </DropdownToggle>
-
-                        <DropdownMenu className="isDropDownCurrencyMenu">
-                            <DropdownItem>
-                                <option onClick={this.currencyChangedDemo}>USD</option>
-                            </DropdownItem>
-                            <DropdownItem>
-                                <option onClick={this.currencyChangedDemo}>GBP</option>
-                            </DropdownItem>
-                            <DropdownItem>
-                                <option onClick={this.currencyChangedDemo}>EUR</option>
-                            </DropdownItem>
-                        </DropdownMenu>
-
-                    </Dropdown>
+                <Select options={this.props.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.demoDefaultCurrencyCode}
+                className='dropdownContainer'/>
+                    
 
 
                 </div>
@@ -194,7 +195,7 @@ export default class IncomeStatement extends Component {
                 <div className="isgBottom">
                     <ReactTable
                         className="isDataTable"
-                        data={data}
+                        data={this.state.data}
                         noDataText="Your income and expenses will appear here"
                         columns={columns}
                     />
