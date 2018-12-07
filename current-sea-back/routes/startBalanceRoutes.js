@@ -43,6 +43,8 @@ module.exports = function router() {
                   res.status(201).json({ message: 'Initial balance set' });
                 }
               });
+            } else {
+              res.status(401).json({ message: 'Not all balance accounts are sent' });
             }
           });
       } else {
