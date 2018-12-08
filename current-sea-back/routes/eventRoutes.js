@@ -7,8 +7,8 @@ module.exports = function router() {
 
     eventRouter.route('/create_event')
         .post((req, res) => {
-            const { eventAbv, eventName } = req.body;
-            db.query('INSERT INTO event_table (et_event_abv, et_event_name, et_user_id) VALUES (?, ?, ?);', [eventAbv, eventName, req.user.username], (err,results) => {
+            const { eventAbv, eventName, eventColor } = req.body;
+            db.query('INSERT INTO event_table (et_event_abv, et_event_name, et_event_color, et_user_id) VALUES (?, ?, ?);', [eventAbv, eventName, eventColor, req.user.username], (err,results) => {
                 if (err) {
                     debug('Error occurred while inserting to event_table in create_event route', err);
                     res.status(500).json({message: 'Some error occurred'});
@@ -20,8 +20,8 @@ module.exports = function router() {
 
     eventRouter.route('/edit_event')
         .put((req, res) => {
-            const { eventId, eventAbv, eventName } = req.body;
-            db.query('UPDATE event_table SET et_event_abv = ?, et_event_name = ? WHERE et_event_id = ? and et_user_id=?;', [eventAbv, eventName, eventId, req.user.username], (err) => {
+            const { eventId, eventAbv, eventName, eventColor } = req.body;
+            db.query('UPDATE event_table SET et_event_abv = ?, et_event_name = ?, et_event_color = ? WHERE et_event_id = ? and et_user_id=?;', [eventAbv, eventName, eventColor, eventId, req.user.username], (err) => {
                 if (err) {
                     debug('Error occurred while updating event_table in edit_event route', err);
                     res.status(500).json({message: 'Some error occurred'});
