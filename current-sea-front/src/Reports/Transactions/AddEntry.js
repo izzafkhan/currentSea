@@ -142,7 +142,7 @@ export default class AddEntry extends React.Component{
                     <table width='600' id='addTable'>
                         <thead>
                             <tr>
-                                <th></th>
+                                <th>{this.props.nextEntry}</th>
                                 <th><DatePicker id='date' selected={this.state.dateSetter} onChange={this.setDate} popperPlacement='right-start'/></th>
                                 <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
                                 <th></th>

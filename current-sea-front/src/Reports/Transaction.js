@@ -26,7 +26,9 @@ const options = {
         labels: {
             fontColor: 'rgb(255, 99, 132)'
         }
-    }
+    },
+    responsive: true,
+    maintainAspectRatio: true
 }
 
 export default class Transaction extends React.Component {
@@ -430,7 +432,7 @@ export default class Transaction extends React.Component {
                                 <tr>
                                     <th colSpan='6'>
                                         <button id='addEntryButton' onClick={ e => this.addRow()}>+</button>
-                                        {this.state.showAddEntry ? <div><AddEntry addEntry={this.state.showAddEntry} action={this.closeRow} currencies={this.state.convertCurrencies} accounts={this.state.accounts}/></div> : <span></span>}
+                                        {this.state.showAddEntry ? <div><AddEntry nextEntry={this.state.currentData.length + 1} addEntry={this.state.showAddEntry} action={this.closeRow} currencies={this.state.convertCurrencies} accounts={this.state.accounts}/></div> : <span></span>}
                                     </th>
                                 </tr>
                             </thead>
