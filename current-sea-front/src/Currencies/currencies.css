@@ -27,7 +27,7 @@
 }
 
 .tableTop {
-    width: 600px;
+    width: 750px;
     display: flex;
     flex-direction: row;
     background-color: #00ADA2;
@@ -38,7 +38,7 @@
 
 
 .tableBottom {
-    width: 600px;
+    width: 750px;
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -58,4 +58,14 @@
     margin-left: 10px;
     margin-right: 10px;
     
+}
+.word{
+    width: 400px;
+    margin-left: 50px;
+}
+.dropdown{
+    width: 200px;
+    height: 38px;
+    padding-left: 0px;
+    left:20px;
 }
