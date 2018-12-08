@@ -18,6 +18,7 @@ module.exports = function router() {
           + 'AND account_type = ? AND tt_currency = t1.ct_from AND t1.ct_to = "USD" AND t1.ct_date = tt_date AND bt_account_id = dt_accountID AND bt_user_id = dt_userID AND bt_currency_abv = t2.ct_from AND t2.ct_to = "USD" AND t2.ct_date = ? ORDER BY dt_accountID, tt_date ASC, dt_transactionID;',
         [req.user.username, 'Balance', moment().format('YYYY-MM-DD')],
         (err, results) => {
+          debug(results);
           const start_amount = [];
           const change_amount = [];
           const end_amount = [];

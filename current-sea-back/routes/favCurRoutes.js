@@ -118,8 +118,6 @@ module.exports = function router() {
   favCurRouter.route('/getrate').post((req, res) => {
     debug(req.body);
     let { from, to } = req.body;
-      from = "USD";
-      to = to.label;
     db.query('select * from currency_table where ct_from = ? AND ct_to = ? order by ct_date desc LIMIT 1;',
       [from, to], (err, results) => {
         console.log('cp1');
