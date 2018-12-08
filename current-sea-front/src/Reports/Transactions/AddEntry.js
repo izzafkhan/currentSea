@@ -27,6 +27,7 @@ export default class AddEntry extends React.Component{
         }
         this.setDate = this.setDate.bind(this);
         this.addinfo = this.addinfo.bind(this);
+        this.cancel = this.cancel.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleCurrency = this.handleCurrency.bind(this);
         this.handleDescription = this.handleDescription.bind(this);
@@ -42,6 +43,12 @@ export default class AddEntry extends React.Component{
         });
         newData.startDate = moment(this.state.dateSetter).format('YYYY-MM-DD');
         this.setState({newData});
+    }
+
+    cancel(row){
+        let index = this.state.newData.internalEntries.indexOf(row);
+        this.state.newData.internalEntries.splice(index, 1);
+        this.forceUpdate();
     }
 
     addinfo = () => {
@@ -153,6 +160,7 @@ export default class AddEntry extends React.Component{
                                         <td><input type="number"  placeholder="Debit" onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
                                         <td><input type="number" placeholder="Credit" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
                                         <td><input type="text"  placeholder="Event" onChange={(e) => this.handleChange(row, 'event', e)}/></td>
+                                        <td><button onClick={() => this.cancel(row)}>X</button></td>
                                     </tr>
                                 )
                             })}
