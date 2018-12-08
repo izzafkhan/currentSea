@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './Header.css';
-import {Redirect, Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
+import {log} from './index';
 import $ from 'jquery';
 
 export class Header extends Component {
@@ -27,6 +28,9 @@ export class Header extends Component {
                 if (data.message === 'NOK') {
                     console.log(data.message);
                     this.setState({loggedIn: false});
+                    return(
+                    <Redirect to={{pathname: "/"}} />
+                    );
                 }
             }
         });

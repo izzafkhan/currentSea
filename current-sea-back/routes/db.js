@@ -9,11 +9,24 @@ const config = {
   database: 'currency_db',
 };
 
-const dbConnection = mysql.createConnection(config);
+function handleDisconnect() {
+  const dbConnection = mysql.createConnection(config);
+  dbConnection.connect((err) => {
+    if (err) {
+      console.log('Error when connecting to db:', err);
+      setTimeout(handleDisconnect, 8000);
+    } else {
+      console.log('Connection established with MySQL DB');
+    }
+  });
+  dbConnection.on('error', (err) => {
+    console.log('Error occurred in MySQL DB connection', err);
+    handleDisconnect();
+  });
 
-dbConnection.connect((err) => {
-  if (err) { debug('DATABASE NOT CONNECTED'); }
-  debug('Connection established with MySQL');
-});
+  return dbConnection;
+}
+
+const dbConnection = handleDisconnect();
 
 module.exports = dbConnection;
