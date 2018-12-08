@@ -7,5 +7,17 @@
 }
 
 #startTable th, #startTable td, #startTable input{
-    width: 100px;
+    width: 100px !important;
+}
+
+#startTable{
+    width: 300px !important;
+}
+
+#bodyEntry td{
+    width: 100px !important;
+}
+
+td input{
+    width: 100px !important;
 }

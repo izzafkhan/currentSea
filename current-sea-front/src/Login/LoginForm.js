@@ -85,10 +85,10 @@ export default class LoginForm extends React.Component {
             }
 
         );
-
+            /*
         log.authenticate( () => {
             this.setState({redirectRef: true})
-        })
+        }) */
 
 
     }
@@ -106,8 +106,7 @@ export default class LoginForm extends React.Component {
 
                 {this.redirectAfterLogin()}
 
-                <div className="navbarLoginDiv">
-                    <nav className="navbarLogin">
+                    <div className="navbarLogin">
                         <Link to="/">
                             <img className="logo" src={require('../Assets/CSLogo.png')}></img>
                         </Link>
@@ -117,9 +116,7 @@ export default class LoginForm extends React.Component {
                             alt="lockblue" width="15"
                             height="15"></img>Sign Up</button>
                         </Link>
-                    </nav>
-                </div>
-                
+                    </div>
 
                 <div className="loginBody">
 

@@ -1,15 +1,14 @@
 .loginRoot {
-
 }
 
 .navbarLogin {
     background: white;
     height: 60px;
-
 }
 
 .navbarLoginDiv {
     box-shadow: 0px 3px 5px rgba(100, 100, 100, 0.49);
+    overflow: visible; 
 }
 
 .navbarLoginFormGap {
@@ -19,7 +18,6 @@
 
 .loginBody {
     background-image: url("CurrentSea_bg.png");
-
     background-repeat: no-repeat;
     background-size: cover;
     height: 100%;
@@ -56,7 +54,6 @@
     padding-top: 10px;
     display: table;
     margin: 0 auto;
-
 }
 
 .loginFormField {
@@ -96,7 +93,7 @@
     margin:0 auto;
     display:block;
     cursor: pointer;
-
+    box-shadow: 0px 3px 5px rgba(100, 100, 100, 0.49);
 }
 
 .registerDiv {
