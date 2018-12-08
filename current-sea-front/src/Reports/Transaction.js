@@ -87,8 +87,6 @@ export default class Transaction extends React.Component {
         }
         this.convert = this.convert.bind(this);
         this.updateConvert = this.updateConvert.bind(this);
-        this.income = this.income.bind(this);
-        this.expenses = this.expenses.bind(this);
         this.addRow = this.addRow.bind(this);
         this.editRow = this.editRow.bind(this);
         this.closeRow = this.closeRow.bind(this);
@@ -151,7 +149,6 @@ export default class Transaction extends React.Component {
         dataSetCopy[1].label = labelCopy2;
         dataSetCopy[2].label = labelCopy3;
         dataSetCopy[3].label = labelCopy4;
-        console.log(dataSetCopy);
         this.setState({
             chartData : Object.assign({}, this.state.chartData, {
                 datasets: dataSetCopy
@@ -196,6 +193,8 @@ export default class Transaction extends React.Component {
             update: true,
         })
         console.log(this.state.startBalance);
+        
+        this.updateChart();
     }
 
     deleteEdit(tt_transaction_id){
@@ -227,6 +226,8 @@ export default class Transaction extends React.Component {
                 editUpdate : true
             });
         }
+        
+        this.updateChart();
     }
 
     handleStartCurrency(event){
@@ -307,18 +308,6 @@ export default class Transaction extends React.Component {
                  console.log("Error: Could not update.");
             }
         });
-    }
-
-    income() {
-        this.setState({
-            showIncome: true
-        })
-    }
-
-    expenses() {
-        this.setState({
-            showIncome: false
-        })
     }
 
     componentDidMount(){
@@ -413,7 +402,7 @@ export default class Transaction extends React.Component {
                          update : false
                      })
                 }
-            });
+            }); 
         }
         return (
             <div class="bigContainer">
