@@ -8,16 +8,17 @@ export default class StartBalance extends React.Component{
         this.state = {
             data : [],
             update : false,
-            accounts: this.props.accounts,
+            accounts: [],
             currencies : this.props.currencies,
         }
         this.addinfo = this.addinfo.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.save = this.save.bind(this);
         this.handleCurrency = this.handleCurrency.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount = () => {
         $.ajax({
             url: "http://localhost:4000/startBalance/get_balance",
             type: "GET",
@@ -33,7 +34,31 @@ export default class StartBalance extends React.Component{
             error: () => {
                  console.log("Error: Could not submit");
             }
-        })
+        });
+
+        $.ajax({
+            url: "http://localhost:4000/accounts/get_balance_accounts",
+           type: "GET",
+           contentType: "application/json; charset=utf-8",
+           crossDomain: true,
+           dataType:"json",
+           xhrFields: { withCredentials:true },
+           success: (data) => {
+                const accounts = [];
+                for (let i = 0; i < data.results.length; i++) {
+                    const newRow = {value: '', label: ''};
+                    newRow.value = data.results[i].at_account_id;
+                    newRow.label = data.results[i].at_account_id + " " + data.results[i].at_account_name;
+                    accounts[i] = newRow;
+                }
+                this.setState({
+                    accounts: accounts
+                });
+           },
+           error: () => {
+                console.log("Error: Could not fetch data");
+           }
+        });
     }
 
     addinfo = () => {

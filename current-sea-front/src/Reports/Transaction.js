@@ -459,7 +459,7 @@ export default class Transaction extends React.Component {
                                                 </tr>
                                                 <tr>
                                                     {this.state.startBalance ?
-                                                        <td><StartBalance accounts={this.state.accounts} currencies={this.state.convertCurrencies} closeAction={this.closeStart}/></td> : (null) }
+                                                        <td><StartBalance currencies={this.state.convertCurrencies} closeAction={this.closeStart}/></td> : (null) }
                                                 </tr>
                                             </tbody>
                                         </table>

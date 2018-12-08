@@ -126,5 +126,23 @@ module.exports = function router() {
         res.status(401).json({ message: 'User is not logged in' });
       }
     });
+
+  bkAccountRouter.route('/get_balance_accounts')
+    .get((req, res) => {
+      if (req.user) {
+        db.query('SELECT * FROM account_table WHERE account_type="Balance" AND at_user_id = ?', [req.user.username],
+          (err, results) => {
+            if (err) {
+              debug(err);
+              res.status(500).json({ message: 'Some error occurred' });
+            } else {
+              debug(results);
+              res.status(200).json({ results });
+            }
+          });
+      } else {
+        res.status(401).json({ message: 'User is not logged in' });
+      }
+    });
   return bkAccountRouter;
 };
