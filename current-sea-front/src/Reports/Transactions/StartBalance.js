@@ -27,9 +27,12 @@ export default class StartBalance extends React.Component{
             dataType:"json",
             xhrFields: { withCredentials:true },
             success: (receivedData) => {
-                 this.setState({
-                     data: receivedData,
-                 })
+                console.log("Received Data")
+                console.log(receivedData);
+                if(receivedData.length > 0){
+                    this.state.data = receivedData;
+                }
+                this.forceUpdate();
             },
             error: () => {
                  console.log("Error: Could not submit");
@@ -82,7 +85,6 @@ export default class StartBalance extends React.Component{
     }
 
     handleChange(row, entry, event) {
-        console.log(event);
         if(entry == "bt_accountID"){
             row[entry] = event.value;
         } else {
@@ -107,36 +109,6 @@ export default class StartBalance extends React.Component{
             error: () => {
                  console.log("Error: Could not submit");
                  this.props.closeAction();
-            }
-        })
-    }
-
-    componentDidMount(){
-        $.ajax({
-            url: "http://localhost:4000/transactions/get_details",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            dataType:"json",
-            xhrFields: { withCredentials:true },
-            data: JSON.stringify({'tt_transaction_id': this.props.id}),
-            success: (receivedData) => {
-                this.setState({
-                    data: receivedData
-                })
-                if(receivedData){
-                    this.setState({
-                        data: receivedData
-                    });
-                }
-                if(this.props.id){
-                    this.setState({
-                        action_id: this.props.id,
-                    })
-                } 
-            },
-            error: () => {
-                console.log("Error: Could not submit");
             }
         })
     }

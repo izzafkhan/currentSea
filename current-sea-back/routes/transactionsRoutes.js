@@ -82,6 +82,7 @@ module.exports = function router() {
 
   transactionsRouter.route('/edit_transactions')
     .post((req, res) => {
+      debug(req.body);
       const { balance } = req.body;
       var dt_transactionID, dt_accountID, dt_eventID, dt_debit, dt_credit;
       if (req.body.data && req.body.data.length > 0) {
