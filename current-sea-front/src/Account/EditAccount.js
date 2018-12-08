@@ -13,8 +13,7 @@ export default class EditAccount extends React.Component{
             }],
             action_id : 0,
             update : false,
-            accounts : this.props.accounts,
-            myAccounts : [],
+            
         }
         this.addinfo = this.addinfo.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -143,16 +142,11 @@ export default class EditAccount extends React.Component{
     }
 
     render(){
-        return(
+        return( 
             <div width='400'>
                 <table id='editTable' width='400'>
                     <thead id='headEntry'>
-                        <tr>
-                            <th>Account</th>
-                            <th>Debit</th>
-                            <th>Credit</th>
-                            <th>Event</th>
-                        </tr>
+                       
                     </thead>
                     <tbody>
                         <tr></tr>   

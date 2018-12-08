@@ -10,6 +10,7 @@ import SignUpForm from './Login/SignupForm'
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Route, Redirect, Link, withRouter } from "react-router-dom";
 import Accounts from './Account/Accounts';
+import Settings from './Account/Settings';
 import $ from 'jquery';
 
 export const log = {
@@ -47,7 +48,7 @@ export default class App extends React.Component{
         <div>
           <Auth/>
           <Route exact path="/Reports/Report"  component={Report}/>
-          <Route exact path="/Account/Accounts"  component={Accounts}/>
+          <Route exact path="/Account/Settings"  component={Settings}/>
           <Route exact path="/Currencies/Currencies"  component={Currencies}/>
           <Route exact path="/Help"  component={Help}/>
           <Route exact path="/Transactions"  render={(props) => (

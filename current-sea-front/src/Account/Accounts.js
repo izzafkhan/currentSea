@@ -157,7 +157,7 @@ export default class Accounts extends React.Component {
             dataType:"json",
             xhrFields: {withCredentials:true},
             success: (data) => {
-                
+                console.log(data.results)
                 this.setState({
                     
                     currentData: data.results
@@ -198,18 +198,11 @@ export default class Accounts extends React.Component {
             });
         }
         return (
-<<<<<<< HEAD
-            <div> <Header/> 
+            <div> 
             
             <h1 align="center" background="#051642"><br /> Account Settings </h1>
             <h6 align="center"> Here you can set up, edit and delete your accounts and events<br /><br /> </h6>
-            <Events/>
-=======
-            <div class="bigContainer"> 
-            <Header/> 
-            <h1>Accounts</h1>
-            <h6> Here you can set up, edit and delete your accounts</h6>
->>>>>>> a84161cdaa0db123c555637c51d93612d5e2e2fe
+
             <div class="tableContainer">
                 <div className="account-table">
                     <table id='dataTableA'>

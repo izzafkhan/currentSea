@@ -66,7 +66,7 @@ export class Header extends Component {
                         </button>
                     </Link>
 
-                    <Link to="/Account/Accounts" className="l">Settings</Link>
+                    <Link to="/Account/Settings" className="l">Settings</Link>
                     <Link to="/Currencies/Currencies" className="l">Currencies</Link>  
                     <Link to="/Reports/Report" className="l">Reports</Link>
                     <Link to="/Transactions" className="l">Bookkeeping</Link>

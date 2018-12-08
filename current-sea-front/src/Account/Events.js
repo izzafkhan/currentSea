@@ -20,9 +20,8 @@ export default class Events extends React.Component {
             editUpdate : false,
 
             currentData: [{
-                eventAbv:'',
-                transactionID:'',
-                eventName:'',
+                et_event_abv:'',
+                et_event_name:'',
 
             },]
 
@@ -118,7 +117,7 @@ export default class Events extends React.Component {
 
 
     componentDidMount(){
-       /*$.ajax({
+       $.ajax({
             url: "http://localhost:4000/event/get_all_events/",
             type: "GET",
             contentType: "application/json; charset=utf-8",
@@ -126,26 +125,26 @@ export default class Events extends React.Component {
             dataType:"json",
             xhrFields: {withCredentials:true},
             success: (data) => {
-                
+                console.log(data); 
                 this.setState({
                     
-                    currentData: data.results
+                    currentData: data
                 
                 });   
-                console.log("SUCCESS FOR EVENTS")
+               
                 
             },
             error: () => {
                  console.log("Error: Could not update.");
             }
-        }); */
+        }); 
     }
 
 
     render() {
         if(this.state.update === true){
-         /* $.ajax({
-                url: "http://localhost:4000/events/get_all_events/",
+          $.ajax({
+                url: "http://localhost:4000/event/get_all_events/",
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,
@@ -153,7 +152,7 @@ export default class Events extends React.Component {
                 xhrFields: {withCredentials:true},
                 success: (data) => {
                     this.setState({
-                        currentData : data.results,
+                        currentData : data,
                         update: false
                     });
 
@@ -164,7 +163,7 @@ export default class Events extends React.Component {
                          update : false
                      })
                     }
-            });*/
+            });
         }
         return (
             <div class="tableContainerE">
@@ -184,16 +183,15 @@ export default class Events extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                           { this.state.currentData.map(row => {
+                            { this.state.currentData.map(row => {
                                 return (
                                     <tr key={`row-${row.accountID}`}>
                                         <td colSpan='6'>
                                             <table>
                                                 <tbody>
                                                     <tr id='nested'>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.transactionID)}}>{row.eventAbv}</button></td>
-                                                        {/*<td><button onClick={(e) =>{this.editRow(e, row.transactionID)}}>{row.}</button></td>*/}
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.transactionID)}}>{row.eventName}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_abv}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_name}</button></td>
                                                        
                                                     </tr>
                                                     {row.edit ?
@@ -206,7 +204,8 @@ export default class Events extends React.Component {
                                         </td>
                                     </tr>
                                 )
-                            })}
+                            })}  
+                            
                         </tbody>
                     </table>
                 </div> 
