@@ -22,6 +22,7 @@ export const log = {
   }
 }
 
+{/*}
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
     log.loggedIn ? (
@@ -37,7 +38,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 
 const Auth = withRouter(({history}) => (
   log.loggedIn ? ( <Link to="/Transactions"></Link> ) : (<Redirect to={{pathname: "/"}} />)
-))
+)) */}
 
 export default class App extends React.Component{
   render() {
@@ -45,17 +46,11 @@ export default class App extends React.Component{
     return (
       <BrowserRouter>
         <div>
-          <Auth/>
           <Route exact path="/Reports/Report"  component={Report}/>
           <Route exact path="/Account/Accounts"  component={Accounts}/>
           <Route exact path="/Currencies/Currencies"  component={Currencies}/>
           <Route exact path="/Help"  component={Help}/>
-          <Route exact path="/Transactions"  render={(props) => (
-              log.loggedIn === true ? <Home {...props} /> : <Redirect to={{
-                  pathname: "/",
-                  state: {from: props.location}
-              }} />
-          )} />
+          <Route exact path="/Transactions"  component={Home}/>
           <Route exact path="/Register"  component = {SignUpForm}/>
           <Route exact path="/Accounts"  component = {Accounts}/>
           <Route exact path="/"  component={Login}/>

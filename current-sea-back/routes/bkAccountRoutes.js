@@ -37,11 +37,22 @@ module.exports = function router() {
               if (accountId === '' || accountName === '') {
                 res.status(401).json({ message: 'Please fill in the blank spaces of the parameters.' });
               } else {
-                db.query('INSERT INTO account_table(at_account_name, at_account_id, at_user_id, account_type) VALUES (?, ?, ?, ?);', [accountName, accountId, req.user.username, accountType],
+                db.query('INSERT INTO account_table(at_account_name, at_account_id, at_user_id, account_type) VALUES (?, ?, ?, ?);',
+                  [accountName, accountId, req.user.username, accountType],
                   (err2) => {
                     if (err2) {
                       debug(err2);
                       res.status(500).json({ message: 'Some error occurred' });
+                    } else if (accountType === 'Balance') {
+                      db.query('INSERT INTO initial_balance_table(bt_account_id, bt_user_id, bt_initialBalance) VALUES (?,?,?)',
+                        [accountId, req.user.username, 0], (err3, results) => {
+                          if (err3) {
+                            debug(err3);
+                            res.status(500).json({ message: 'Some error occurred' });
+                          } else {
+                            res.status(201).json({ message: 'Account created' });
+                          }
+                        });
                     } else {
                       res.status(201).json({ message: 'Account created' });
                     }
@@ -62,8 +73,8 @@ module.exports = function router() {
         const {
           accountId, accountName, newAccountId, newAccountName,
         } = req.body;
-        db.query('SELECT account_name from account_table where at_user_id = ? AND at_account_name = ? AND at_account_id = ?', [req.user.username, accountName, accountId], (err, results) => {
-          if (results.length !== 0) {
+        db.query('SELECT at_account_name from account_table where at_user_id = ? AND at_account_name = ? AND at_account_id = ?', [req.user.username, accountName, accountId], (err, results) => {
+          if (results && results.length !== 0) {
             if (newAccountId !== accountId || newAccountName !== accountName) {
               if (newAccountId !== accountId) {
                 db.query(('UPDATE account_table SET at_account_id = ? WHERE at_user_id = ? AND at_account_id = ?', [newAccountId, req.user.username, accountId], (err2) => {
@@ -98,6 +109,7 @@ module.exports = function router() {
   bkAccountRouter.route('/delete_account')
     .post((req, res) => {
       if (req.user) {
+
         const { accountId } = req.body;
         db.query('SELECT account_name from details_table where dt_userID = ? AND dt_accountID = ?',
           [req.user.username, accountId], (err, results) => {
@@ -117,6 +129,24 @@ module.exports = function router() {
                     res.status(200).json({ message: 'Account deleted successfully' });
                   }
                 });
+            }
+          });
+      } else {
+        res.status(401).json({ message: 'User is not logged in' });
+      }
+    });
+
+  bkAccountRouter.route('/get_balance_accounts')
+    .get((req, res) => {
+      if (req.user) {
+        db.query('SELECT * FROM account_table WHERE account_type="Balance" AND at_user_id = ?', [req.user.username],
+          (err, results) => {
+            if (err) {
+              debug(err);
+              res.status(500).json({ message: 'Some error occurred' });
+            } else {
+              debug(results);
+              res.status(200).json({ results });
             }
           });
       } else {

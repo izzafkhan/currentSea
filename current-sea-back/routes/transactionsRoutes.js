@@ -1,6 +1,7 @@
 const express = require('express');
 const debug = require('debug')('app:transactionsRoutes');
 const db = require('./db');
+const _ = require('lodash');
 
 const transactionsRouter = express.Router();
 
@@ -82,37 +83,32 @@ module.exports = function router() {
 
   transactionsRouter.route('/edit_transactions')
     .post((req, res) => {
-      const { balance } = req.body;
-      var dt_transactionID, dt_accountID, dt_eventID, dt_debit, dt_credit;
-      if (req.body.data && req.body.data.length > 0) {
-        dt_transactionID = req.body.data[0].dt_transactionID;
-        dt_accountID = req.body.data[0].dt_accountID;
-        dt_eventID = req.body.data[0].dt_eventID;
-        dt_debit = req.body.data[0].dt_debit;
-        dt_credit = req.body.data[0].dt_credit;
-      }
-      db.query('SELECT * FROM transaction_table WHERE tt_transaction_id = ?', [dt_transactionID], (err, results, fields) => {
+      debug(req.body);
+      const { tt_balance, data, tt_transaction_id } = req.body;
+
+      db.query('SELECT * FROM transaction_table WHERE tt_transaction_id = ?', [tt_transaction_id], (err, results) => {
         if (results.length === 0) {
           res.status(401).json({ message: 'Transaction id does not exist.' });
         } else {
           //change this to UPDATE transaction_table SET tt_currency = ?
           db.query('UPDATE transaction_table SET tt_balance=? WHERE tt_transaction_id = ? and tt_user_id = ?;',
-            [balance, dt_transactionID, req.user.username],
+            [tt_balance, tt_transaction_id, req.user.username],
             (err, results, fields) => {
               if (err) {
                 debug('An Error occurred while editing a transaction from transactions table', err);
                 res.status(500).json({ message: 'Error occurred editing a transaction' });
               } else {
-                db.query('UPDATE details_table SET dt_eventID = ?, dt_accountID = ?, dt_debit = ?, dt_credit = ? WHERE dt_transactionID = ?;',
-                  [dt_eventID, dt_accountID, dt_debit, dt_credit, dt_transactionID],
-                  (err, results, fields) => {
-                    if (err) {
-                      debug('An Error occurred while editing a transaction_detail in the details table', err);
-                      res.status(500).json({ message: 'Error occurred editing a transaction_detail' });
-                    } else {
-                      res.status(201).json({ message: 'Transaction detail edited successfully' });
-                    }
+                  _.each(data, (datum) => {
+                      db.query('UPDATE details_table SET dt_eventID = ?, dt_accountID = ?, dt_debit = ?, dt_credit = ? WHERE dt_id = ?',
+                          [datum.dt_eventID, datum.dt_accountID, datum.dt_debit, datum.dt_credit, datum.dt_id],
+                          (err) => {
+                              if (err) {
+                                  debug('An Error occurred while editing a transaction_detail in the details table', err);
+                                  return res.status(500).json({ message: 'Error occurred editing a transaction_detail' });
+                              }
+                          });
                   });
+                  res.status(201).json({ message: 'Transaction detail edited successfully' });
               }
             });
         }

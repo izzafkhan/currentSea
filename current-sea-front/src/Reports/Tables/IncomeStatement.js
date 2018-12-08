@@ -159,18 +159,18 @@ export default class IncomeStatement extends Component {
 
 
 
-                    <DatePicker className="isStartDatePicker"
+                    {/*<DatePicker className="isStartDatePicker"
                                 selected={this.state.startDate}
                                 onChange={this.handleChangeStart}
                                 placeholderText="Start Date"
-                    />
+                    />*/}
 
-                    <DatePicker className="isEndDatePicker"
+                    {/*<DatePicker className="isEndDatePicker"
                                 selected={this.state.endDate}
                                 onChange={this.handleChangeEnd}
                                 minDate={this.state.startDate}
                                 placeholderText="End Date"
-                    />
+                    />*/}
 
                 <Select options={this.props.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.currencyCode}
                 className='dropdownContainer'/>

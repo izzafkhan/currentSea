@@ -85,10 +85,10 @@ export default class LoginForm extends React.Component {
             }
 
         );
-
+            /*
         log.authenticate( () => {
             this.setState({redirectRef: true})
-        })
+        }) */
 
 
     }
