@@ -38,7 +38,33 @@ export default class StartBalance extends React.Component{
             error: () => {
                  console.log("Error: Could not submit");
             }
-        })
+        });
+
+        $.ajax({
+            url: "http://localhost:4000/accounts/get_balance_accounts",
+           type: "GET",
+           contentType: "application/json; charset=utf-8",
+           crossDomain: true,
+           dataType:"json",
+           xhrFields: { withCredentials:true },
+           success: (data) => {
+                const accounts = [];
+                for (let i = 0; i < data.results.length; i++) {
+                    const newRow = {value: '', label: ''};
+                    newRow.value = data.results[i].at_account_id;
+                    newRow.label = data.results[i].at_account_id + " " + data.results[i].at_account_name;
+                    accounts[i] = newRow;
+                }
+                this.setState({
+                    accounts: accounts
+                });
+           },
+           error: () => {
+                console.log("Error: Could not fetch data");
+           }
+        });
+
+
     }
 
     addinfo = () => {
