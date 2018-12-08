@@ -119,7 +119,7 @@ export default class Transaction extends React.Component {
         let total = 1;
         let other = 'Other';
         for(let i = 0; i < this.state.currentData.length; i++){
-            console.log(this.state.currentData);
+            console.log(max1);
             if(this.state.currentData[i].tt_balance >= max1){
                 max3 = max2;
                 label3 = label2;
@@ -127,6 +127,15 @@ export default class Transaction extends React.Component {
                 label2 = label1;
                 max1 = this.state.currentData[i].tt_balance;
                 label1 = this.state.currentData[i].tt_description; 
+            } else if(this.state.currentData[i].tt_balance >= max2){
+                max3 = max2;
+                label3 = label2;
+                max2 = this.state.currentData[i].tt_balance;
+                label2 = this.state.currentData[i].tt_description;
+
+            } else if(this.state.currentData[i].tt_balance >= max3){
+                max3 = this.state.currentData[i].tt_balance;
+                label3 = this.state.currentData[i].tt_description;
             }
             total += this.state.currentData[i].tt_balance;
         }
