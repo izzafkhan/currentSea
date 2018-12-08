@@ -133,13 +133,13 @@ export default class Transaction extends React.Component {
             total += this.state.currentData[i].tt_balance;
         }
 
-        dataCopy1[0] = (max1*100 / total);
+        dataCopy1[0] = (max1*100 / total).toFixed(2);
         labelCopy1 = (label1);
-        dataCopy2[0] = (max2*100 / total);
+        dataCopy2[0] = (max2*100 / total).toFixed(2);
         labelCopy2 = (label2);
-        dataCopy3[0] = (max3*100 / total);
+        dataCopy3[0] = (max3*100 / total).toFixed(2);
         labelCopy3 = (label3);
-        dataCopy4[0] = ((total - (max1 + max2 + max3))*100/total);
+        dataCopy4[0] = ((total - (max1 + max2 + max3))*100/total).toFixed(2);
         labelCopy4 = (other);
 
         dataSetCopy[0].data = dataCopy1;
@@ -231,16 +231,16 @@ export default class Transaction extends React.Component {
 
     handleStartCurrency(event){
         this.setState({
-            startCurrency : event.value
+            startCurrency : event
         })
-        this.updateConvert(this.state.original, event.value, this.state.endCurrency);
+        this.updateConvert(this.state.original, event, this.state.endCurrency);
     }
 
     handleEndCurrency(event){
         this.setState({
             endCurrency : event.value
         })
-        this.updateConvert(this.state.original, this.state.startCurrency, event.value);
+        this.updateConvert(this.state.original, this.state.startCurrency, event);
     }
 
     setBalance(){
@@ -265,7 +265,7 @@ export default class Transaction extends React.Component {
             crossDomain: true,
             dataType:"json",
             xhrFields: {withCredentials:true},
-            data : JSON.stringify({from, to}),
+            data : JSON.stringify({ 'from' : from, 'to' : to}),
             success: (data) => {
                 this.setState({
                     rate : parseFloat(data.rate) 
@@ -285,8 +285,8 @@ export default class Transaction extends React.Component {
     }
 
     updateConvert(original, start, end){
-        var from = start;
-        var to = end;
+        console.log("Update");
+        console.log(original);
         $.ajax({
             url: "http://localhost:4000/currencies/getrate",
             type: "POST",
@@ -294,20 +294,20 @@ export default class Transaction extends React.Component {
             crossDomain: true,
             dataType:"json",
             xhrFields: {withCredentials:true},
-            data : JSON.stringify({from, to}),
+            data : JSON.stringify({ 'from' : start.value, 'to' : end.value}),
             success: (data) => {
                 this.setState({
-                    rate : parseFloat(data.rate) 
+                    rate : parseFloat(data.rate),
+                })
+                this.setState({
+                    conversion : isNaN(this.state.rate * original) ? 0 : (this.state.rate * original).toFixed(4),
                 })
             },
             error: () => {
                  console.log("Error: Could not update.");
             }
         });
-        this.state.original = parseFloat(original);
-        this.setState({
-            conversion : isNaN(this.state.rate * this.state.original) ? 0 : (this.state.rate * this.state.original).toFixed(4) 
-        })
+        console.log(this.state.conversion);
     }
 
     income() {
