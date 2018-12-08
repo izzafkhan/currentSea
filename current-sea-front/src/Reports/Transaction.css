@@ -24,14 +24,22 @@ div.bookkeepingTitleDiv {
 }
 
 #h1title{
-    color: white;
-    text-align: center;
-    padding: 40px;
+    color: white !important;
+    text-align: center !important;
+    background-color: #051642 !important;
+    padding: 16px;
 }
 
 div.transaction-table{
     margin-inline-end: 40px;
     height: auto;
+}
+
+div.conversion, div.summary {
+    background-color: white;
+    color: black;
+    margin-block-end: 8px;
+    padding: 16px;
 }
 
 .header-name{
@@ -48,31 +56,8 @@ div.transaction-table{
     margin-inline-end: 8px;
 }
 
-div.summary1{
-    margin: 8px;
-}
-div.summary2{
-    margin: 8px;
-}
-div.summary3{
-    margin: 8px;
-}
-div.other{
-    margin: 8px;
-}
-
 div.transaction-table, div.quick { float: left;}
-div.summary1, div.summary2 {float: left;}
-div.summary3, div.other {float: left;}
 span.dot, span.text {float:left;}
-
-
-div.row1 {overflow: hidden;}
-div.row2 {overflow: hidden;}
-div.summary1 {overflow: hidden;}
-div.summary2 {overflow: hidden;}
-div.summary3 {overflow: hidden;}
-div.other {overflow: hidden;}
 
 /* 
 Styling to make the table readable
@@ -126,7 +111,6 @@ Styling to make the table readable
 div.conversion p, div.conversion h2, div.conversion h3{
     margin-top: 8px;
     margin-bottom: 8px;
-    color: white;
 }
 
 div.conversion input {
@@ -143,4 +127,10 @@ div.conversion input {
 }
 
 button:focus {outline:0;}
+
+button {
+    cursor: pointer;
+}
+
+
 

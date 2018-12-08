@@ -15,6 +15,7 @@ import './currencies.css';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import DatePicker from "react-datepicker/es";
 import AddAccount from '../Account/AddAccount';
+import RateRow from './RateRow.js';
 //import {CurrencyMenu} from 'CurrenciesMenu.js'
 //import CurrenciesGraph from 'CurrenciesGraph.js'
 //import ReactChartkick, { LineChart} from 'react-native-chart-kit';
@@ -71,28 +72,33 @@ function onInsert(row) {
 export default class Currencies extends React.Component {
     constructor(props) {
         super(props);
-
-        this.onSelectCurrency = this.onSelectCurrency.bind(this);
+        this.alreadyRan = false;
+        //this.onSelectCurrency = this.onSelectCurrency.bind(this);
         this.state = {
             showMenu: false,
-            fav_currencies: [],
+            fav_currencies: [
+                // toCurrency: cur_obj={currency, conversion, change}   
+            ],
+            fav_curList: [],
             currencies: [],
-            defaultCurrencyCode: 'USD'
+            ////////////////////where to access defaultcurrency
+            defaultCurrencyCode: 'USD',
         };
 
         this.showMenu = this.showMenu.bind(this);
         this.closeMenu = this.closeMenu.bind(this);
         this.currencyChanged = this.currencyChanged.bind(this);
-        this.componentDidMount = this.componentDidMount.bind(this);
-
+        this.call_getrate = this.call_getrate.bind(this);
+        this.call_me_first = this.call_me_first.bind(this);
     }
 
     //getting different currencies rate
     currencyChanged = event => {
-        let currencyCode = this.state.defaultCurrencyCode;
-        currencyCode = event.value;
-        console.log(currencyCode);
+        let currencyCode = event.value;
+        this.setState({defaultCurrencyCode: currencyCode});
+        console.log("new currency: ", this.state.defaultCurrencyCode);
 
+        //////need to change
         $.ajax({
                 url: "http://localhost:4000/currencies/getrate",
                 type: "POST",
@@ -102,26 +108,34 @@ export default class Currencies extends React.Component {
                 xhrFields: {withCredentials: true},
                 data: JSON.stringify({from: this.state.defaultCurrencyCode, to: currencyCode}),
                 success:  (receivedData) => {
-                    console.log(receivedData);
+                    console.log('what is this '+ receivedData);
                     this.setState({exchangeRate: receivedData.rate, defaultCurrencyCode: currencyCode});
-                    let data = this.state.data;
-                    for (let i = 0; i < data.length; i++){
-                        let {start, change, end} = data[i];
-                        start = (start * this.state.exchangeRate).toFixed(4);
-                        change = (change * this.state.exchangeRate).toFixed(4);
-                        end = (end * this.state.exchangeRate).toFixed(4);
-                        data[i].start = start;
-                        data[i].change = change;
-                        data[i].end = end;
-                    };
-                    this.setState({data: data});
+                    console.log("defaultCode changed to ", this.state.defaultCurrencyCode)
+                    this.alreadyRan = false;
+                    this.call_getrate();
+                    // let rates = [
+                    //     // toCurrency: {rate}
+                    // ];
+                    // if(rates[currencyCode] === undefined){
+                    //     rates[currencyCode] = receivedData.rate.toFixed(4);
+                    // }
+                    //this.state.fav_currencies.push({ currency: currencyCode, conversion: receivedData.rate, change: '0.23%' })
+                    // console.log('steve, what is this', receivedData.rate);
+                    // let { rate } = data[i];
+                    //     // start = (start * this.state.exchangeRate).toFixed(4);
+                    //     // change = (change * this.state.exchangeRate).toFixed(4);
+                    //     // end = (end * this.state.exchangeRate).toFixed(4);
+                    //     // data[i].start = start;
+                    //     // data[i].change = change;
+                    //     // data[i].end = end;
+                    // };
+                    // this.setState({data: data});
                 },
                 error: (receivedData) => {
                     alert('error occurred')
 
                 }
-            }
-        );
+            });
     }
     
 
@@ -141,32 +155,38 @@ export default class Currencies extends React.Component {
 
     }
 
-    onSelectCurrency(string) {
-        let newRow =
-        {
-            currency: this.string,
-            coversion:
-                $.ajax({
-                    url: "http://localhost:4000/currencies/getrate",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    crossDomain: true,
-                    dataType: "json",
-                    xhrFields: { withCredentials: true },
-                    data: JSON.stringify(this.state.newData),
-                    success: () => {
-                        console.log("Work in progress");
-                    },
-                    error: () => {
-                        console.log("Error: Could not submit");
-                        ////////
-                        this.props.action(false);
-                    }
-                })
-        }
+    // onSelectCurrency(string) {
+    //     let newRow =
+    //     {
+    //         currency: this.string,
+    //         coversion:
+    //             $.ajax({
+    //                 url: "http://localhost:4000/currencies/getrate",
+    //                 type: "POST",
+    //                 contentType: "application/json; charset=utf-8",
+    //                 crossDomain: true,
+    //                 dataType: "json",
+    //                 xhrFields: { withCredentials: true },
+    //                 data: JSON.stringify(this.state.newData),
+    //                 success: (data) => {
+    //                     for(let i = 0; i < data.length; i +=1){
+
+    //                     }
+    //                     console.log("Work in progress");
+    //                 },
+    //                 error: () => {
+    //                     console.log("Error: Could not submit");
+    //                     ////////
+    //                     this.props.action(false);
+    //                 }
+    //             })
+    //     }
         // fav_currencies.push(newRow);
-    }
-    componentDidMount() {
+    //}
+    //getting all the different currencies
+    call_me_first() {
+        if(!this.alreadyRan){
+        console.log("1");
         $.ajax({
             url: "http://localhost:4000/currencies/currencies",
             type: "GET",
@@ -175,6 +195,7 @@ export default class Currencies extends React.Component {
             dataType: "json",
             xhrFields: { withCredentials: true },
             success: (data) => {
+                console.log("success into currencies", data);
                 let currencies = []
                 for (let i = 0; i < data.currencies.length; i++) {
                     const newRow = { value: '', label: '' };
@@ -183,33 +204,106 @@ export default class Currencies extends React.Component {
                     currencies[i] = newRow;
                 }
                 this.setState({ currencies: currencies })
+                this.call_getrate();
             },
             error: () => {
                 console.log("Error: Could not submit");
                 // this.props.action(false);
             }
         });
+    this.alreadyRan = true;
     }
+        
+        // $.ajax({
+        //     url: "http://localhost:4000/currencies/get_fav_cur",
+        //     type: "GET",
+        //     contentType: "application/json; charset=utf-8",
+        //     crossDomain: true,
+        //     dataType: "json",
+        //     xhrFields: { withCredentials: true },
+        //     success: (data) => {
+        //         console.log("success into get_fav_cur and what's data" );
+        //         for (let i = 0; i < data.length; i++) {
+        //             console.log("success into get_fav_cur and what's data" + data[i].to);
+        //             this.state.fav_curList.push(data[i].to);
+        //         }
+        //         this.call_getrate();
+        //     },
+        //     error: () => {
+        //         console.log("Error: Could not Sumbit");
+        //         // this.props.action(false);
+        //     }
+        // });
+
+    }
+
+    call_getrate(){
+        console.log("call_getrate...so what is data");
+        let tempCurs = [];
+        for (let i = 0; i < this.state.currencies.length; i++) {
+            console.log("getting into getrate");
+            $.ajax({
+                url: "http://localhost:4000/currencies/get_all_rates",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                xhrFields: { withCredentials: true },
+                data: JSON.stringify({from: this.state.defaultCurrencyCode}),
+                success: (data) => {
+                    if(data.length === 0){
+                        console.log("THERE IS NOTHING MEANINGFUL IN THIS WORLD");
+                    }
+                    console.log("returned data: ", data.results[i]);
+                    tempCurs.push({currency: this.state.currencies[i].label, conversion: data.results[i].ct_rate.toFixed(4), change: (100*(data.results[i].ct_rate-data.results[i+33].ct_rate)/data.results[i+33].ct_rate).toFixed(4)
+                    }); 
+                    this.forceUpdate();
+                    console.log(data);
+                    console.log("Work in progress");
+                },
+                error: () => {
+                    console.log("Error: Could not submit");
+                }
+            });
+            this.setState({fav_currencies : tempCurs});
+        }
+        console.log("after getrate: ", this.state.fav_currencies);
+    }
+
+componentDidUpdate(prevProps, prevState){
+    console.log("UPDATED!!!")
+    this.call_me_first();
+}
+
     render() {
-        // var fav_currencies = [
-        //     { currency: 'USD', conversion: '0.342', change: '0.23%' },
-        //     { currency: 'SEK', conversion: '1.00', change: '0.01%' }
-        // ];
-        // const cellEditP = {
-        //     mode: 'click',
-        // }
+        console.log("RENDERING");
+        this.call_me_first();
+        console.log("What is in here, "+this.state.fav_currencies);
         var columns = [{
             Header: 'Currency',
             accessor: 'currency'
         }, {
-            Header: '1 Sek',
+            Header: '1 ' + this.state.defaultCurrencyCode,
             accessor: 'conversion'
         }, {
             Header: 'Change(day)',
-            accessor: 'change'
+            accessor: 'change',
+            Cell: row => (
+                  <span
+                    style={{
+                      color: row.value >= 0 ? 'green'
+                        : 'red',
+                    }}>{row.value+"%"}</span>)
+            // Cell: rowInfo => (<div 
+            // style={{
+            //     color:
+            //         rowInfo.value > 0 
+            //             ? "green" : "red"
+            // }}
+            // ></div>)
         }]
         return (
-            <body className="currencyreportsContainer">
+            <div className="currencyreportsContainer">
                 <Header />
 
                 <div class="body">
@@ -220,31 +314,19 @@ export default class Currencies extends React.Component {
                     <div>
 
                         <div class="bottomBody">
-
                             <div className="gridContainer">
 
                                 <div className="tableTop" >
+                                    <h6 class = "word" style = {{color: "white"}}>Change Currency</h6>
+                                    <Select options={this.state.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.defaultCurrencyCode}
+                                                        className="dropdown" />
                                     <div class = "clickButton">
-                                        <button onClick={this.showMenu}>+Add New Currency</button>
-                                        {
-                                            this.state.showMenu
-                                                ? (
-                                                    <div id="currencyHolder" style={{ display: "inline-flex" }}>
-                                                        <Select options={this.props.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.defaultCurrencyCode}
-                                                        className="dropdownContainer" />
-                                                        <button onClick={this.closeMenu}>Done</button>
-                                                    </div>
-                                                )
-                                                : (
-                                                    null
-                                                )
-                                        }
                                     </div>
 
                                 </div>
 
                                 <div className="tableBottom">
-                                    <ReactTable
+                                    <ReactTable 
                                         className="currencyDataTable"
                                         data={this.state.fav_currencies}
                                         noDataText="Your favorite currencies will appear here"
@@ -253,7 +335,7 @@ export default class Currencies extends React.Component {
                                 </div>
 
                             </div>
-                            <div class="linechart">
+                            {/* <div class="linechart">
                                 <h2 align="center" style={{ color: "black" }}>My Exchange Rates</h2>
                                 <Linechart
                                     width={600}
@@ -262,14 +344,14 @@ export default class Currencies extends React.Component {
                                     isDate="true"
                                     style={{ backgroundColor: "white", width: "600px" }}
                                 />
-                            </div>
+                            </div> */}
 
 
                         </div>
 
                     </div>
                 </div>
-            </body>
+            </div>
 
         );
     }

@@ -1,5 +1,6 @@
 const express = require('express');
 const debug = require('debug')('app:favCurRoutes');
+const moment = require('moment');
 const db = require('./db');
 
 const favCurRouter = express.Router();
@@ -99,6 +100,7 @@ module.exports = function router() {
 
   favCurRouter.route('/gethistoricrate').get((req, res) => {
     const { from, to, date } = req.body;
+    debug(moment().format('YYYY-MM-DD'));
     db.query('SELECT ct_rate FROM currency_table WHERE ct_from = ? AND ct_to = ? AND ct_date = ?',
       [from, to, date], (err, results) => {
         if (err) {
@@ -115,17 +117,31 @@ module.exports = function router() {
 
   favCurRouter.route('/getrate').post((req, res) => {
     debug(req.body);
-    const { from, to } = req.body;
+    let { from, to } = req.body;
     db.query('select * from currency_table where ct_from = ? AND ct_to = ? order by ct_date desc LIMIT 1;',
       [from, to], (err, results) => {
+        console.log('cp1');
         if (err) {
           debug(err);
-          res.status(500).json({ message: 'Some error occurred' });
+          return res.status(500).json({ message: 'Some error occurred' });
         }
-        if (results.length > 0) {
+        if (results && results.length > 0) {
           res.status(200).json({ rate: results[0].ct_rate });
         } else {
           res.status(200).json({ message: 'No current rate for these currencies.' });
+        }
+      });
+  });
+
+  favCurRouter.route('/get_all_rates').post((req, res) => {
+    const { from } = req.body;
+    db.query('SELECT * FROM currency_table WHERE ct_from = ? AND ct_date <= ? ORDER BY ct_date desc, ct_to asc LIMIT 66',
+      [from, moment().format('YYYY-MM-DD')], (err, results) => {
+        if (err) {
+          debug(err);
+          res.status(500).json({ message: 'Some error occurred' });
+        } else {
+          res.status(200).json({ results });
         }
       });
   });
