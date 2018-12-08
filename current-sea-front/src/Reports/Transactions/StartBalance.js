@@ -28,11 +28,9 @@ export default class StartBalance extends React.Component{
             dataType:"json",
             xhrFields: { withCredentials:true },
             success: (receivedData) => {
-                console.log("Received Data")
-                console.log(receivedData);
-                if(receivedData.length > 0){
-                    this.state.data = receivedData;
-                }
+                console.log("Received Data");
+                this.state.data = receivedData.results;
+                console.log(this.state.data.results);
                 this.forceUpdate();
             },
             error: () => {
@@ -71,7 +69,7 @@ export default class StartBalance extends React.Component{
         var internalEntries = this.state.data.slice(0);
 
         let newRow = {
-            bt_accountID : '',
+            bt_account_id : '',
             bt_initialBalance: 0,
             bt_currency_abv: '',
         };
@@ -88,7 +86,7 @@ export default class StartBalance extends React.Component{
     }
 
     handleChange(row, entry, event) {
-        if(entry == "bt_accountID"){
+        if(entry == "bt_account_id"){
             row[entry] = event.value;
         } else {
             row[entry] = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
@@ -131,9 +129,9 @@ export default class StartBalance extends React.Component{
                         {this.state.data.map( (row, index) => {
                             return (
                                 <tr key={`row-${index}`}>
-                                    <td><Select options={this.state.accounts} onChange={(e) => this.handleChange(row, 'bt_accountID', e)}/></td>
+                                    <td><Select options={this.state.accounts} placeholder={row.bt_account_id} onChange={(e) => this.handleChange(row, 'bt_account_id', e)}/></td>
                                     <td><input type="number"  defaultValue={row.bt_initialBalance} onChange={(e) => this.handleChange(row, 'bt_initialBalance', e)}/></td>
-                                    <td><Select options={this.state.currencies} onChange={(e) => this.handleCurrency(row, 'bt_currency_abv', e)}/></td>
+                                    <td><Select options={this.state.currencies} placeholder={row.bt_currency_abv} onChange={(e) => this.handleCurrency(row, 'bt_currency_abv', e)}/></td>
                                 </tr>
                             )
                         })}
