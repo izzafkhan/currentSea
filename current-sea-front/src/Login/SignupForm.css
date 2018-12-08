@@ -98,6 +98,7 @@
     font-family: 'Roboto', sans-serif;
     font-weight: bold;
     display:block;
+    cursor: pointer;
 }
 
 .supSignInDiv {
@@ -131,4 +132,5 @@
     display:block;
     float: right;
     margin-top: 13px;
+    cursor: pointer;
 }
