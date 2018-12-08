@@ -1,12 +1,15 @@
 
 div.tableContainer{
-    margin-block-start: 20px;
+    margin-block-start: 30px;
     height: 100vh; /* Magic here */
     display: flex;    
     justify-content: left;
     background: #051642;
     margin:0;
-    margin-block-start: 0;
+    margin-block-start:0;
+    float:left;
+    width:fit-content;
+  
   
 }
 
@@ -16,6 +19,7 @@ div.bigContainer h1 {
     text-align: center; 
     padding-bottom: 5px; 
     padding-top: 40px; 
+
 }
 
 div.bigContainer h6 {
@@ -50,16 +54,16 @@ Styling to make the table readable
     text-align: left;
     background-color:white;
     color: black;
-    width: 250px;
+    width: 210px;
 }
 
 #nested td {
     text-align: left;
-    width: 250px;
+    width: 200px;
 }
 
 #nested button {
-    width: 250;
+    width: 200px;
     background-color: white;
     border-color: white;
     border-style: solid;
@@ -67,7 +71,7 @@ Styling to make the table readable
 }
 
 #addAccountButton {
-    width: 734px;
+    width: 700px;
     text-align: center;
     color: white;
     background-color: #00ADA2;

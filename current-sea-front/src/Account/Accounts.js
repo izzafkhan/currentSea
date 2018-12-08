@@ -38,7 +38,9 @@ export default class Accounts extends React.Component {
         this.deleteEdit = this.deleteEdit.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.addToTable =this.addToTable.bind(this);
+        this.deleteRow = this.deleteRow.bind(this);
     }
+
 
     addRow = () => {
         if (this.state.showAddEntry === false){
@@ -105,8 +107,35 @@ export default class Accounts extends React.Component {
         {/*Line 80 (was: editUpdate: true, which does nothing) is probably singlehandedly responsible for the problems we had today. Pitfall?*/}
     }
 
-    
-    deleteEdit(accountId){
+    deleteRow(e,at_account_id){
+        let index = this.state.currentData.findIndex(x=>x.at_account_id ==at_account_id);
+        let rowData = this.state.currentData[index];
+        let rowDataVar = {accountId:rowData.at_account_id};
+
+        
+       
+           $.ajax({
+            url: "http://localhost:4000/accounts/delete_account",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType:"json",
+            xhrFields: { withCredentials:true },
+            data: JSON.stringify(rowDataVar),
+            success: (data) => {
+                console.log("success inside");
+                 this.setState({
+                     update:true
+                 });
+               
+
+            },
+            error: () => {
+                 console.log("Error: Could not submit");
+            }
+        })
+    }
+    deleteEdit(e,accountId){
         let index = this.state.currentData.findIndex(x=>x.accountId==accountId);
         let editData = this.state.currentData;
         var editIndex = editData.indexOf(index);
@@ -118,8 +147,8 @@ export default class Accounts extends React.Component {
         this.forceUpdate();
     }
 
-    editRow = (e, accountId) => {
-        let index = this.state.currentData.findIndex(x=>x.accountId==accountId);
+    editRow = (e, at_account_id) => {
+        let index = this.state.currentData.findIndex(x=>x.at_account_id ==at_account_id);
         let editData = this.state.currentData;
         if (editData[index].edit === false) {
             editData[index].edit = true;
@@ -222,7 +251,7 @@ export default class Accounts extends React.Component {
                         <tbody>
                            { this.state.currentData.map(row => {
                                 return (
-                                    <tr key={`row-${row.accountID}`}>
+                                    <tr key={`row-${row.at_account_id}`}>
                                         <td colSpan='6'>
                                             <table>
                                                 <tbody>
@@ -230,6 +259,8 @@ export default class Accounts extends React.Component {
                                                         <td><button onClick={(e) =>{this.editRow(e, row.at_account_id)}}>{row.at_account_id}</button></td>
                                                         <td><button onClick={(e) =>{this.editRow(e, row.at_account_id)}}>{row.at_account_name}</button></td>
                                                         <td><button onClick={(e) =>{this.editRow(e, row.at_account_id)}}>{row.account_type}</button></td>
+                                                        <button id='deleteButton' onClick={e => this.deleteRow(e,row.at_account_id)}> x </button>
+
                                                     </tr>
                                                     {row.edit ?
                                                         <tr>

@@ -212,6 +212,10 @@ class BalanceSheet extends Component{
                         data={this.state.data}
                         noDataText="Your balances will appear here"
                         columns={columns}
+                        defaultPageSize={25}
+                        showPageSizeOptions= {false}
+                  
+
                     />
                 </div>
 

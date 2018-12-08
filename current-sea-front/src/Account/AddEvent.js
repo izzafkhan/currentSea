@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import './AddAccount.css'
 import $ from 'jquery'
 import Select from 'react-select';
-import SketchPicker from 'react-color'
+import SketchPicker, { CirclePicker } from 'react-color'
 
 export default class AddEvent extends React.Component{
 
@@ -15,7 +15,8 @@ export default class AddEvent extends React.Component{
         this.state = {
             newData : {
                 eventAbv: 'Event Abbreviation',
-                eventName: 'Event Name'
+                eventName: 'Event Name',
+                eventColor: 'Event Color'
                 
                
             },
@@ -27,6 +28,8 @@ export default class AddEvent extends React.Component{
         this.submitData = this.submitData.bind(this);
         this.handleAbv = this.handleAbv.bind(this);
         this.handleName = this.handleName.bind(this);
+        this.handleColor = this.handleColor.bind(this);
+
     }
 
     
@@ -51,6 +54,17 @@ export default class AddEvent extends React.Component{
         this.setState({newData});
     }
 
+    handleColor(color) {
+        let newData = Object.assign({}, this.state.newData);
+        newData.eventColor = "pink";
+  
+        this.setState({newData});
+     
+        
+      };
+
+    
+
     handleChange(row, entry, event) {
        
         row[entry] = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
@@ -59,9 +73,13 @@ export default class AddEvent extends React.Component{
 
    
     submitData(){
+        console.log(this.state.newData)
         let newData = Object.assign({}, this.state.newData);
+      
         this.setState({newData});
+  
         this.props.action(false);
+        console.log(this.state.newData)
         
         
         /*
@@ -76,6 +94,7 @@ export default class AddEvent extends React.Component{
            dataType:"json",
            xhrFields: { withCredentials:true },
            data: JSON.stringify(this.state.newData),
+         
            success: () => {
                 this.props.action(false);
                 console.log("EVENT ADDED");
@@ -101,7 +120,10 @@ export default class AddEvent extends React.Component{
                                 
                                 <th><input type="text" placeholder="Event Abbreviation" onChange={this.handleAbv }/></th>
                                 <th><input type="text" placeholder="Name" onChange={this.handleName} /></th>
-                               {/*} <th><SketchPicker/> /></th>*/}
+                                <th> <CirclePicker width="200px" onChange={this.handleColor} circleSize = {23}  colors= {["#f44336", "#e91e63", "#9c27b0",
+                                 "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39",
+                                  "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#a07b8e", "#795548","#a3a3a3", "#607d8b"]}/> </th>
+                                   {/*} <th><SketchPicker/> /></th>*/}
                                 
                                
                             </tr>
