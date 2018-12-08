@@ -238,7 +238,7 @@ export default class Transaction extends React.Component {
 
     handleEndCurrency(event){
         this.setState({
-            endCurrency : event.value
+            endCurrency : event
         })
         this.updateConvert(this.state.original, this.state.startCurrency, event);
     }
@@ -258,6 +258,11 @@ export default class Transaction extends React.Component {
     convert(event) {
         var from = this.state.startCurrency.value;
         var to = this.state.endCurrency.value;
+        this.setState({
+            original : parseFloat(event.target.value),
+        })
+        console.log(this.state.original);
+        console.log(to);
         $.ajax({
             url: "http://localhost:4000/currencies/getrate",
             type: "POST",
@@ -270,23 +275,18 @@ export default class Transaction extends React.Component {
                 this.setState({
                     rate : parseFloat(data.rate) 
                 })
+                this.setState({
+                    conversion : isNaN(this.state.rate * this.state.original) ? 0 : 
+                            (this.state.rate * this.state.original).toFixed(4),
+                })
             },
             error: () => {
                  console.log("Error: Could not update.");
             }
         });
-        this.state.original = parseFloat(event.target.value);
-        this.setState({
-            conversion : isNaN(this.state.rate * this.state.original) ? 0 : (this.state.rate * this.state.original).toFixed(4) 
-        })
-        var test = event.target.value;
-        console.log(test);
-        console.log(parseFloat(test));
     }
 
     updateConvert(original, start, end){
-        console.log("Update");
-        console.log(original);
         $.ajax({
             url: "http://localhost:4000/currencies/getrate",
             type: "POST",
@@ -307,7 +307,6 @@ export default class Transaction extends React.Component {
                  console.log("Error: Could not update.");
             }
         });
-        console.log(this.state.conversion);
     }
 
     income() {
@@ -505,7 +504,7 @@ export default class Transaction extends React.Component {
                         </div>
                         <div class="conversion">
                             <h2>Currency Conversion</h2>
-                            <input type="number" defaultValue={this.state.original} onInput={this.convert} />
+                            <input type="number" defaultValue={this.state.original} onChange={this.convert} />
                             <Select id='start-currency' options={this.state.convertCurrencies} placeholder={this.state.startCurrency.value} onChange={this.handleStartCurrency}/>
                             <h3>=</h3>
                             <p>{this.state.conversion}</p>
