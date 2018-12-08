@@ -73,8 +73,8 @@ module.exports = function router() {
         const {
           accountId, accountName, newAccountId, newAccountName,
         } = req.body;
-        db.query('SELECT account_name from account_table where at_user_id = ? AND at_account_name = ? AND at_account_id = ?', [req.user.username, accountName, accountId], (err, results) => {
-          if (results.length !== 0) {
+        db.query('SELECT at_account_name from account_table where at_user_id = ? AND at_account_name = ? AND at_account_id = ?', [req.user.username, accountName, accountId], (err, results) => {
+          if (results && results.length !== 0) {
             if (newAccountId !== accountId || newAccountName !== accountName) {
               if (newAccountId !== accountId) {
                 db.query(('UPDATE account_table SET at_account_id = ? WHERE at_user_id = ? AND at_account_id = ?', [newAccountId, req.user.username, accountId], (err2) => {
@@ -112,6 +112,15 @@ module.exports = function router() {
         const { userId, accountId, accountName } = req.body;
         db.query('SELECT account_name from account_table where at_user_id = ? AND at_account_name = ? OR at_account_id = ?', [userId, accountName, accountId], (err, results) => {
           if (results.length !== 0) {
+
+              db.query('SELECT dt_accountID from details_table where dt_accountID = ?', [accountId], (err1) => {
+                  if (err1) {
+                      debug('Error occurred while querying details_table', err1);
+                      return res.status(401).json({message: 'Deleting account is not permitted'});
+                  }
+              });
+
+
             db.query('DELETE FROM account_table WHERE at_user_id = ? AND at_account_name = ? OR at_account_id = ?', [userId, accountName, accountId], () => {
               if (err) {
                 debug(err);
