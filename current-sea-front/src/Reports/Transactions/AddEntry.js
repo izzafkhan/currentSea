@@ -99,7 +99,6 @@ export default class AddEntry extends React.Component{
         if(balanceCheck == sum && (balanceCheck != 0)){
             this.state.newData.balance = sum;     
             this.setState({newData});
-            if(entriesFilled == true){
                 /*
                     Ajax magic 
                     Maybe we should send the internal entries back home instead of newData? We need to avoid losing information one way or another.
@@ -120,9 +119,6 @@ export default class AddEntry extends React.Component{
                             this.props.action(false);
                     }
                 })
-            } else {
-                alert("Make sure every account has a category: for what reason the money was spent.")
-            }
         } else {
             alert("Make sure your credit and debit are equal and filled out.")
         }

@@ -86,6 +86,7 @@ export default class Transaction extends React.Component {
               }
         }
         this.convert = this.convert.bind(this);
+        this.updateConvert = this.updateConvert.bind(this);
         this.income = this.income.bind(this);
         this.expenses = this.expenses.bind(this);
         this.addRow = this.addRow.bind(this);
@@ -194,6 +195,7 @@ export default class Transaction extends React.Component {
             startBalance : false,
             update: true,
         })
+        console.log(startBalance);
     }
 
     deleteEdit(tt_transaction_id){
@@ -229,14 +231,16 @@ export default class Transaction extends React.Component {
 
     handleStartCurrency(event){
         this.setState({
-            startCurrency : event
+            startCurrency : event.value
         })
+        this.updateConvert(this.state.original, event.value, this.state.endCurrency);
     }
 
     handleEndCurrency(event){
         this.setState({
-            endCurrency : event
+            endCurrency : event.value
         })
+        this.updateConvert(this.state.original, this.state.startCurrency, event.value);
     }
 
     setBalance(){
@@ -263,7 +267,6 @@ export default class Transaction extends React.Component {
             xhrFields: {withCredentials:true},
             data : JSON.stringify({from, to}),
             success: (data) => {
-                console.log(data);
                 this.setState({
                     rate : parseFloat(data.rate) 
                 })
@@ -279,6 +282,32 @@ export default class Transaction extends React.Component {
         var test = event.target.value;
         console.log(test);
         console.log(parseFloat(test));
+    }
+
+    updateConvert(original, start, end){
+        var from = start;
+        var to = end;
+        $.ajax({
+            url: "http://localhost:4000/currencies/getrate",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType:"json",
+            xhrFields: {withCredentials:true},
+            data : JSON.stringify({from, to}),
+            success: (data) => {
+                this.setState({
+                    rate : parseFloat(data.rate) 
+                })
+            },
+            error: () => {
+                 console.log("Error: Could not update.");
+            }
+        });
+        this.state.original = parseFloat(original);
+        this.setState({
+            conversion : isNaN(this.state.rate * this.state.original) ? 0 : (this.state.rate * this.state.original).toFixed(4) 
+        })
     }
 
     income() {
