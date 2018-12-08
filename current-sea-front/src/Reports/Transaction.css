@@ -5,7 +5,7 @@ div.myContainer{
     background-color: #051642;
     height: auto;
     color: white;
-    padding: 40px;
+    padding: 20px;
 }
 
 div.bigContainer{
@@ -14,6 +14,13 @@ div.bigContainer{
     justify-content: center;
     background-color: #051642;
     height: auto;
+}
+
+div.bookkeepingTitleDiv {
+    text-align: center;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    padding-bottom: 10px;
 }
 
 #h1title{

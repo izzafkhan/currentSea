@@ -125,7 +125,6 @@ class BalanceSheet extends Component{
             xhrFields: { withCredentials: true },
             success: (receivedData) => {
                 this.setState({data:receivedData});
-                
             },
             error: (data) => {
                 //alert('error occurred')

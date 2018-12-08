@@ -95,30 +95,6 @@ class Report extends Component {
 
 
             </body>
-            // {/*<div>*/}
-            //     {/*<Header />*/}
-            //     {/*<div class="container">*/}
-            //         {/*<div class="sheets">*/}
-            //             {/*<h1 align="center">Reports Page</h1>*/}
-            //
-            //             {/*<div className="reports-options">*/}
-            //                 {/*<Menu className="reports-menu" setBalanceSheet={this.showBalanceSheet.bind(this)} setIncomeStatement={this.showIncomeStatement.bind(this)}/>*/}
-            //                 {/**/}
-            //                 {/*<CurrencyMenu />*/}
-            //             {/*</div>*/}
-            //
-            //             {/*{this.state.balance ? */}
-            //             {/*<BalanceSheet /> :*/}
-            //             {/*<IncomeStatement /> }*/}
-            //         {/*</div>*/}
-            //         {/*<div class="diagrams">*/}
-            //             {/*/!**/}
-            //                 {/*Need to figure out how to display graphs and diagrams before this is workable*/}
-            //             {/**!/*/}
-            //         {/*</div>*/}
-            //     {/*</div>*/}
-            // {/*</div>*/}
-
         );
     }
 }
