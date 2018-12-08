@@ -10,7 +10,6 @@ import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 class Report extends Component {
     constructor(props){
         super(props);
-
         this.state = {
             presentIncomeStatement: false,
             currencies: []
@@ -22,23 +21,17 @@ class Report extends Component {
     }
 
     handleIncomeStatementTapped() {
-
         this.setState({
             presentIncomeStatement : false
         })
-
-        console.log("in income")
-
     }
 
     handleBalanceSheetTapped() {
-
         this.setState({
             presentIncomeStatement : true
         })
-
-        console.log("in balance")
     }
+
     componentDidMount() {
         $.ajax({
             url: "http://localhost:4000/currencies/currencies",
@@ -62,26 +55,11 @@ class Report extends Component {
            }
         });
     }
-    //
-    //
-    // showBalanceSheet(event){
-    //     this.setState({
-    //         balance : true
-    //     })
-    // }
-    //
-    // showIncomeStatement(event){
-    //     this.setState({
-    //         balance : false
-    //     })
-    // }
 
     render(){
-
         const currentSheet = () => {
             if (this.state.presentIncomeStatement == true) {
                 return <IncomeStatement action={this.handleIncomeStatementTapped} currencies={this.state.currencies}/>
-
             }
             return <BalanceSheet action={this.handleBalanceSheetTapped} currencies={this.state.currencies}/>
         }
@@ -89,7 +67,7 @@ class Report extends Component {
         return(
             <body className="reportsRootContainer">
                 <Header/>
-                <div className="reportsTitle"><h1>Reports</h1></div>
+                <h1 id="h1title">Reports</h1>
 
                 {currentSheet()}
 
