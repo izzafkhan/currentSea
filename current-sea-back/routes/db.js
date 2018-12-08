@@ -10,21 +10,21 @@ const config = {
 };
 
 function handleDisconnect() {
-    const dbConnection = mysql.createConnection(config);
-    dbConnection.connect((err) => {
-        if (err) {
-            console.log('Error when connecting to db:', err);
-            setTimeout(handleDisconnect, 8000);
-        } else {
-            console.log('Connection established with MySQL DB');
-        }
-    });
-    dbConnection.on('error', (err) => {
-        console.log('Error occurred in MySQL DB connection', err);
-        handleDisconnect();
-    });
+  const dbConnection = mysql.createConnection(config);
+  dbConnection.connect((err) => {
+    if (err) {
+      console.log('Error when connecting to db:', err);
+      setTimeout(handleDisconnect, 8000);
+    } else {
+      console.log('Connection established with MySQL DB');
+    }
+  });
+  dbConnection.on('error', (err) => {
+    console.log('Error occurred in MySQL DB connection', err);
+    handleDisconnect();
+  });
 
-    return dbConnection;
+  return dbConnection;
 }
 
 const dbConnection = handleDisconnect();

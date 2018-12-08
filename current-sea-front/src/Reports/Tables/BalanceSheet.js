@@ -125,7 +125,6 @@ class BalanceSheet extends Component{
             xhrFields: { withCredentials: true },
             success: (receivedData) => {
                 this.setState({data:receivedData});
-                
             },
             error: (data) => {
                 //alert('error occurred')
@@ -185,18 +184,18 @@ class BalanceSheet extends Component{
                         </DropdownMenu>
                     </Dropdown>
 
-                    <DatePicker className="isStartDatePicker"
+                    {/*<DatePicker className="isStartDatePicker"
                                 selected={this.state.startDate}
                                 onChange={this.handleChangeStart}
                                 placeholderText="Start Date"
-                    />
+                    />*/}
 
-                    <DatePicker className="isEndDatePicker"
+                    {/*<DatePicker className="isEndDatePicker"
                                 selected={this.state.endDate}
                                 onChange={this.handleChangeEnd}
                                 minDate={this.state.startDate}
                                 placeholderText="End Date"
-                    />
+                    />*/}
 
                     <Select options={this.props.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.defaultCurrencyCode}
                     className="dropdownContainer" />

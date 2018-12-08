@@ -14,10 +14,14 @@ export default class EditEntry extends React.Component{
             action_id : 0,
             update : false,
             accounts : this.props.accounts,
+            currencies : this.props.currencies,
             myAccounts : [],
+            transactionInfo : this.props.transactionInfo,
         }
         this.addinfo = this.addinfo.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleDescription = this.handleDescription.bind(this);
+        this.handleCurrency = this.handleCurrency.bind(this);
         this.save = this.save.bind(this);
         this.remove = this.remove.bind(this);
         this.submitDelete = this.submitDelete.bind(this);
@@ -67,31 +71,55 @@ export default class EditEntry extends React.Component{
         }
     }
 
+    handleDescription(event){
+        this.state.transactionInfo.tt_description = event.target.value;
+    }
+
+    handleCurrency(event){
+        this.state.transactionInfo.tt_currency = event.label;
+    }
     save(){
         var sum = 0;
+        var checkCredit = 0;
+        var validEntry = true;
         for(let i = 0; i < this.state.data.length; i++){
             
             sum += this.state.data[i].dt_debit;
-        }
-        console.log(sum);
-        $.ajax({
-            url: "http://localhost:4000/transactions/edit_transactions",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            dataType:"json",
-            xhrFields: { withCredentials:true },
-            data: JSON.stringify({ 'tt_transaction_id' : this.state.action_id, 'data': this.state.data, 
-                'balance': sum}),
-            success: () => {
-                console.log(this.state.data);
-                 this.props.closeAction(this.state.action_id, sum);
-            },
-            error: () => {
-                 console.log("Error: Could not submit");
-                 this.props.closeAction(this.state.action_id, 0);
+            checkCredit += this.state.data[i].dt_credit;
+
+            if(this.state.data[i].dt_debit != 0 && this.state.data[i].dt_credit != 0){
+                validEntry = false;
             }
-        })
+        }
+        if(checkCredit != 0 && checkCredit == sum){
+            if(validEntry){
+                $.ajax({
+                    url: "http://localhost:4000/transactions/edit_transactions",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    crossDomain: true,
+                    dataType:"json",
+                    xhrFields: { withCredentials:true },
+                    data: JSON.stringify({  'tt_transaction_id' : this.state.action_id,
+                                            'data': this.state.data, 
+                                            'tt_balance': sum, 
+                                            'tt_currency' : this.state.transactionInfo.tt_currency, 
+                                            'tt_description' : this.state.transactionInfo.tt_description}),
+                    success: () => {
+                        console.log(this.state.data);
+                        this.props.closeAction(this.state.action_id, sum);
+                    },
+                    error: () => {
+                        console.log("Error: Could not submit");
+                        this.props.closeAction(this.state.action_id, 0);
+                    }
+                })
+            } else {
+                alert("You cannot have a credit and debit in the same field.")
+            }
+        } else {
+            alert("Debit and Credit fields must remain equal and filled out.")
+        }
     }
 
     remove(){
@@ -152,6 +180,8 @@ export default class EditEntry extends React.Component{
                             <th>Debit</th>
                             <th>Credit</th>
                             <th>Event</th>
+                            <th><input type="text" defaultValue={this.state.transactionInfo.tt_description} onChange={(e) => this.handleDescription(e)}></input></th>
+                            <th><Select options={this.state.currencies} placeholder={this.state.transactionInfo.tt_currency} onChange={(e) => this.handleCurrency(e)} /></th>
                         </tr>
                     </thead>
                     <tbody>

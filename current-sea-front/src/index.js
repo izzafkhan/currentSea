@@ -8,21 +8,23 @@ import Help from './Help';
 import Login from './Login/Login';
 import SignUpForm from './Login/SignupForm'
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter, Route, Redirect, Link, withRouter } from "react-router-dom";
-import Accounts from './Account/Accounts';
+import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 import Settings from './Account/Settings';
 import $ from 'jquery';
 
 export const log = {
   loggedIn : false,
-  authenticate(cb){
-    this.loggedIn = true
+  authenticate(){
+    this.loggedIn = true;
+    localStorage.setItem('loggedIn', this.loggedIn);
   },
-  signout(cb){
-    this.loggedIn = false
+  signout(){
+    this.loggedIn = false;
+    localStorage.setItem('loggedIn', this.loggedIn);
   }
 }
 
+{/*}
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
     log.loggedIn ? (
@@ -35,33 +37,24 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     )
   )}/>
 )
-
 const Auth = withRouter(({history}) => (
   log.loggedIn ? ( <Link to="/Transactions"></Link> ) : (<Redirect to={{pathname: "/"}} />)
-))
+)) */}
 
 export default class App extends React.Component{
   render() {
-
+    console.log(localStorage.getItem('loggedIn'));
     return (
       <BrowserRouter>
-        <div>
-          <Auth/>
-          <Route exact path="/Reports/Report"  component={Report}/>
-          <Route exact path="/Account/Settings"  component={Settings}/>
-          <Route exact path="/Currencies/Currencies"  component={Currencies}/>
-          <Route exact path="/Help"  component={Help}/>
-          <Route exact path="/Transactions"  render={(props) => (
-              log.loggedIn === true ? <Home {...props} /> : <Redirect to={{
-                  pathname: "/",
-                  state: {from: props.location}
-              }} />
-          )} />
-          <Route exact path="/Register"  component = {SignUpForm}/>
-          <Route exact path="/Accounts"  component = {Accounts}/>
-          <Route exact path="/"  component={Login}/>
-  
-        </div>
+        <Switch>
+          <Route  path="/Reports/Report"  render={() => ( localStorage.getItem('loggedIn') ? <Report/> : <Redirect to="/"/>)}/>
+          <Route  path="/Account/Settings"  render={() => ( localStorage.getItem('loggedIn') ? <Settings/> : <Redirect to="/"/>)}/>
+          <Route  path="/Currencies/Currencies"  render={() => ( localStorage.getItem('loggedIn') ? <Currencies/> : <Redirect to="/"/>)}/>
+          <Route  path="/Help"  render={() => ( localStorage.getItem('loggedIn') ? <Help/> : <Redirect to="/"/>)}/>
+          <Route  path="/Transactions"  render={() => ( localStorage.getItem('loggedIn') ? <Home/> : <Redirect to="/"/> )}/>
+          <Route  path="/Register"  component = {SignUpForm}/>
+          <Route  path="/"  component={Login}/>
+        </Switch>
       </BrowserRouter>
     );
   }    

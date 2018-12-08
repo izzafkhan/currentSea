@@ -18,6 +18,7 @@ export default class AddEntry extends React.Component{
                 description: 'Description',
                 balance : 0.00,
                 internalEntries : [],
+                startBalance: false,
             },
             enteringData : false,
             dateSetter : moment(),
@@ -26,6 +27,7 @@ export default class AddEntry extends React.Component{
         }
         this.setDate = this.setDate.bind(this);
         this.addinfo = this.addinfo.bind(this);
+        this.cancel = this.cancel.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleCurrency = this.handleCurrency.bind(this);
         this.handleDescription = this.handleDescription.bind(this);
@@ -41,6 +43,12 @@ export default class AddEntry extends React.Component{
         });
         newData.startDate = moment(this.state.dateSetter).format('YYYY-MM-DD');
         this.setState({newData});
+    }
+
+    cancel(row){
+        let index = this.state.newData.internalEntries.indexOf(row);
+        this.state.newData.internalEntries.splice(index, 1);
+        this.forceUpdate();
     }
 
     addinfo = () => {
@@ -84,21 +92,21 @@ export default class AddEntry extends React.Component{
     submitData(){
         var sum = 0;
         var balanceCheck = 0;
-        var entriesFilled = true;
+        var validEntry = true;
         let newData = Object.assign({}, this.state.newData);
         for(let i = 0; i < newData.internalEntries.length; i++){
             
             sum += newData.internalEntries[i].debit;
             balanceCheck += newData.internalEntries[i].credit;
-            if(newData.internalEntries[i].event === ''){
-                entriesFilled = false;
+            if(newData.internalEntries[i].debit != 0 && newData.internalEntries[i].credit != 0){
+                validEntry = false;
             }
         }
         //console.log(sum);
         if(balanceCheck == sum && (balanceCheck != 0)){
+            if(validEntry){
             this.state.newData.balance = sum;     
             this.setState({newData});
-            if(entriesFilled == true){
                 /*
                     Ajax magic 
                     Maybe we should send the internal entries back home instead of newData? We need to avoid losing information one way or another.
@@ -120,7 +128,7 @@ export default class AddEntry extends React.Component{
                     }
                 })
             } else {
-                alert("Make sure every account has a category: for what reason the money was spent.")
+                alert("You cannot have a credit and debit in the same field.")
             }
         } else {
             alert("Make sure your credit and debit are equal and filled out.")
@@ -138,7 +146,7 @@ export default class AddEntry extends React.Component{
                     <table width='600' id='addTable'>
                         <thead>
                             <tr>
-                                <th></th>
+                                <th>{this.props.nextEntry}</th>
                                 <th><DatePicker id='date' selected={this.state.dateSetter} onChange={this.setDate} popperPlacement='right-start'/></th>
                                 <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
                                 <th></th>
@@ -156,6 +164,7 @@ export default class AddEntry extends React.Component{
                                         <td><input type="number"  placeholder="Debit" onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
                                         <td><input type="number" placeholder="Credit" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
                                         <td><input type="text"  placeholder="Event" onChange={(e) => this.handleChange(row, 'event', e)}/></td>
+                                        <td><button onClick={() => this.cancel(row)}>X</button></td>
                                     </tr>
                                 )
                             })}
