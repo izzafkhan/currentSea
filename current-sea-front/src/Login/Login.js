@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import Header from '../Header.js';
 import LoginForm from '../Login/LoginForm.js';
-import SignupForm from '../Login/SignupForm.js';
-import Accounts from '../Account/Accounts'
-import Report from '../Reports/Report'
-import { Link } from "react-router-dom";
-
-import IncomeStatement from '../Reports/Tables/IncomeStatement'
-import BalanceSheet from '../Reports/Tables/BalanceSheet'
 
 
 export default class Login extends Component{
