@@ -13,6 +13,7 @@ const options = {
          xAxes: [{
              stacked: true,
              display: false,
+             categoryPercentage: 5,
          }],
          yAxes: [{
              stacked: true,
@@ -100,6 +101,8 @@ export default class Transaction extends React.Component {
     }
 
     updateChart(){
+        
+        console.log('updated');
         let dataSetCopy = this.state.chartData.datasets.slice(0);
         let dataCopy1 = dataSetCopy[0].data.slice(0);
         let labelCopy1 = dataSetCopy[0].label;
@@ -140,13 +143,13 @@ export default class Transaction extends React.Component {
             total += this.state.currentData[i].tt_balance;
         }
 
-        dataCopy1[0] = (max1*100 / total).toFixed(2);
+        dataCopy1[0] = (max1/total).toFixed(2)*100;
         labelCopy1 = (label1);
-        dataCopy2[0] = (max2*100 / total).toFixed(2);
+        dataCopy2[0] = (max2/total).toFixed(2)*100;
         labelCopy2 = (label2);
-        dataCopy3[0] = (max3*100 / total).toFixed(2);
+        dataCopy3[0] = (max3/total).toFixed(2)*100 ;
         labelCopy3 = (label3);
-        dataCopy4[0] = ((total - (max1 + max2 + max3))*100/total).toFixed(2);
+        dataCopy4[0] = ((total - (max1 + max2 + max3))/total).toFixed(2)*100;
         labelCopy4 = (other);
 
         dataSetCopy[0].data = dataCopy1;
@@ -175,13 +178,14 @@ export default class Transaction extends React.Component {
                 showAddEntry: false
             });
         }
+        this.updateChart();
     }
 
     closeRow(id){
-        this.state.showAddEntry = id;
-        this.state.update = true;
-        this.forceUpdate();
-        this.updateChart();
+        this.setState({
+            showAddEntry : id,
+            update : true,
+        });
     } 
 
     closeEdit(tt_transaction_id, sum){
@@ -215,7 +219,6 @@ export default class Transaction extends React.Component {
             currentData : editData,
             update: true,
         });
-        this.forceUpdate();
         this.updateChart();
     }
 
@@ -235,7 +238,6 @@ export default class Transaction extends React.Component {
                 editUpdate : true
             });
         }
-        
         this.updateChart();
     }
 
@@ -271,8 +273,6 @@ export default class Transaction extends React.Component {
         this.setState({
             original : parseFloat(event.target.value),
         })
-        console.log(this.state.original);
-        console.log(to);
         $.ajax({
             url: "http://localhost:4000/currencies/getrate",
             type: "POST",
@@ -331,8 +331,6 @@ export default class Transaction extends React.Component {
                 this.setState({
                     currentData : data
                 });
-                console.log(this.state.currentData);
-                console.log('Update');
                 this.updateChart();
             },
             error: () => {
@@ -404,6 +402,7 @@ export default class Transaction extends React.Component {
                         currentData : data,
                         update: false
                     });
+                    this.updateChart();
                 },
                 error: () => {
                      console.log("Error: Could not update.");
