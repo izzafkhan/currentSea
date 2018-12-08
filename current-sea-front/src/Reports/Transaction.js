@@ -195,7 +195,7 @@ export default class Transaction extends React.Component {
             startBalance : false,
             update: true,
         })
-        console.log(startBalance);
+        console.log(this.state.startBalance);
     }
 
     deleteEdit(tt_transaction_id){

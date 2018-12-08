@@ -61,7 +61,6 @@ export default class StartBalance extends React.Component{
     }
 
     handleChange(row, entry, event) {
-        console.log(event);
         if(entry == "bt_accountID"){
             row[entry] = event.value;
         } else {
