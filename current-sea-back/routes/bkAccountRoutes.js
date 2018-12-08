@@ -107,30 +107,30 @@ module.exports = function router() {
     });
 
   bkAccountRouter.route('/delete_account')
-    .delete((req, res) => {
+    .post((req, res) => {
       if (req.user) {
-        const { userId, accountId, accountName } = req.body;
-        db.query('SELECT account_name from account_table where at_user_id = ? AND at_account_name = ? OR at_account_id = ?', [userId, accountName, accountId], (err, results) => {
-          if (results.length !== 0) {
 
-              db.query('SELECT dt_accountID from details_table where dt_accountID = ?', [accountId], (err1) => {
-                  if (err1) {
-                      debug('Error occurred while querying details_table', err1);
-                      return res.status(401).json({message: 'Deleting account is not permitted'});
+        const { accountId } = req.body;
+        db.query('SELECT account_name from details_table where dt_userID = ? AND dt_accountID = ?',
+          [req.user.username, accountId], (err, results) => {
+            if (err) {
+              debug(err);
+              res.status(500).json({ message: 'Some error occurred' });
+            }
+            if (results.length !== 0) {
+              res.status(401).json({ message: 'Account already used, please transfer your transactions from this account to another one' });
+            } else {
+              db.query('DELETE FROM account_table WHERE at_user_id = ? at_account_id = ?',
+                [req.user.username, accountId], () => {
+                  if (err) {
+                    debug(err);
+                    res.status(500).json({ message: 'Some error occurred' });
+                  } else {
+                    res.status(200).json({ message: 'Account deleted successfully' });
                   }
-              });
-
-
-            db.query('DELETE FROM account_table WHERE at_user_id = ? AND at_account_name = ? OR at_account_id = ?', [userId, accountName, accountId], () => {
-              if (err) {
-                debug(err);
-                res.status(500).json({ message: 'Some error occurred' });
-              }
-            });
-          } else {
-            res.status(401).json({ message: 'Account not found.' });
-          }
-        });
+                });
+            }
+          });
       } else {
         res.status(401).json({ message: 'User is not logged in' });
       }
