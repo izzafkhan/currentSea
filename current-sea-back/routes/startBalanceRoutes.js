@@ -55,7 +55,7 @@ module.exports = function router() {
   startBalanceRouter.route('/get_balance')
     .get((req, res) => {
       if (req.user) {
-        db.query('SELECT * FROM initial_balance_table WHERE bt_user_id',
+        db.query('SELECT * FROM initial_balance_table WHERE bt_user_id=?',
           [req.user.username], (err, results) => {
             if (err) {
               debug(err);
