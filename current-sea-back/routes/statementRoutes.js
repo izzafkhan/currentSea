@@ -2,8 +2,9 @@ const express = require('express');
 const math = require('mathjs');
 // const console = require('console');
 const debug = require('debug')('app:statementRoutes');
-const db = require('./db');
 const moment = require('moment');
+const db = require('./db');
+
 const statementRouter = express.Router();
 
 module.exports = function router() {
@@ -29,50 +30,31 @@ module.exports = function router() {
             let start = 0;
             let total_change = 0;
             for (let i = 0; i < results.length; i += 1) {
-              let end = 0;
               accountId.push(results[i].dt_accountID);
               accountName.push(results[i].at_account_name);
-              // credit not null for first transaction
-              if (results[i].dt_credit) {
-                end -= results[i].dt_credit * results[i].ct_rate;
-                start_amount.push(results[i].bt_initialBalance * results[i].rate);
-                start = -results[i].dt_credit * results[i].ct_rate;
-              }
-              // debit not null for first transaction
-              else if (results[i].dt_debit) {
-                end += results[i].dt_debit * results[i].ct_rate;
-                start_amount.push(results[i].bt_initialBalance * results[i].rate);
-                start = results[i].bt_initialBalance * results[i].rate;
-              }
-              if (i === results.length - 1) {
-                if (end < 0) {
-                  start_amount.push(math.abs(end));
-                  change_amount.push(math.abs(end));
-                  end_amount.push(math.abs(end));
-                } else {
-                  start_amount.push(end);
-                  change_amount.push(end);
-                  end_amount.push(end);
+              start = results[i].bt_initialBalance * results[i].rate;
+              start_amount.push(start);
+              let change = start;
+
+              if (results[i].dt_credit) { change -= results[i].dt_credit * results[i].ct_rate; }
+              else if (results[i].dt_debit) { change += results[i].dt_debit * results[i].ct_rate; }
+              if (i + 1 < results.length) {
+                while (results[i].dt_accountID === results[i + 1].dt_accountID) {
+                  if (results[i + 1].dt_credit) { change -= results[i + 1].dt_credit * results[i + 1].ct_rate; } else if (results[i + 1].dt_debit) { change += results[i + 1].dt_debit * results[i + 1].ct_rate; }
+                  i++;
+                  if (i >= results.length - 1) { break; }
                 }
-                break;
-              }
-              // loop through same account_id
-              while (results[i].dt_accountID === results[i + 1].dt_accountID) {
-                if (results[i + 1].dt_credit) { end -= results[i + 1].dt_credit * results[i + 1].ct_rate; }
-                else if (results[i + 1].dt_debit) { end += results[i + 1].dt_debit * results[i + 1].ct_rate; }
-                i++;
-                if (i >= results.length - 1) { break; }
               }
               // push the end amount for each account
+              const end = start + change;
               if (end < 0) {
-                end_amount.push(math.abs(end));
+                end_amount.push(end);
               } else {
                 end_amount.push(end);
               }
               // calculate the total change amount
               total_change = end - start;
-              if (total_change < 0) {change_amount.push(math.abs(total_change));}
-              else {change_amount.push(total_change);}
+              if (total_change < 0) { change_amount.push(total_change); } else { change_amount.push(total_change); }
             }
             // deal with return object
             const obj = {};
@@ -127,16 +109,14 @@ module.exports = function router() {
                 start = results[i].dt_debit * results[i].ct_rate;
               }
               if (i === results.length - 1) {
-                if (end < 0) {end_amount.push(math.abs(end));}
-                else {end_amount.push(end);}
+                if (end < 0) { end_amount.push(math.abs(end)); } else { end_amount.push(end); }
                 break;
               }
               // loop through same account_id
               while (results[i].dt_accountID === results[i + 1].dt_accountID) {
-                if (results[i + 1].dt_credit) {end -= results[i + 1].dt_credit * results[i+1].ct_rate;}
-                else if (results[i + 1].dt_debit) {end += results[i + 1].dt_debit * results[i+1].ct_rate;}
+                if (results[i + 1].dt_credit) { end -= results[i + 1].dt_credit * results[i + 1].ct_rate; } else if (results[i + 1].dt_debit) { end += results[i + 1].dt_debit * results[i + 1].ct_rate; }
                 i++;
-                if (i >= results.length - 1) {break;}
+                if (i >= results.length - 1) { break; }
               }
               // push the end amount for each account
               if (end < 0) {
