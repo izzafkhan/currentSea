@@ -13,6 +13,7 @@ const options = {
          xAxes: [{
              stacked: true,
              display: false,
+             categoryPercentage: 5,
          }],
          yAxes: [{
              stacked: true,
@@ -25,7 +26,9 @@ const options = {
         labels: {
             fontColor: 'rgb(255, 99, 132)'
         }
-    }
+    },
+    responsive: true,
+    maintainAspectRatio: true
 }
 
 export default class Transaction extends React.Component {
@@ -100,6 +103,8 @@ export default class Transaction extends React.Component {
     }
 
     updateChart(){
+        
+        console.log('updated');
         let dataSetCopy = this.state.chartData.datasets.slice(0);
         let dataCopy1 = dataSetCopy[0].data.slice(0);
         let labelCopy1 = dataSetCopy[0].label;
@@ -119,7 +124,7 @@ export default class Transaction extends React.Component {
         let total = 1;
         let other = 'Other';
         for(let i = 0; i < this.state.currentData.length; i++){
-            console.log(this.state.currentData);
+            console.log(max1);
             if(this.state.currentData[i].tt_balance >= max1){
                 max3 = max2;
                 label3 = label2;
@@ -127,17 +132,26 @@ export default class Transaction extends React.Component {
                 label2 = label1;
                 max1 = this.state.currentData[i].tt_balance;
                 label1 = this.state.currentData[i].tt_description; 
+            } else if(this.state.currentData[i].tt_balance >= max2){
+                max3 = max2;
+                label3 = label2;
+                max2 = this.state.currentData[i].tt_balance;
+                label2 = this.state.currentData[i].tt_description;
+
+            } else if(this.state.currentData[i].tt_balance >= max3){
+                max3 = this.state.currentData[i].tt_balance;
+                label3 = this.state.currentData[i].tt_description;
             }
             total += this.state.currentData[i].tt_balance;
         }
 
-        dataCopy1[0] = (max1*100 / total).toFixed(2);
+        dataCopy1[0] = (max1/total).toFixed(2)*100;
         labelCopy1 = (label1);
-        dataCopy2[0] = (max2*100 / total).toFixed(2);
+        dataCopy2[0] = (max2/total).toFixed(2)*100;
         labelCopy2 = (label2);
-        dataCopy3[0] = (max3*100 / total).toFixed(2);
+        dataCopy3[0] = (max3/total).toFixed(2)*100 ;
         labelCopy3 = (label3);
-        dataCopy4[0] = ((total - (max1 + max2 + max3))*100/total).toFixed(2);
+        dataCopy4[0] = ((total - (max1 + max2 + max3))/total).toFixed(2)*100;
         labelCopy4 = (other);
 
         dataSetCopy[0].data = dataCopy1;
@@ -166,13 +180,14 @@ export default class Transaction extends React.Component {
                 showAddEntry: false
             });
         }
+        this.updateChart();
     }
 
     closeRow(id){
-        this.state.showAddEntry = id;
-        this.state.update = true;
-        this.forceUpdate();
-        this.updateChart();
+        this.setState({
+            showAddEntry : id,
+            update : true,
+        });
     } 
 
     closeEdit(tt_transaction_id, sum){
@@ -206,7 +221,6 @@ export default class Transaction extends React.Component {
             currentData : editData,
             update: true,
         });
-        this.forceUpdate();
         this.updateChart();
     }
 
@@ -226,7 +240,6 @@ export default class Transaction extends React.Component {
                 editUpdate : true
             });
         }
-        
         this.updateChart();
     }
 
@@ -262,8 +275,6 @@ export default class Transaction extends React.Component {
         this.setState({
             original : parseFloat(event.target.value),
         })
-        console.log(this.state.original);
-        console.log(to);
         $.ajax({
             url: "http://localhost:4000/currencies/getrate",
             type: "POST",
@@ -322,8 +333,6 @@ export default class Transaction extends React.Component {
                 this.setState({
                     currentData : data
                 });
-                console.log(this.state.currentData);
-                console.log('Update');
                 this.updateChart();
             },
             error: () => {
@@ -395,6 +404,7 @@ export default class Transaction extends React.Component {
                         currentData : data,
                         update: false
                     });
+                    this.updateChart();
                 },
                 error: () => {
                      console.log("Error: Could not update.");
@@ -422,7 +432,7 @@ export default class Transaction extends React.Component {
                                 <tr>
                                     <th colSpan='6'>
                                         <button id='addEntryButton' onClick={ e => this.addRow()}>+</button>
-                                        {this.state.showAddEntry ? <div><AddEntry addEntry={this.state.showAddEntry} action={this.closeRow} currencies={this.state.convertCurrencies} accounts={this.state.accounts}/></div> : <span></span>}
+                                        {this.state.showAddEntry ? <div><AddEntry nextEntry={this.state.currentData.length + 1} addEntry={this.state.showAddEntry} action={this.closeRow} currencies={this.state.convertCurrencies} accounts={this.state.accounts}/></div> : <span></span>}
                                     </th>
                                 </tr>
                             </thead>

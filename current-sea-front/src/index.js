@@ -8,17 +8,19 @@ import Help from './Help';
 import Login from './Login/Login';
 import SignUpForm from './Login/SignupForm'
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter, Route, Redirect, Link, withRouter } from "react-router-dom";
+import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 import Accounts from './Account/Accounts';
 import $ from 'jquery';
 
 export const log = {
   loggedIn : false,
-  authenticate(cb){
-    this.loggedIn = true
+  authenticate(){
+    this.loggedIn = true;
+    localStorage.setItem('loggedIn', this.loggedIn);
   },
-  signout(cb){
-    this.loggedIn = false
+  signout(){
+    this.loggedIn = false;
+    localStorage.setItem('loggedIn', this.loggedIn);
   }
 }
 
@@ -42,20 +44,18 @@ const Auth = withRouter(({history}) => (
 
 export default class App extends React.Component{
   render() {
-
+    console.log(localStorage.getItem('loggedIn'));
     return (
       <BrowserRouter>
-        <div>
-          <Route exact path="/Reports/Report"  component={Report}/>
-          <Route exact path="/Account/Accounts"  component={Accounts}/>
-          <Route exact path="/Currencies/Currencies"  component={Currencies}/>
-          <Route exact path="/Help"  component={Help}/>
-          <Route exact path="/Transactions"  component={Home}/>
-          <Route exact path="/Register"  component = {SignUpForm}/>
-          <Route exact path="/Accounts"  component = {Accounts}/>
-          <Route exact path="/"  component={Login}/>
-  
-        </div>
+        <Switch>
+          <Route  path="/Reports/Report"  render={() => ( localStorage.getItem('loggedIn') ? <Report/> : <Redirect to="/"/>)}/>
+          <Route  path="/Account/Accounts"  render={() => ( localStorage.getItem('loggedIn') ? <Accounts/> : <Redirect to="/"/>)}/>
+          <Route  path="/Currencies/Currencies"  render={() => ( localStorage.getItem('loggedIn') ? <Currencies/> : <Redirect to="/"/>)}/>
+          <Route  path="/Help"  render={() => ( localStorage.getItem('loggedIn') ? <Help/> : <Redirect to="/"/>)}/>
+          <Route  path="/Transactions"  render={() => ( localStorage.getItem('loggedIn') ? <Home/> : <Redirect to="/"/> )}/>
+          <Route  path="/Register"  component = {SignUpForm}/>
+          <Route  path="/"  component={Login}/>
+        </Switch>
       </BrowserRouter>
     );
   }    
