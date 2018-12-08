@@ -12,9 +12,9 @@ module.exports = function router() {
         let query = '';
         for (let i = 0; i < data.length; i += 1) {
           if (i === 0) {
-            query += `at_account_id = ${data[i].bt_accountID}`;
+            query += `at_account_id = ${data[i].bt_account_id}`;
           } else {
-            query += ` OR at_account_id = ${data[i].bt_accountID}`;
+            query += ` OR at_account_id = ${data[i].bt_account_id}`;
           }
         }
         db.query(`SELECT * FROM account_table WHERE account_type = "Balance" AND at_user_id = ? AND (${query})`,
@@ -26,10 +26,10 @@ module.exports = function router() {
               let insert = '';
               for (let i = 0; i < data.length; i += 1) {
                 if (i === data.length - 1) {
-                  insert += `(${data[i].bt_accountID}, ${data[i].bt_initialBalance}, "${
+                  insert += `(${data[i].bt_account_id}, ${data[i].bt_initialBalance}, "${
                     data[i].bt_currency_abv}", "${req.user.username}")`;
                 } else {
-                  insert += `("${data[i].bt_accountID}", ${data[i].bt_initialBalance}, "${
+                  insert += `("${data[i].bt_account_id}", ${data[i].bt_initialBalance}, "${
                     data[i].bt_currency_abv}", "${req.user.username}"), `;
                 }
               }
