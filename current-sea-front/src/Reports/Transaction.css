@@ -16,6 +16,13 @@ div.bigContainer{
     height: auto;
 }
 
+div.bookkeepingTitleDiv {
+    text-align: center;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    padding-bottom: 10px;
+}
+
 #h1title{
     color: white !important;
     text-align: center !important;
