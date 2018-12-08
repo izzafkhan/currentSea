@@ -80,7 +80,6 @@ export default class LoginForm extends React.Component {
                     this.setState({ loginSuccess: true });
                 },
                 error: (data) => {
-                    this.setState({ password: '' });
                     alert('Invalid credentials');
                 }
             }

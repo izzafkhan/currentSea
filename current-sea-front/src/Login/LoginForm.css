@@ -18,7 +18,11 @@
 
 .loginBody {
     background-image: url("CurrentSea_bg.png");
-    height: 1024px;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    padding-bottom: 100px;
 }
 
 .loginContainerGrid {
