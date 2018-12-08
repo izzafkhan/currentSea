@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import './Header.css';
 import {Link, Redirect} from "react-router-dom";
+import {withRouter} from "react-router";
 import {log} from './index';
 import $ from 'jquery';
 
-export class Header extends Component {
+class Header extends Component {
     constructor() {
         super();
         this.state = {
@@ -24,13 +25,13 @@ export class Header extends Component {
                 if (data.message === 'OK') {
                     console.log(data.message);
                     this.setState({loggedIn: true});
+                    log.authenticate();
                 }
                 if (data.message === 'NOK') {
                     console.log(data.message);
                     this.setState({loggedIn: false});
-                    return(
-                    <Redirect to={{pathname: "/"}} />
-                    );
+                    log.signout();
+                    this.props.history.push("/");
                 }
             }
         });
@@ -42,10 +43,11 @@ export class Header extends Component {
             type: 'GET',
             crossDomain: true,
             xhrFields: {withCredentials: true},
-            success: (data) => {
+            success: () => {
                 this.setState({loggedIn: false});
+                log.signout();
             },
-            error: (data) => {
+            error: () => {
                 this.setState({loggedIn: false});
             }
         });
@@ -89,4 +91,4 @@ export class Header extends Component {
 
 
 //ReactDOM.render(<nav></nav>,document.querySelector('navbar'));
-export default Header;
+export default withRouter(Header);
