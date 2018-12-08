@@ -15,6 +15,7 @@ export default class StartBalance extends React.Component{
         this.handleChange = this.handleChange.bind(this);
         this.save = this.save.bind(this);
         this.handleCurrency = this.handleCurrency.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
 
     componentDidMount(){
