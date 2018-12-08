@@ -3,7 +3,7 @@ const math = require('mathjs');
 // const console = require('console');
 const debug = require('debug')('app:statementRoutes');
 const db = require('./db');
-
+const moment = require('moment');
 const statementRouter = express.Router();
 
 module.exports = function router() {
@@ -11,11 +11,11 @@ module.exports = function router() {
   statementRouter.route('/balance')
     .get((req, res) => {
       if (req.user) {
-        db.query('SELECT * FROM details_table, transaction_table, account_table, currency_table '
+        db.query('SELECT dt_accountID, at_account_name, dt_credit, dt_debit, bt_initialBalance, t1.ct_rate, t2.ct_rate as rate FROM details_table, transaction_table, account_table, currency_table t1, initial_balance_table, currency_table t2 '
           + 'WHERE at_user_id = dt_userID AND at_account_id = dt_accountID '
           + 'AND tt_user_id = dt_userID AND tt_transaction_id = dt_transactionID AND dt_userID = ? '
-          + 'AND account_type = ? AND tt_currency = ct_from AND ct_to = "USD" AND ct_date = tt_date ORDER BY dt_accountID, tt_date ASC, dt_transactionID;',
-        [req.user.username, 'Balance'],
+          + 'AND account_type = ? AND tt_currency = t1.ct_from AND t1.ct_to = "USD" AND t1.ct_date = tt_date AND bt_account_id = dt_accountID AND bt_user_id = dt_userID AND bt_currency_abv = t2.ct_from AND t2.ct_to = "USD" AND t2.ct_date = ? ORDER BY dt_accountID, tt_date ASC, dt_transactionID;',
+        [req.user.username, 'Balance', moment().format('YYYY-MM-DD')],
         (err, results) => {
           const start_amount = [];
           const change_amount = [];
@@ -35,14 +35,14 @@ module.exports = function router() {
               // credit not null for first transaction
               if (results[i].dt_credit) {
                 end -= results[i].dt_credit * results[i].ct_rate;
-                start_amount.push(results[i].dt_credit * results[i].ct_rate);
+                start_amount.push(results[i].bt_initialBalance * results[i].rate);
                 start = -results[i].dt_credit * results[i].ct_rate;
               }
               // debit not null for first transaction
               else if (results[i].dt_debit) {
                 end += results[i].dt_debit * results[i].ct_rate;
-                start_amount.push(results[i].dt_debit * results[i].ct_rate);
-                start = results[i].dt_debit * results[i].ct_rate;
+                start_amount.push(results[i].bt_initialBalance * results[i].rate);
+                start = results[i].bt_initialBalance * results[i].rate;
               }
               if (i === results.length - 1) {
                 if (end < 0) {
