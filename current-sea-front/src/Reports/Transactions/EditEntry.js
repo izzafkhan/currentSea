@@ -17,6 +17,7 @@ export default class EditEntry extends React.Component{
             currencies : this.props.currencies,
             events : this.props.events,
             myAccounts : [],
+            myEvents : [],
             transactionInfo : this.props.transactionInfo,
         }
         this.addinfo = this.addinfo.bind(this);
@@ -188,6 +189,18 @@ export default class EditEntry extends React.Component{
 
         $.ajax({
             url: "http://localhost:4000/event/get_event_transactions",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType:"json",
+            xhrFields: { withCredentials:true },
+            data: JSON.stringify({'tt_transaction_id': this.props.id}),
+            success: (receivedData) => {
+                console.log(receivedData);
+                this.setState({
+                    myEvents : receivedData,
+                })
+            }
         })
     }
 
