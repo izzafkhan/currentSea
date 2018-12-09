@@ -13,8 +13,7 @@ export default class Login extends Component{
   render() {
       return(
         <div>
-            {/*{<LoginForm/>}*/}
-            {<Settings/>}
+            {<LoginForm/>}
         </div>
     );
   }
