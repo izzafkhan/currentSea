@@ -104,10 +104,9 @@ export default class Events extends React.Component {
                             this.setState({
                                 update: true
                             });
-
-
                         },
-                        error: () => {
+                        error: (data) => {
+                            alert(data.responseJSON.message);
                             console.log("Error: Could not submit");
 
 
