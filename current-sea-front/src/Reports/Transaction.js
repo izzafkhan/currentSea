@@ -59,6 +59,8 @@ export default class Transaction extends React.Component {
             conversion: 0,
             startBalance: false,
             accounts: [],
+            events: [],
+            categories: [],
 
             chartData : { 
                 datasets:[{
@@ -356,7 +358,8 @@ export default class Transaction extends React.Component {
                     newRow.label = data.currencies[i];
                     currencies[i] = newRow;
                 }
-                this.setState({convertCurrencies: currencies,
+                this.setState({
+                    convertCurrencies: currencies,
                     startCurrency : currencies[31],
                     endCurrency: currencies[8]    
                 })
@@ -365,6 +368,7 @@ export default class Transaction extends React.Component {
                 console.log("Error: Could not fetch data");
            }
         });
+
         $.ajax({
             url: "http://localhost:4000/accounts/get_accounts",
            type: "GET",
@@ -388,6 +392,29 @@ export default class Transaction extends React.Component {
                 console.log("Error: Could not fetch data");
            }
         });
+
+        $.ajax({
+            url: "http://localhost:4000/event/get_all_events",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType:"json",
+            xhrFields: {withCredentials:true},
+            success: (data) => {
+                console.log(data);
+                const events = []; 
+                for (let i = 0; i < data.length; i++) {
+                    const newRow = {value: '', label: ''};
+                    newRow.value = data[i].et_event_id;
+                    newRow.label = data[i].et_event_abv + " " + data[i].et_event_name;
+                    events[i] = newRow;
+                }
+                events.push({'value' : 42, 'label' : 'No Event'});
+                this.setState({
+                    events: events,
+                })
+            }
+        })
     }
 
 
@@ -414,6 +441,8 @@ export default class Transaction extends React.Component {
                      })
                 }
             }); 
+
+            
         }
         return (
             <div class="bigContainer">
@@ -428,12 +457,17 @@ export default class Transaction extends React.Component {
                                     <th>Description</th>
                                     <th>Balance</th>
                                     <th>DF</th>
-                                    <th>Category</th>
+                                    <th>Event</th>
                                 </tr>
                                 <tr>
                                     <th colSpan='6'>
                                         <button id='addEntryButton' onClick={ e => this.addRow()}>+</button>
-                                        {this.state.showAddEntry ? <div><AddEntry nextEntry={this.state.currentData.length + 1} addEntry={this.state.showAddEntry} action={this.closeRow} currencies={this.state.convertCurrencies} accounts={this.state.accounts}/></div> : <span></span>}
+                                        {this.state.showAddEntry ? <div><AddEntry   nextEntry={this.state.currentData.length + 1} 
+                                                                                    addEntry={this.state.showAddEntry} 
+                                                                                    action={this.closeRow} 
+                                                                                    currencies={this.state.convertCurrencies} 
+                                                                                    events={this.state.events} 
+                                                                                    accounts={this.state.accounts}/></div> : <span></span>}
                                     </th>
                                 </tr>
                             </thead>
@@ -462,7 +496,8 @@ export default class Transaction extends React.Component {
                                                                                makeEdit={row.edit} 
                                                                                deleteAction={this.deleteEdit} 
                                                                                accounts={this.state.accounts} 
-                                                                               currencies={this.state.convertCurrencies} 
+                                                                               currencies={this.state.convertCurrencies}
+                                                                               events={this.state.events} 
                                                                                closeAction={this.closeEdit} 
                                                                                transactionInfo={row} />
                                                                 </td>
