@@ -164,8 +164,8 @@ export default class Events extends React.Component {
             <div>
                 <table className="accountsTable">
 
-                    <col width={100}/>
-                    <col width={200}/>
+                    <col width={170}/>
+                    <col width={190}/>
                     <col width={100}/>
                     <col width={100}/>
 
