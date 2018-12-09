@@ -90,8 +90,9 @@ export default class Events extends React.Component {
                            
             
                         },
-                        error: () => {
+                        error: (data) => {
                              console.log("Error: Could not submit");
+                             alert(data.responseJSON.message);
                              
 
                         }
