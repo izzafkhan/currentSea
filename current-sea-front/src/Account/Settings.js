@@ -17,7 +17,7 @@ class Settings extends Component {
                 <Header/>
 
                 <div className="settingsBothTitlesDiv">
-                    <h1 id="h1titleSettings">Settings</h1>
+                    <h1 id="h1titleSettings" style={{paddingBottom: "40px"}}>Settings</h1>
                     <div className="settingSubHead">Here you can set up, edit and delete your accounts and events</div>
                 </div>
 
