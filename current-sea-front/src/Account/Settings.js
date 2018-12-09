@@ -15,11 +15,8 @@ class Settings extends Component {
         return (
             <div className="settingsRoot">
                 <Header/>
-                <h1 id="h1title">Account Settings</h1>
+                <h1 id="h1title">Settings</h1>
                 <div className="settingSubHead">Here you can set up, edit and delete your accounts and events</div>
-
-
-
                 <div className="settingsTableDiv">
                     <div className="accountsDiv">
                         <div className="settingsTableTitle">Accounts</div>

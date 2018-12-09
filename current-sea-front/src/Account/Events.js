@@ -265,56 +265,6 @@ export default class Events extends React.Component {
 
             </div>
 
-            /*
-            <div class="tableContainerE">
-                <div className="events-table">
-                    <table id='dataTableE'>
-                        <thead>
-                            <tr>
-                                <th>Abbr.</th>
-                                <th>Name</th>
-                                <th>Color</th>
-                            </tr>
-                            <tr>
-                                <th colSpan='6'>
-                                    <button id='addEventButton' onClick={ e => this.addRow()}>+</button>
-                                    {this.state.showAddEntry ? <div><AddEvent addEntry={this.state.showAddEntry} add={this.addToTable} action={this.closeRow}/></div> : <span></span>}                                </th>
-                                 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            { this.state.currentData.map(row => {
-                                return (
-                                    <tr key={`row-${row.et_event_id}`}>
-                                        <td colSpan='6'>
-                                            <table>
-                                                <tbody>
-                                                    <tr id='nested'>
-                                                        <td><button>{row.et_event_abv}</button></td>
-                                                        <td><button>{row.et_event_name}</button></td>
-                                                        <td><button>{row.et_event_color}</button></td>
-
-                                                        <button id='deleteButton' onClick={e => this.deleteRowE(e,row.et_event_id)}> x </button>
-
-                                                    </tr>
-                                                    {row.edit ?
-                                                        <tr>
-                                                            <td colSpan='6'>
-                                                            </td>
-                                                        </tr> : <tr></tr>}
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                )
-                            })}  
-                            
-                        </tbody>
-                    </table>
-                </div> 
-            </div>
-            */
-
         );
     }
 }
