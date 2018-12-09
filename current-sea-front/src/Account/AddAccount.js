@@ -70,7 +70,7 @@ export default class AddAccount extends React.Component{
     submitData(){
         if(this.state.newData.accountType == '' && this.state.newData.accountId != '' &&
             this.state.newData.accountName != ''){
-                alert("PLease fill in all fields to submit")
+                alert("Please fill in all fields ")
             }
         let newData = Object.assign({}, this.state.newData);
 
@@ -109,25 +109,24 @@ export default class AddAccount extends React.Component{
             <div>
                 {this.props.addEntry ? 
                 <div>
-                    <table width='600' id='addTableA'>
+                    <table width='450' id='addTableA'>
                         <thead>
                             <tr>
                                 
-                                <th><input type="number" placeholder="Account Number" onChange={this.handleAcctID }/></th>
-                                <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
-                                <th><Select options={options} onChange={this.handleType}/></th>
-                               
+                                <td><input type="number" placeholder="Account No." onChange={this.handleAcctID }/></td>
+                                <td><input type="text" placeholder="Description" onChange={this.handleDescription} /></td>
+                                {/*<th><input type="text" placeholder="Balance or Income" onChange={this.handleType} /></th>*/}
+                                <td className="selectAccountDropDown"><Select  options={options} onChange={this.handleType}/></td>
                             </tr>
+
+                            <td><button onClick={()=>{
+                                this.props.add(this.state.newData);
+                                this.submitData();}}>Done</button></td>
                            
                         </thead>
-                    
-                        <tbody>
-                           
-                        </tbody>     
+
                     </table>
-                    <button onClick={()=>{
-                            this.props.add(this.state.newData);
-                             this.submitData();}}>Done</button>
+
                 </div>
                 : (null) }
             </div>

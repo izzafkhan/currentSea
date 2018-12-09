@@ -1,11 +1,15 @@
-/*#addTableA th, #addTableA input{
+#addTableA th, #addTableA input{
     width: 120px;
 }
 
 #addTableA{
-    margin: 12px;
+    margin: 5px;
 }
 
 #newAccount td{
-    width: 80px;
-}*/
+    width: 120px;
+}
+
+.selectAccountDropDown {
+    width: 200px;
+}
