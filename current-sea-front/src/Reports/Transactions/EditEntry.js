@@ -27,7 +27,7 @@ export default class EditEntry extends React.Component{
         this.save = this.save.bind(this);
         this.remove = this.remove.bind(this);
         this.submitDelete = this.submitDelete.bind(this);
-        this.cancel = this.cancel.bind(this);
+        /*this.cancel = this.cancel.bind(this);*/
     }
 
     submitDelete = () => {
@@ -163,12 +163,12 @@ export default class EditEntry extends React.Component{
             }
         })
     }
-
+/*
     cancel(row){
         let index = this.state.data.indexOf(row);
         this.state.data.splice(index, 1);
         this.forceUpdate();
-    }
+    }*/
 
     componentDidMount(){
         $.ajax({
@@ -265,7 +265,7 @@ export default class EditEntry extends React.Component{
                                     <td><input type="number"  defaultValue={row.dt_debit} onChange={(e) => this.handleChange(row, 'dt_debit', e)}/></td>
                                     <td><input type="number" defaultValue={row.dt_credit} onChange={(e) => this.handleChange(row, 'dt_credit', e)}/></td>
                                     <td><Select options={this.state.events} placeholder={' '} onChange={(e) => this.handleChange(row, 'dt_eventID', e)} className = "dropdownA"/></td>
-                                    <td><button onClick={() => this.cancel(row)}>X</button></td>
+                                    {/*<td><button onClick={() => this.cancel(row)}>X</button></td>*/}
                                 </tr>
                             )
                         })}
