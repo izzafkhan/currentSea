@@ -8,6 +8,7 @@ module.exports = function router() {
   startBalanceRouter.route('/set_balance')
     .post((req, res) => {
       if (req.user) {
+        debug(req.body);
         const { data } = req.body;
         let query = '';
         for (let i = 0; i < data.length; i += 1) {
