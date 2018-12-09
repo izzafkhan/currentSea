@@ -243,11 +243,17 @@ export default class Events extends React.Component {
                                                 <tbody>
                                                     <tr id='nested'>
 <<<<<<< HEAD
+<<<<<<< HEAD
                                                         <td><button>{row.et_event_abv}</button></td>
                                                         <td><button>{row.et_event_name}</button></td>
                                                         <td><button>{<svg height="25" width="25">
                                                         <circle cx="12.5" cy="12.5" r="10" stroke={row.et_event_color} stroke-width="1" fill= {row.et_event_color} />
                                                         </svg>}</button></td>
+=======
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_abv}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_name}</button></td>
+                                                        <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_color}</button></td>
+>>>>>>> parent of ba1b7b7... Settings done except styling
 =======
                                                         <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_abv}</button></td>
                                                         <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_name}</button></td>

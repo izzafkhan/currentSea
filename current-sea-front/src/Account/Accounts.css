@@ -39,7 +39,11 @@ div.accounts-table, div.quick { float: left;}
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 div.tableContainer{overflow:hidden;width:200px;}
+=======
+div.tableContainer {overflow: hidden;}
+>>>>>>> parent of ba1b7b7... Settings done except styling
 =======
 div.tableContainer {overflow: hidden;}
 >>>>>>> parent of ba1b7b7... Settings done except styling
