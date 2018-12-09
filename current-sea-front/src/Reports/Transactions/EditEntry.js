@@ -232,7 +232,7 @@ export default class EditEntry extends React.Component{
                             <th>Credit</th>
                             <th>Event</th>
                             <th><input type="text" defaultValue={this.state.transactionInfo.tt_description} onChange={(e) => this.handleDescription(e)}></input></th>
-                            <th><Select options={this.state.currencies} placeholder={this.state.transactionInfo.tt_currency} onChange={(e) => this.handleCurrency(e)} /></th>
+                            <th  style={{width : "100px"}}><Select options={this.state.currencies} placeholder={this.state.transactionInfo.tt_currency} onChange={(e) => this.handleCurrency(e)} /></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -240,10 +240,10 @@ export default class EditEntry extends React.Component{
                         {this.state.data.map( (row, index) => {
                             return (
                                 <tr key={`row-${index}`}>
-                                    <td><Select options={this.state.accounts} placeholder={row.dt_accountID} onChange={(e) => this.handleChange(row, 'dt_accountID', e)}/></td>
+                                    <td  style={{width : "100px"}}><Select options={this.state.accounts} placeholder={row.dt_accountID} onChange={(e) => this.handleChange(row, 'dt_accountID', e)}/></td>
                                     <td><input type="number"  defaultValue={row.dt_debit} onChange={(e) => this.handleChange(row, 'dt_debit', e)}/></td>
                                     <td><input type="number" defaultValue={row.dt_credit} onChange={(e) => this.handleChange(row, 'dt_credit', e)}/></td>
-                                    <td><Select options={this.state.events} placeholder={row.dt_eventID} onChange={(e) => this.handleChange(row, 'dt_eventID', e)}/></td>
+                                    <td  style={{width : "100px"}}><Select options={this.state.events} placeholder={' '} onChange={(e) => this.handleChange(row, 'dt_eventID', e)}/></td>
                                     <td><button onClick={() => this.cancel(row)}>X</button></td>
                                 </tr>
                             )

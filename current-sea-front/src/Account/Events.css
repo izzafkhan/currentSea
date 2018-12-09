@@ -70,5 +70,25 @@
     /*border-style: solid;*/
 /*}*/
 
+.eventsTable {
+    background-color: white;
+}
 
+.eventsTableRow {
+    width: 400px;
+}
+
+#addEventButton {
+    width: 500px;
+    text-align: center;
+    color: white;
+    background-color: #00ADA2;
+    border-color: #00ADA2;
+    border-style: solid;
+}
+
+.eventDeleteButton {
+    background: none;
+    border: none;
+}
 

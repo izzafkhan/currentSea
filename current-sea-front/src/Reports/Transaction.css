@@ -114,6 +114,7 @@ Styling to make the table readable
     color: white;
     background-color: #00ADA2;
     border: #00ADA2;
+    padding: 4px;
 }
 
 div.conversion p, div.conversion h3{

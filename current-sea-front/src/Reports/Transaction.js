@@ -402,7 +402,6 @@ export default class Transaction extends React.Component {
             dataType:"json",
             xhrFields: {withCredentials:true},
             success: (data) => {
-                console.log(data);
                 const events = []; 
                 for (let i = 0; i < data.length; i++) {
                     const newRow = {value: '', label: ''};
@@ -425,7 +424,6 @@ export default class Transaction extends React.Component {
             dataType:"json",
             xhrFields: { withCredentials:true },
             success: (receivedData) => {
-                console.log(receivedData);
                 this.setState({
                     myEvents : receivedData,
                 })
@@ -466,7 +464,6 @@ export default class Transaction extends React.Component {
                 dataType:"json",
                 xhrFields: { withCredentials:true },
                 success: (receivedData) => {
-                    console.log(receivedData);
                     this.setState({
                         myEvents : receivedData,
                     })
@@ -511,7 +508,6 @@ export default class Transaction extends React.Component {
                                     if(!this.state.myEvents[row.tt_transaction_id]){ 
                                         const data = this.state.myEvents;
                                         data[row.tt_transaction_id] = {et_event_abv: " "};
-                                        console.log(data);
                                         this.setState({myEvents: data});
                                     }
                                     return (    

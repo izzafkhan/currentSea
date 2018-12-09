@@ -6,7 +6,7 @@
     float: right;
 }
 
-#editTable th, #editTable td, #editTable input{
+#editTable input{
     width: 100px;
 }
 
