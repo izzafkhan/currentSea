@@ -10,7 +10,12 @@
     width: 100px;
 }
 
-h1{
+#currenciesTitle{
     background-color: #051642 !important;
     color: white !important;
+}
+
+h1{
+    background-color: white !important;
+    color: black !important;
 }
