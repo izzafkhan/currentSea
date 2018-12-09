@@ -165,7 +165,7 @@ module.exports = function router() {
   transactionsRouter.route('/get_transaction_event')
     .get((req, res) => {
       if (req.user) {
-        db.query('SELECT dt_transactionID, et_event_abv, et_event_name, et_event_color, count(et_event_id) as num FROM event_table, details_table WHERE dt_userID = ? AND dt_eventID = et_event_id GROUP BY dt_transactionID',
+        db.query('SELECT dt_transactionID, et_event_abv, et_event_name, et_event_color FROM event_table, details_table WHERE dt_userID = ? AND dt_eventID = et_event_id GROUP BY dt_transactionID',
           [req.user.username], (err, results) => {
             if (err) {
               debug('Error in /get_transaction_events', err);
