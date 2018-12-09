@@ -1,13 +1,19 @@
 
+<<<<<<< HEAD
 /*div.tableContainer{
     height: 100vh; 
+=======
+div.tableContainer{
+    margin-block-start: 30px;
+    height: 100vh; /* Magic here */
+>>>>>>> parent of ba1b7b7... Settings done except styling
     display: flex;    
-    justify-content: center;
+    justify-content: left;
     background: #051642;
-    padding-left:450px;
-    padding-right:450px;
-    padding-top:50px;
-   
+    margin:0;
+    margin-block-start:0;
+    float:left;
+    width:fit-content;
   
   
 }
@@ -19,7 +25,6 @@ div.bigContainer h1 {
     padding-bottom: 5px; 
     padding-top: 40px; 
 
-
 }
 
 div.bigContainer h6 {
@@ -30,10 +35,14 @@ div.bigContainer h6 {
     margin-bottom: 40px; 
 }
 
-div.accounts-table, div.quick { float: left; width:100px;}
+div.accounts-table, div.quick { float: left;}
 
 
+<<<<<<< HEAD
 div.tableContainer{overflow:hidden;width:200px;}
+=======
+div.tableContainer {overflow: hidden;}
+>>>>>>> parent of ba1b7b7... Settings done except styling
 
 
 /* 

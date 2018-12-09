@@ -4,11 +4,12 @@ div.tableContainerE{
     
     display: flex;    
 
+    padding-block-start: 20px;
+    padding-inline-start: 100px;
     background: #051642;
-    padding-left: 100px;
-       
-   
-
+    margin:0;
+    
+    justify-content: left;
 }
 
 
@@ -20,10 +21,10 @@ div.tableContainerE{
 }
 
 
-div.events-table, div.quick { display:inline;}
+div.events-table, div.quick { display:inline; float: left;}
 
 
-div.tableContainerE {overflow: hidden; float:right; width:800px;}
+div.tableContainerE {overflow: hidden;}
 
 
 /* 
