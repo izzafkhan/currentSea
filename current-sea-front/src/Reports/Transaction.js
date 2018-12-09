@@ -538,12 +538,17 @@ export default class Transaction extends React.Component {
                             <HorizontalBar id="myChart" data={this.state.chartData} options={options}/>
                         </div>
                         <div class="conversion">
-                            <h2>Currency Conversion</h2>
-                            <input type="number" defaultValue={this.state.original} onChange={this.convert} />
-                            <Select id='start-currency' options={this.state.convertCurrencies} placeholder={this.state.startCurrency.value} onChange={this.handleStartCurrency}/>
-                            <h3>=</h3>
-                            <p>{this.state.conversion}</p>
-                            <Select id='end-currency' options={this.state.convertCurrencies} placeholder={this.state.endCurrency.value} onChange={this.handleEndCurrency}/>
+                            <h2>    Currency Conversion</h2>
+                            <div>
+                                <input type="number" id='currency-number-in' defaultValue={this.state.original} onChange={this.convert} />
+                                <Select id='start-currency' options={this.state.convertCurrencies} placeholder={this.state.startCurrency.value} onChange={this.handleStartCurrency}/>
+                            </div>
+
+                            <h3 id='currency-equal'>=</h3>
+                            <div class='currency-out'>
+                                <p id='currency-number-out'>{this.state.conversion}</p>
+                                <Select id='end-currency' options={this.state.convertCurrencies} placeholder={this.state.endCurrency.value} onChange={this.handleEndCurrency}/>
+                            </div>
                         </div>
                     </div>
                 </div>
