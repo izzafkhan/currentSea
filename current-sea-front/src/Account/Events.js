@@ -9,6 +9,7 @@ import ChromePicker from 'react-color'
 import update from 'react-addons-update';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
+import {Circle} from  'react-shapes';
 
 export default class Events extends React.Component {
     constructor(props) {
@@ -39,6 +40,7 @@ export default class Events extends React.Component {
         this.componentDidMount = this.componentDidMount.bind(this);
         this.addToTable =this.addToTable.bind(this);
         this.deleteRowE = this.deleteRowE.bind(this);
+        this.makeCircle = this.makeCircle.bind(this);
     }
 
     addRow = () => {
@@ -149,6 +151,8 @@ export default class Events extends React.Component {
         }
     }
 
+    makeCircle = (e, accountColor) => {
+    }
     get(event) {
         {/*
             We'll need to figure out how to use the API before we can convert
@@ -237,7 +241,9 @@ export default class Events extends React.Component {
                                                     <tr id='nested'>
                                                         <td><button>{row.et_event_abv}</button></td>
                                                         <td><button>{row.et_event_name}</button></td>
-                                                        <td><button>{row.et_event_color}</button></td>
+                                                        <td><button>{<svg height="25" width="25">
+                                                        <circle cx="12.5" cy="12.5" r="10" stroke={row.et_event_color} stroke-width="1" fill= {row.et_event_color} />
+                                                        </svg>}</button></td>
 
                                                         <button id='deleteButton' onClick={e => this.deleteRowE(e,row.et_event_id)}> x </button>
 
