@@ -7,6 +7,7 @@ import $ from 'jquery'
 import moment from "moment"
 import Select from 'react-select';   
 import {HorizontalBar} from 'react-chartjs-2';
+import {Circle} from 'react-shapes';
 
 const options = {
     scales: {
@@ -60,7 +61,7 @@ export default class Transaction extends React.Component {
             startBalance: false,
             accounts: [],
             events: [],
-            categories: [],
+            myEvents: {},
 
             chartData : { 
                 datasets:[{
@@ -415,6 +416,21 @@ export default class Transaction extends React.Component {
                 })
             }
         })
+
+        $.ajax({
+            url: "http://localhost:4000/transactions/get_transaction_event",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType:"json",
+            xhrFields: { withCredentials:true },
+            success: (receivedData) => {
+                console.log(receivedData);
+                this.setState({
+                    myEvents : receivedData,
+                })
+            }
+        })
     }
 
 
@@ -447,7 +463,9 @@ export default class Transaction extends React.Component {
         return (
             <div class="bigContainer">
                 <h1 id='h1title'>Bookkeeping</h1>
-                <div class="myContainer">
+                <div className="settingSubHead">Here you can record your transactions</div>
+
+                <div class="myContainer" style={{marginTop: "30px"}}>
                     <div className="transaction-table">
                         <table id='dataTable' width="600">
                             <thead>
@@ -475,6 +493,12 @@ export default class Transaction extends React.Component {
                                 {this.state.currentData.slice(0).reverse().map(row => {
                                     let index = this.state.currentData.indexOf(row);
                                     let display = 1 + index; 
+                                    if(!this.state.myEvents[row.tt_transaction_id]){ 
+                                        const data = this.state.myEvents;
+                                        data[row.tt_transaction_id] = {et_event_abv: " "};
+                                        console.log(data);
+                                        this.setState({myEvents: data});
+                                    }
                                     return (    
                                         <tr key={`row-${row.tt_transaction_id}`}>
                                             <td colSpan='6'>
@@ -486,7 +510,9 @@ export default class Transaction extends React.Component {
                                                             <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
                                                             <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_balance}</button></td>
                                                             <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_currency}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
+                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>
+                                                            <Circle r={10} fill={{color:this.state.myEvents[row.tt_transaction_id].et_event_color}} 
+                                                            stroke={{color:this.state.myEvents[row.tt_transaction_id].et_event_color}} strokeWidth={3} /></button></td>
                                                         </tr>
                                                         {row.edit ?
                                                             <tr>
@@ -498,6 +524,7 @@ export default class Transaction extends React.Component {
                                                                                accounts={this.state.accounts} 
                                                                                currencies={this.state.convertCurrencies}
                                                                                events={this.state.events} 
+                                                                               myEvents={this.state.myEvents}
                                                                                closeAction={this.closeEdit} 
                                                                                transactionInfo={row} />
                                                                 </td>
@@ -538,12 +565,17 @@ export default class Transaction extends React.Component {
                             <HorizontalBar id="myChart" data={this.state.chartData} options={options}/>
                         </div>
                         <div class="conversion">
-                            <h2>Currency Conversion</h2>
-                            <input type="number" defaultValue={this.state.original} onChange={this.convert} />
-                            <Select id='start-currency' options={this.state.convertCurrencies} placeholder={this.state.startCurrency.value} onChange={this.handleStartCurrency}/>
-                            <h3>=</h3>
-                            <p>{this.state.conversion}</p>
-                            <Select id='end-currency' options={this.state.convertCurrencies} placeholder={this.state.endCurrency.value} onChange={this.handleEndCurrency}/>
+                            <h2>    Currency Conversion</h2>
+                            <div>
+                                <input type="number" id='currency-number-in' defaultValue={this.state.original} onChange={this.convert} />
+                                <Select id='start-currency' options={this.state.convertCurrencies} placeholder={this.state.startCurrency.value} onChange={this.handleStartCurrency}/>
+                            </div>
+
+                            <h3 id='currency-equal'>=</h3>
+                            <div class='currency-out'>
+                                <p id='currency-number-out'>{this.state.conversion}</p>
+                                <Select id='end-currency' options={this.state.convertCurrencies} placeholder={this.state.endCurrency.value} onChange={this.handleEndCurrency}/>
+                            </div>
                         </div>
                     </div>
                 </div>

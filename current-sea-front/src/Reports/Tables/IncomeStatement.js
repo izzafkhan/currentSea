@@ -143,7 +143,7 @@ export default class IncomeStatement extends Component {
         return (
 
 
-            <div className="gridContainer">
+            <div className="gridContainer" style={{paddingTop: "50px"}}>
 
                 <div className="isgTop">
 

@@ -69,6 +69,8 @@ class Report extends Component {
             <body className="reportsRootContainer">
                 <Header/>
                 <h1 id="h1title">Reports</h1>
+                <div className="settingSubHead">Here you can inspect records of your financial activities</div>
+
 
                 {currentSheet()}
 

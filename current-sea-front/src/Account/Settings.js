@@ -15,9 +15,11 @@ class Settings extends Component {
         return (
             <div className="settingsRoot">
                 <Header/>
-                <h1 id="h1title">Account Settings</h1>
-                <div className="settingSubHead">Here you can set up, edit and delete your accounts and events</div>
 
+                <div className="settingsBothTitlesDiv">
+                    <h1 id="h1titleSettings" style={{paddingBottom: "40px"}}>Settings</h1>
+                    <div className="settingSubHead">Here you can set up, edit and delete your accounts and events</div>
+                </div>
 
 
                 <div className="settingsTableDiv">
