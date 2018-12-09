@@ -59,7 +59,9 @@ h1{
     alignment: center;
     width: 100px;
 }
-
+.dropdownA{
+    width: 100px;
+}
 #acc-cancel-btn {
 
 }
