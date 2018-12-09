@@ -224,15 +224,26 @@ export default class EditEntry extends React.Component{
 
         return(
             <div width='400'>
+                <div>
+                    <div>
+                        <span id='tr-desc-label'><b>Description:</b></span>
+                        <input type="text" id='tr-desc' defaultValue={this.state.transactionInfo.tt_description} onChange={(e) => this.handleDescription(e)}></input>
+                    </div>
+
+                    <div>
+                        <span id='tr-curr-label'><b>Currency:</b></span>
+                        <Select options={this.state.currencies} id='tr-curr' placeholder={this.state.transactionInfo.tt_currency} onChange={(e) => this.handleCurrency(e)} />
+                    </div>
+
+                </div>
                 <table id='editTable' width='400'>
                     <thead id='headEntry'>
+
                         <tr>
                             <th>Account</th>
                             <th>Debit</th>
                             <th>Credit</th>
                             <th>Event</th>
-                            <th><input type="text" defaultValue={this.state.transactionInfo.tt_description} onChange={(e) => this.handleDescription(e)}></input></th>
-                            <th><Select options={this.state.currencies} placeholder={this.state.transactionInfo.tt_currency} onChange={(e) => this.handleCurrency(e)} /></th>
                         </tr>
                     </thead>
                     <tbody>
