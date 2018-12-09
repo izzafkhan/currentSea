@@ -91,7 +91,12 @@ export default class AddEntry extends React.Component{
             this.state.newData.event = row[entry];
             this.forceUpdate();
         } else {
-        row[entry] = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
+            let value = event.target.value;
+            if( parseFloat(value) > 0 ) {
+                row[entry] = parseFloat(value);
+            } else {
+                row[entry] = 0;
+            }
         }
     }
 
