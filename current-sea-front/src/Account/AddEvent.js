@@ -56,7 +56,7 @@ export default class AddEvent extends React.Component{
 
     handleColor(color) {
         let newData = Object.assign({}, this.state.newData);
-        newData.eventColor = "pink";
+        newData.eventColor = color.hex;
   
         this.setState({newData});
      

@@ -196,11 +196,11 @@ export default class Events extends React.Component {
 
                     {this.state.currentData.map(row => {
                         return (
-                            <tr key={`row-${row.at_account_id}`}>
+                            <tr key={`row-${row.et_event_id}`}>
                                 <td scope="row">{row.et_event_abv}</td>
                                 <td>{row.et_event_name}</td>
                                 <td>{<svg height="25" width="25">
-                                    <circle cx="12.5" cy="12.5" r="10" stroke={row.et_event_color} stroke-width="3" fill= {row.et_event_color} />
+                                    <circle cx="12.5" cy="12.5" r="10" stroke={row.et_event_color} stroke-width="1" fill= {row.et_event_color} />
                                 </svg>}</td>
                                 <td>
                                     <button className="accountDeleteButton"
