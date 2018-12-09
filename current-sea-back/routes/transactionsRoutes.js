@@ -1,7 +1,7 @@
 const express = require('express');
 const debug = require('debug')('app:transactionsRoutes');
-const _ = require('lodash');
 const db = require('./db');
+const _ = require('lodash');
 
 const transactionsRouter = express.Router();
 
@@ -40,9 +40,7 @@ module.exports = function router() {
               const transactionID = results.insertId;
               let query = '';
               for (let i = 0; i < internalEntries.length; i += 1) {
-                const {
-                  account, debit, credit, event
-                } = internalEntries[i];
+                const { account, debit, credit, event } = internalEntries[i];
                 if (i === 0) {
                   query += `("${transactionID}", "${req.user.username}", "${account}", "${event}", ${debit}, ${credit})`;
                 } else {
@@ -50,7 +48,7 @@ module.exports = function router() {
                 }
               }
               debug(query);
-              db.query(`INSERT INTO details_table (dt_transactionID, dt_userID, dt_accountID, dt_eventID, dt_debit, dt_credit) VALUES ${query}`,
+              db.query('INSERT INTO details_table (dt_transactionID, dt_userID, dt_accountID, dt_eventID, dt_debit, dt_credit) VALUES ' + query,
                 (err2) => {
                   if (err2) {
                     debug('Error occurred in /add_transactions', err2);
@@ -102,17 +100,32 @@ module.exports = function router() {
                 debug('An Error occurred while editing a transaction from transactions table', err);
                 res.status(500).json({ message: 'Error occurred editing a transaction' });
               } else {
-                _.each(data, (datum) => {
-                  db.query('UPDATE details_table SET dt_eventID = ?, dt_accountID = ?, dt_debit = ?, dt_credit = ? WHERE dt_id = ?',
-                    [datum.dt_eventID, datum.dt_accountID, datum.dt_debit, datum.dt_credit, datum.dt_id],
-                    (err) => {
-                      if (err) {
-                        debug('An Error occurred while editing a transaction_detail in the details table', err);
-                        return res.status(500).json({ message: 'Error occurred editing a transaction_detail' });
+                  _.each(data, (datum) => {
+                      // if(datum.dt_eventID == undefined || datum.dt_eventID == '')
+                      //     datum.eventId = 42;
+                      if(datum.dt_id) {
+                          db.query('UPDATE details_table SET dt_eventID = ?, dt_accountID = ?, dt_debit = ?, dt_credit = ? WHERE dt_id = ?',
+                              [datum.dt_eventID, datum.dt_accountID, datum.dt_debit, datum.dt_credit, datum.dt_id],
+                              (err) => {
+                                  if (err) {
+                                      debug('An Error occurred while editing a transaction_detail in the details table', err);
+                                      return res.status(500).json({ message: 'Error occurred editing a transaction_detail' });
+                                  }
+                              });
+                      } else {
+                          if(datum.dt_accountID) {
+                              db.query('INSERT INTO details_table (dt_transactionID, dt_userID, dt_accountID, dt_eventID, dt_debit, dt_credit) VALUES (?,?,?,?,?,?);',
+                                  [tt_transaction_id, req.user.username, datum.dt_accountID, datum.dt_eventID, datum.dt_debit, datum.dt_credit],
+                                  (err2) => {
+                                      if (err2) {
+                                          debug('Error occurred in edit_transactions', err2);
+                                          return res.status(500).json({ message: 'Error occurred details while editing a transaction' });
+                                      }
+                                  });
+                          }
                       }
-                    });
-                });
-                res.status(201).json({ message: 'Transaction detail edited successfully' });
+                  });
+                  res.status(201).json({ message: 'Transaction detail edited successfully' });
               }
             });
         }
