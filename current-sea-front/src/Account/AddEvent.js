@@ -105,8 +105,8 @@ export default class AddEvent extends React.Component{
                 this.props.action(false);
            }
        })
-       
     
+       
     }
     
 

@@ -150,11 +150,11 @@ export default class Transaction extends React.Component {
         }
 
         dataCopy1[0] = (max1/total).toFixed(2)*100;
-        labelCopy1 = (label1);
+        labelCopy1 = (label1).length > 14 ? label1.substr(0, 7) + "..." : label1;
         dataCopy2[0] = (max2/total).toFixed(2)*100;
-        labelCopy2 = (label2);
+        labelCopy2 = (label2).length > 14 ? label2.substr(0, 7) + "..." : label2;
         dataCopy3[0] = (max3/total).toFixed(2)*100 ;
-        labelCopy3 = (label3);
+        labelCopy3 = (label3).length > 14 ? label3.substr(0, 7) + "..." : label3;
         dataCopy4[0] = ((total - (max1 + max2 + max3))/total).toFixed(2)*100;
         labelCopy4 = (other);
 
@@ -458,24 +458,39 @@ export default class Transaction extends React.Component {
                 }
             }); 
 
+            $.ajax({
+                url: "http://localhost:4000/transactions/get_transaction_event",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType:"json",
+                xhrFields: { withCredentials:true },
+                success: (receivedData) => {
+                    console.log(receivedData);
+                    this.setState({
+                        myEvents : receivedData,
+                    })
+                }
+            })
+
             
         }
         return (
             <div class="bigContainer">
-                <h1 id='h1title'>Bookkeeping</h1>
-                <div className="settingSubHead">Here you can record your transactions</div>
+                <h1 id='h1title' style={{paddingBottom: "10px"}}>Bookkeeping</h1>
+                <div className="settingSubHead" style={{paddingBottom: "30px"}}>Here you can record your transactions</div>
 
                 <div class="myContainer" style={{marginTop: "30px"}}>
                     <div className="transaction-table">
                         <table id='dataTable' width="600">
                             <thead>
                                 <tr>
-                                    <th>No.</th>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Balance</th>
-                                    <th>DF</th>
-                                    <th>Event</th>
+                                    <th style={{width: "60px"}}>No.</th>
+                                    <th style={{width: "110px"}}>Date</th>
+                                    <th style={{width: "230px"}}>Description</th>
+                                    <th style={{width: "80px"}}>Balance</th>
+                                    <th style={{width: "80px"}}>DF</th>
+                                    <th style={{width: "80px"}}>Event</th>
                                 </tr>
                                 <tr>
                                     <th colSpan='6'>
@@ -505,12 +520,12 @@ export default class Transaction extends React.Component {
                                                 <table>
                                                     <tbody>
                                                         <tr id='nested'>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{display}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{(moment(row.tt_date)).format('YYYY-MM-DD')}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_balance}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_currency}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>
+                                                            <td><button style={{width: "50px"}}onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{display}</button></td>
+                                                            <td><button style={{width: "120px"}} onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{(moment(row.tt_date)).format('YYYY-MM-DD')}</button></td>
+                                                            <td><button style={{width: "240px"}} onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
+                                                            <td><button style={{width: "80px"}}onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_balance}</button></td>
+                                                            <td><button style={{width: "80px"}}onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_currency}</button></td>
+                                                            <td><button style={{width: "80px"}}onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>
                                                             <Circle r={10} fill={{color:this.state.myEvents[row.tt_transaction_id].et_event_color}} 
                                                             stroke={{color:this.state.myEvents[row.tt_transaction_id].et_event_color}} strokeWidth={3} /></button></td>
                                                         </tr>
@@ -549,7 +564,7 @@ export default class Transaction extends React.Component {
                                                 </tr>
                                                 <tr>
                                                     {this.state.startBalance ?
-                                                        <td><StartBalance currencies={this.state.convertCurrencies} closeAction={this.closeStart}/></td> : (null) }
+                                                        <td colSpan='3'><StartBalance currencies={this.state.convertCurrencies} closeAction={this.closeStart}/></td> : (null) }
                                                 </tr>
                                             </tbody>
                                         </table>

@@ -17,8 +17,8 @@ export default class EditEntry extends React.Component{
             currencies : this.props.currencies,
             events : this.props.events,
             myAccounts : [],
-            myEvents : this.props.myEvents,
             transactionInfo : this.props.transactionInfo,
+            event : (null),
         }
         this.addinfo = this.addinfo.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -70,7 +70,9 @@ export default class EditEntry extends React.Component{
         if (entry == "dt_accountID") {
             row[entry] = event.value;
         } else if( entry == "dt_eventID"){
-            row[entry] = event.label;
+            row[entry] = event.value;
+            this.state.data.event = row[entry];
+            this.forceUpdate();
         } else {
             row[entry] = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
         }
@@ -83,6 +85,7 @@ export default class EditEntry extends React.Component{
     handleCurrency(event){
         this.state.transactionInfo.tt_currency = event.label;
     }
+
     save(){
         var sum = 0;
         var checkCredit = 0;
@@ -235,9 +238,6 @@ export default class EditEntry extends React.Component{
                     <tbody>
                         <tr></tr>   
                         {this.state.data.map( (row, index) => {
-                            //var eventIndex = this.state.myEvents.events.findIndex(ev => ev.dt_transactionID==row.dt_transactionID);
-                            console.log(this.state.myEvents[224].et_event_abv);
-                            console.log(row);
                             return (
                                 <tr key={`row-${index}`}>
                                     <td><Select options={this.state.accounts} placeholder={row.dt_accountID} onChange={(e) => this.handleChange(row, 'dt_accountID', e)}/></td>

@@ -89,14 +89,10 @@ export default class Events extends React.Component {
                             this.setState({
                                 update: true
                             });
-
-
                         },
                         error: (data) => {
                              console.log("Error: Could not submit");
                              alert(data.responseJSON.message);
-                             
-
                         }
                     })
                 },
