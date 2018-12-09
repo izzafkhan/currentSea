@@ -87,8 +87,8 @@ export default class Events extends React.Component {
         let index = this.state.currentData.findIndex(x => x.et_event_id == et_event_id);
         let rowDataVar = {eventId: et_event_id}
         confirmAlert({
-            title: 'Confirm Deletion',
-            message: 'Deleting Event Permanently',
+            title: 'Deleting event',
+            message: 'Are you sure you would like to proceed?',
             buttons: [
                 {
                     label: 'Ok',

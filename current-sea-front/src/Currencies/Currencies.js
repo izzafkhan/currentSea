@@ -130,6 +130,7 @@ export default class Currencies extends React.Component {
 
 
                     <h1 align="center" id="currenciesTitle">Currencies</h1>
+                    <div className="settingSubHead">Here you can observe exchange rates of other currencies</div>
 
                     <div>
 

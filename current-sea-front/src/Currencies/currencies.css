@@ -1,5 +1,4 @@
 
-
 .bottomBody {
     flex-direction: row;
     display:flex;
@@ -22,7 +21,6 @@
     background-color: #00ADA2;
     align-items: center;
     margin-left: 30px;
-    margin-top: 20px;
 }
 
 
