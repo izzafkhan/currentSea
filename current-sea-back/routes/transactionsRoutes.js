@@ -84,15 +84,15 @@ module.exports = function router() {
   transactionsRouter.route('/edit_transactions')
     .post((req, res) => {
       debug(req.body);
-      const { tt_balance, data, tt_transaction_id } = req.body;
+      const { tt_balance, data, tt_transaction_id, tt_currency, tt_description } = req.body;
 
       db.query('SELECT * FROM transaction_table WHERE tt_transaction_id = ?', [tt_transaction_id], (err, results) => {
         if (results.length === 0) {
           res.status(401).json({ message: 'Transaction id does not exist.' });
         } else {
           //change this to UPDATE transaction_table SET tt_currency = ?
-          db.query('UPDATE transaction_table SET tt_balance=? WHERE tt_transaction_id = ? and tt_user_id = ?;',
-            [tt_balance, tt_transaction_id, req.user.username],
+          db.query('UPDATE transaction_table SET tt_balance=?, tt_currency=?, tt_description=? WHERE tt_transaction_id = ? and tt_user_id = ?;',
+            [tt_balance, tt_currency, tt_description, tt_transaction_id, req.user.username],
             (err, results, fields) => {
               if (err) {
                 debug('An Error occurred while editing a transaction from transactions table', err);
