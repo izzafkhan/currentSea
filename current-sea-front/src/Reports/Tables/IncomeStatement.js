@@ -147,35 +147,23 @@ export default class IncomeStatement extends Component {
 
                 <div className="isgTop">
 
-                    <Dropdown className="isDropDownReports" isOpen={this.state.reportDropdownOpen}
-                              toggle={this.toggleReport}>
-                        <DropdownToggle caret>
-                            Income Statement
-                        </DropdownToggle>
-                        <DropdownMenu className="isDropDownReportsMenu">
-                            <DropdownItem onClick={this.props.action}>Balance Sheet</DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
+                    <div>
+                        <Dropdown className="incomeStatementsDropDownReports" isOpen={this.state.reportDropdownOpen}
+                                  toggle={this.toggleReport}>
+                            <DropdownToggle caret>
+                                Income Statement
+                            </DropdownToggle>
+                            <DropdownMenu className="isDropDownReportsMenu">
+                                <DropdownItem onClick={this.props.action}>Balance Sheet</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </div>
 
+                    <div>
+                        <Select options={this.props.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.currencyCode}
+                                className='dropdownContainer'/>
 
-
-                    {/*<DatePicker className="isStartDatePicker"
-                                selected={this.state.startDate}
-                                onChange={this.handleChangeStart}
-                                placeholderText="Start Date"
-                    />*/}
-
-                    {/*<DatePicker className="isEndDatePicker"
-                                selected={this.state.endDate}
-                                onChange={this.handleChangeEnd}
-                                minDate={this.state.startDate}
-                                placeholderText="End Date"
-                    />*/}
-
-                <Select options={this.props.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.currencyCode}
-                className='dropdownContainer'/>
-                    
-
+                    </div>
 
                 </div>
 
@@ -185,11 +173,10 @@ export default class IncomeStatement extends Component {
                         data={this.state.data}
                         noDataText="Your income and expenses will appear here"
                         columns={columns}
+                        defaultPageSize={25}
+                        showPageSizeOptions={false}
                     />
-
                 </div>
-
-
             </div>
 
         );

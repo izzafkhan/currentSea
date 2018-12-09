@@ -92,18 +92,19 @@ export default class AddEntry extends React.Component{
     submitData(){
         var sum = 0;
         var balanceCheck = 0;
-        var entriesFilled = true;
+        var validEntry = true;
         let newData = Object.assign({}, this.state.newData);
         for(let i = 0; i < newData.internalEntries.length; i++){
             
             sum += newData.internalEntries[i].debit;
             balanceCheck += newData.internalEntries[i].credit;
-            if(newData.internalEntries[i].event === ''){
-                entriesFilled = false;
+            if(newData.internalEntries[i].debit != 0 && newData.internalEntries[i].credit != 0){
+                validEntry = false;
             }
         }
         //console.log(sum);
         if(balanceCheck == sum && (balanceCheck != 0)){
+            if(validEntry){
             this.state.newData.balance = sum;     
             this.setState({newData});
                 /*
@@ -126,6 +127,9 @@ export default class AddEntry extends React.Component{
                             this.props.action(false);
                     }
                 })
+            } else {
+                alert("You cannot have a credit and debit in the same field.")
+            }
         } else {
             alert("Make sure your credit and debit are equal and filled out.")
         }
