@@ -1,11 +1,14 @@
 
 div.tableContainer{
-    margin-block-start: 20px;
     height: 100vh; /* Magic here */
     display: flex;    
     justify-content: center;
     background: #051642;
-    margin:0
+    padding-left:450px;
+    padding-right:450px;
+    padding-top:50px;
+   
+  
   
 }
 
@@ -15,6 +18,8 @@ div.bigContainer h1 {
     text-align: center; 
     padding-bottom: 5px; 
     padding-top: 40px; 
+
+
 }
 
 div.bigContainer h6 {
@@ -25,10 +30,10 @@ div.bigContainer h6 {
     margin-bottom: 40px; 
 }
 
-div.accounts-table, div.quick { float: left;}
+div.accounts-table, div.quick { float: left; width:100px;}
 
 
-div.tableContainer {overflow: hidden;}
+div.tableContainer {overflow:hidden;width:200px;}
 
 
 /* 
@@ -49,16 +54,16 @@ Styling to make the table readable
     text-align: left;
     background-color:white;
     color: black;
-    width: 250px;
+    width: 210px;
 }
 
 #nested td {
     text-align: left;
-    width: 250px;
+    width: 200px;
 }
 
 #nested button {
-    width: 250;
+    width: 200px;
     background-color: white;
     border-color: white;
     border-style: solid;
@@ -66,7 +71,7 @@ Styling to make the table readable
 }
 
 #addAccountButton {
-    width: 734px;
+    width: 700px;
     text-align: center;
     color: white;
     background-color: #00ADA2;

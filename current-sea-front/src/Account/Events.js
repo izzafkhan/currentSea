@@ -5,12 +5,16 @@ import AddEvent from './AddEvent';
 import $ from 'jquery'
 import moment from "moment"   
 import Header from '../Header'
+import ChromePicker from 'react-color'
+import update from 'react-addons-update';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 
 export default class Events extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-        
+            
 
             showAddEntry: false,
             update: false,
@@ -18,17 +22,12 @@ export default class Events extends React.Component {
             editUpdate : false,
 
             currentData: [{
-                accountId : '',
-                accountName : '',
-                accountType: '',
-                edit : false,
+                et_event_abv:'',
+                et_event_name:'',
+                et_event_id:'',
+                et_event_color:'',
 
-            }, {
-                accountId : '',
-                accountName : '',
-                accountType: '',
-                edit : false,
-            }]
+            },]
 
         }
         this.get = this.get.bind(this);
@@ -37,8 +36,9 @@ export default class Events extends React.Component {
         this.closeRow = this.closeRow.bind(this);
         this.closeEdit = this.closeEdit.bind(this);
         this.deleteEdit = this.deleteEdit.bind(this);
-        this.componentWillMount = this.componentWillMount.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
         this.addToTable =this.addToTable.bind(this);
+        this.deleteRowE = this.deleteRowE.bind(this);
     }
 
     addRow = () => {
@@ -55,29 +55,9 @@ export default class Events extends React.Component {
     }
 
     addToTable(data){
-       /* var newArray = this.state.currentData.slice();
-           newArray.unshift(data);
         this.setState({
-            currentData: newArray
-
-        });*/
-        $.ajax({
-            url: "http://localhost:4000/accounts/add_account",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            dataType:"json",
-            xhrFields: { withCredentials:true },
-            data: JSON.stringify(data),
-            success: () => {
-                 this.action(false);
-            },
-            error: () => {
-                 console.log("Error: Could not submit");
-                 this.action(false);
-            }
+            update:true
         })
-        this.forceUpdate();
 
     }
 
@@ -98,6 +78,46 @@ export default class Events extends React.Component {
         {/*Line 80 (was: editUpdate: true, which does nothing) is probably singlehandedly responsible for the problems we had today. Pitfall?*/}
     }
 
+    deleteRowE(e, et_event_id){
+        let index = this.state.currentData.findIndex(x=>x.et_event_id ==et_event_id);
+        let rowDataVar = {eventId:et_event_id}
+        confirmAlert({
+            title: 'Confirm Deletion',
+            message: 'Deleting Event Permanently',
+            buttons: [
+                {
+                    label: 'Ok',
+                    onClick: () => $.ajax({
+                        url: "http://localhost:4000/event/delete_event",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        crossDomain: true,
+                        dataType:"json",
+                        xhrFields: { withCredentials:true },
+                        data: JSON.stringify(rowDataVar),
+                        success: (data) => {
+                             this.setState({
+                                 update:true
+                             });
+                           
+            
+                        },
+                        error: () => {
+                             console.log("Error: Could not submit");
+                             
+
+                        }
+                    })
+                },
+                {
+                    label: 'Cancel',
+                    onClick: () => this.forceUpdate()
+                }
+            ]
+        })
+
+           
+    }
     
     deleteEdit(accountId){
         let index = this.state.currentData.findIndex(x=>x.accountId==accountId);
@@ -141,30 +161,35 @@ export default class Events extends React.Component {
     }
 
 
-    componentWillMount(){/*
+    componentDidMount(){
        $.ajax({
-            url: "http://localhost:4000/accounts/get_accounts",
+            url: "http://localhost:4000/event/get_all_events/",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
             dataType:"json",
             xhrFields: {withCredentials:true},
             success: (data) => {
+                console.log(data); 
                 this.setState({
-                    currentData : data
-                });
+                    
+                    currentData: data
+                
+                });   
+               
+                
             },
             error: () => {
                  console.log("Error: Could not update.");
             }
-        }); */
+        }); 
     }
 
 
     render() {
         if(this.state.update === true){
-          /* $.ajax({
-                url: "http://localhost:4000/accounts/get_accounts",
+          $.ajax({
+                url: "http://localhost:4000/event/get_all_events/",
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,
@@ -175,44 +200,47 @@ export default class Events extends React.Component {
                         currentData : data,
                         update: false
                     });
+
                 },
                 error: () => {
                      console.log("Error: Could not update.");
                      this.setState({
                          update : false
                      })
-                }
-            });*/
+                    }
+            });
         }
         return (
-            <div> 
-            <div class="eventContainer">
-                <div className="event-table">
+            <div class="tableContainerE">
+                <div className="events-table">
                     <table id='dataTableE'>
                         <thead>
                             <tr>
-                                <th>No.</th>
-                                <th>Description</th>
-                                <th>Type</th>
+                                <th>Abbr.</th>
+                                <th>Name</th>
+                                <th>Color</th>
                             </tr>
                             <tr>
                                 <th colSpan='6'>
-                                    <button id='addAccountButton' onClick={ e => this.addRow()}>+</button>
+                                    <button id='addEventButton' onClick={ e => this.addRow()}>+</button>
                                     {this.state.showAddEntry ? <div><AddEvent addEntry={this.state.showAddEntry} add={this.addToTable} action={this.closeRow}/></div> : <span></span>}                                </th>
                                  
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.currentData.map(row => {
+                            { this.state.currentData.map(row => {
                                 return (
-                                    <tr key={`row-${row.accountID}`}>
+                                    <tr key={`row-${row.et_event_id}`}>
                                         <td colSpan='6'>
                                             <table>
                                                 <tbody>
                                                     <tr id='nested'>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.accountId)}}>{row.accountId}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.accountId)}}>{row.accountName}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.accountId)}}>{row.accountType}</button></td>
+                                                        <td><button>{row.et_event_abv}</button></td>
+                                                        <td><button>{row.et_event_name}</button></td>
+                                                        <td><button>{row.et_event_color}</button></td>
+
+                                                        <button id='deleteButton' onClick={e => this.deleteRowE(e,row.et_event_id)}> x </button>
+
                                                     </tr>
                                                     {row.edit ?
                                                         <tr>
@@ -224,12 +252,13 @@ export default class Events extends React.Component {
                                         </td>
                                     </tr>
                                 )
-                            })}
+                            })}  
+                            
                         </tbody>
                     </table>
                 </div> 
             </div>
-            </div>
+            
         );
     }
 }

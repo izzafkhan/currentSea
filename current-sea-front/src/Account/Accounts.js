@@ -7,6 +7,9 @@ import moment from "moment"
 import Header from '../Header'
 import Events from './Events';
 import update from 'react-addons-update';
+import EditAccount from './EditAccount';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 
 export default class Accounts extends React.Component {
     constructor(props) {
@@ -37,7 +40,9 @@ export default class Accounts extends React.Component {
         this.deleteEdit = this.deleteEdit.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.addToTable =this.addToTable.bind(this);
+        this.deleteRow = this.deleteRow.bind(this);
     }
+
 
     addRow = () => {
         if (this.state.showAddEntry === false){
@@ -53,34 +58,7 @@ export default class Accounts extends React.Component {
     }
 
     addToTable(data){
-        /*var newArray = this.state.currentData.slice();
-           newArray.unshift(data);
-        this.setState({
-            currentData: newArray
 
-        });*/
-       /* $.ajax({
-            url: "http://localhost:4000/accounts/add_account",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            dataType:"json",
-            xhrFields: { withCredentials:true },
-            data: JSON.stringify(data),
-            success: () => {
-                this.action(false);
-                 this.setState({
-                     update:true
-                 });
-               
-
-            },
-            error: () => {
-                 console.log("Error: Could not submit");
-                 this.action(false);
-            }
-        })
-        this.forceUpdate();*/
         this.setState({
             update:true
         })
@@ -104,8 +82,49 @@ export default class Accounts extends React.Component {
         {/*Line 80 (was: editUpdate: true, which does nothing) is probably singlehandedly responsible for the problems we had today. Pitfall?*/}
     }
 
-    
-    deleteEdit(accountId){
+    deleteRow(e,at_account_id){
+        let index = this.state.currentData.findIndex(x=>x.at_account_id ==at_account_id);
+        let rowData = this.state.currentData[index];
+        let rowDataVar = {accountId:rowData.at_account_id};
+        confirmAlert({
+            title: 'Confirm Deletion',
+            message: 'Deleting Event Permanently',
+            buttons: [
+                {
+                    label: 'Ok',
+                    onClick: () =>  $.ajax({
+                        url: "http://localhost:4000/accounts/delete_account",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        crossDomain: true,
+                        dataType:"json",
+                        xhrFields: { withCredentials:true },
+                        data: JSON.stringify(rowDataVar),
+                        success: (data) => {
+                            console.log("success inside");
+                             this.setState({
+                                 update:true
+                             });
+                           
+            
+                        },
+                        error: () => {
+                             console.log("Error: Could not submit");
+                        }
+                    })
+               
+                },
+                {
+                    label: 'Cancel',
+                    onClick: () => this.forceUpdate()
+                }
+            ]
+        })
+        
+           
+           
+        }
+    deleteEdit(e,accountId){
         let index = this.state.currentData.findIndex(x=>x.accountId==accountId);
         let editData = this.state.currentData;
         var editIndex = editData.indexOf(index);
@@ -117,8 +136,8 @@ export default class Accounts extends React.Component {
         this.forceUpdate();
     }
 
-    editRow = (e, accountId) => {
-        let index = this.state.currentData.findIndex(x=>x.accountId==accountId);
+    editRow = (e, at_account_id) => {
+        let index = this.state.currentData.findIndex(x=>x.at_account_id ==at_account_id);
         let editData = this.state.currentData;
         if (editData[index].edit === false) {
             editData[index].edit = true;
@@ -156,7 +175,7 @@ export default class Accounts extends React.Component {
             dataType:"json",
             xhrFields: {withCredentials:true},
             success: (data) => {
-                
+                console.log(data.results)
                 this.setState({
                     
                     currentData: data.results
@@ -197,14 +216,17 @@ export default class Accounts extends React.Component {
             });
         }
         return (
-            <div class="bigContainer"> 
-            <Header/> 
-            <h1>Accounts</h1>
-            <h6> Here you can set up, edit and delete your accounts</h6>
+            <div> 
+            
+            <h1 align="center" background="#051642"><br /> Account Settings </h1>
+            <h6 align="center"> Here you can set up, edit and delete your accounts and events<br /><br /> </h6>
+
             <div class="tableContainer">
                 <div className="account-table">
                     <table id='dataTableA'>
+                   
                         <thead>
+
                             <tr>
                                 <th>No.</th>
                                 <th>Description</th>
@@ -220,19 +242,22 @@ export default class Accounts extends React.Component {
                         <tbody>
                            { this.state.currentData.map(row => {
                                 return (
-                                    <tr key={`row-${row.accountID}`}>
+                                    
+                                    <tr key={`row-${row.at_account_id}`}>
                                         <td colSpan='6'>
                                             <table>
                                                 <tbody>
                                                     <tr id='nested'>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.at_account_id)}}>{row.at_account_id}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.at_account_id)}}>{row.at_account_name}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.at_account_id)}}>{row.account_type}</button></td>
+                                                        <td><button>{row.at_account_id}</button></td>
+                                                        <td><button >{row.at_account_name}</button></td>
+                                                        <td><button >{row.account_type}</button></td>
+                                                        <button id='deleteButton' onClick={e => this.deleteRow(e,row.at_account_id)}> x </button>
+
                                                     </tr>
                                                     {row.edit ?
                                                         <tr>
                                                             <td colSpan='6'>
-                                                            </td>
+                                                            <EditAccount editData={this.state.editableData} id={row.at_account_id} makeEdit={row.edit} deleteAction={this.deleteEdit} accounts={this.state.accounts} closeAction={this.closeEdit}/>                                                            </td>
                                                         </tr> : <tr></tr>}
                                                 </tbody>
                                             </table>
