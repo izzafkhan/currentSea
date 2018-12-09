@@ -148,8 +148,9 @@ export default class Currencies extends React.Component {
                                         data={this.fav_currencies}
                                         noDataText="Your favorite currencies will appear here"
                                         columns={columns}
-                                        pageSizeOptions={[5, 10, 20]}
-                                    />
+                                        defaultPageSize={33}
+                                        showPaginationBottom={false}
+                                        />
                                 </div>
 
                             </div>
