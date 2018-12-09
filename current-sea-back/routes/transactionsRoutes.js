@@ -171,7 +171,11 @@ module.exports = function router() {
               debug('Error in /get_transaction_events', err);
               res.status(500).json({ message: 'Error has occurred while getting events' });
             } else {
-              res.status(200).json({ events: results });
+              const output = {};
+              for (let i = 0; i < results.length; i++) {
+                output[results[i].dt_transactionID] = results[i];
+              }
+              res.status(200).json(output);
             }
           });
       } else {
