@@ -78,6 +78,8 @@ export default class LoginForm extends React.Component {
                 data: JSON.stringify(loginData),
                 success: (data) => {
                     this.setState({ loginSuccess: true });
+                    log.authenticate();
+                    console.log(localStorage.getItem('loggedIn'));
                 },
                 error: (data) => {
                     alert('Invalid credentials');

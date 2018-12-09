@@ -80,32 +80,46 @@ export default class EditEntry extends React.Component{
     }
     save(){
         var sum = 0;
+        var checkCredit = 0;
+        var validEntry = true;
         for(let i = 0; i < this.state.data.length; i++){
             
             sum += this.state.data[i].dt_debit;
-        }
-        console.log(sum);
-        $.ajax({
-            url: "http://localhost:4000/transactions/edit_transactions",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            dataType:"json",
-            xhrFields: { withCredentials:true },
-            data: JSON.stringify({  'tt_transaction_id' : this.state.action_id,
-                                    'data': this.state.data, 
-                                    'tt_balance': sum, 
-                                    'tt_currency' : this.state.transactionInfo.tt_currency, 
-                                    'tt_description' : this.state.transactionInfo.tt_description}),
-            success: () => {
-                console.log(this.state.data);
-                 this.props.closeAction(this.state.action_id, sum);
-            },
-            error: () => {
-                 console.log("Error: Could not submit");
-                 this.props.closeAction(this.state.action_id, 0);
+            checkCredit += this.state.data[i].dt_credit;
+
+            if(this.state.data[i].dt_debit != 0 && this.state.data[i].dt_credit != 0){
+                validEntry = false;
             }
-        })
+        }
+        if(checkCredit != 0 && checkCredit == sum){
+            if(validEntry){
+                $.ajax({
+                    url: "http://localhost:4000/transactions/edit_transactions",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    crossDomain: true,
+                    dataType:"json",
+                    xhrFields: { withCredentials:true },
+                    data: JSON.stringify({  'tt_transaction_id' : this.state.action_id,
+                                            'data': this.state.data, 
+                                            'tt_balance': sum, 
+                                            'tt_currency' : this.state.transactionInfo.tt_currency, 
+                                            'tt_description' : this.state.transactionInfo.tt_description}),
+                    success: () => {
+                        console.log(this.state.data);
+                        this.props.closeAction(this.state.action_id, sum);
+                    },
+                    error: () => {
+                        console.log("Error: Could not submit");
+                        this.props.closeAction(this.state.action_id, 0);
+                    }
+                })
+            } else {
+                alert("You cannot have a credit and debit in the same field.")
+            }
+        } else {
+            alert("Debit and Credit fields must remain equal and filled out.")
+        }
     }
 
     remove(){

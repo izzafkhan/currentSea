@@ -119,7 +119,7 @@ export default class Currencies extends React.Component {
                 <span
                     style={{
                         color: row.value >= 0 ? 'green'
-                            : 'red',
+                            : 'red'
                     }}>{row.value + "%"}</span>)
         }]
         return (
