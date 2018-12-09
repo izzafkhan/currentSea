@@ -11,7 +11,6 @@ export default class StartBalance extends React.Component{
             accounts: this.props.accounts,
             currencies : this.props.currencies,
         }
-        this.addinfo = this.addinfo.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.save = this.save.bind(this);
         this.handleCurrency = this.handleCurrency.bind(this);
@@ -30,7 +29,7 @@ export default class StartBalance extends React.Component{
             success: (receivedData) => {
                 console.log("Received Data");
                 this.state.data = receivedData.results;
-                console.log(this.state.data.results);
+                console.log(this.state.data);
                 this.forceUpdate();
             },
             error: () => {
@@ -65,21 +64,6 @@ export default class StartBalance extends React.Component{
 
     }
 
-    addinfo = () => {
-        var internalEntries = this.state.data.slice(0);
-
-        let newRow = {
-            bt_account_id : '',
-            bt_initialBalance: 0,
-            bt_currency_abv: '',
-        };
-
-        internalEntries.push(newRow);
-    
-        this.state.data = internalEntries;
-        this.forceUpdate();
-    }
-
     handleCurrency(row, entry, event){
         let newData = Object.assign({}, this.state.data);
         row[entry] = event.value;
@@ -105,11 +89,12 @@ export default class StartBalance extends React.Component{
             xhrFields: { withCredentials:true },
             data: JSON.stringify({'data': this.state.data}),
             success: () => {
-                 this.props.closeAction();
+                console.log(this.state.data);
+                this.props.closeAction();
             },
             error: () => {
-                 console.log("Error: Could not submit");
-                 this.props.closeAction();
+                console.log("Error: Could not submit");
+                this.props.closeAction();
             }
         })
     }
@@ -137,7 +122,6 @@ export default class StartBalance extends React.Component{
                         })}
                     </tbody>
                 </table>
-                <button onClick={this.addinfo}>Add +</button>
                 <button onClick={this.save}>Save</button>
             </div>
             

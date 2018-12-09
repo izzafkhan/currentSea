@@ -30,7 +30,7 @@ export default class EditEntry extends React.Component{
     submitDelete = () => {
         confirmAlert({
             title: 'Confirm Deletion',
-            message: 'Deleting Entry Permanently',
+            message: 'Do you want to delete this transaction permanently?',
             buttons: [
                 {
                     label: 'Ok',
@@ -58,9 +58,9 @@ export default class EditEntry extends React.Component{
         };
 
         internalEntries.push(newRow);
-    
-        this.state.data = internalEntries;
-        this.forceUpdate();
+        this.setState({
+            data : internalEntries,
+        })
     }
 
     handleChange(row, entry, event) {
@@ -107,6 +107,9 @@ export default class EditEntry extends React.Component{
                                             'tt_description' : this.state.transactionInfo.tt_description}),
                     success: () => {
                         console.log(this.state.data);
+                        this.setState({
+                            update: true,
+                        })
                         this.props.closeAction(this.state.action_id, sum);
                     },
                     error: () => {
@@ -132,7 +135,10 @@ export default class EditEntry extends React.Component{
             xhrFields: { withCredentials:true },
             data: JSON.stringify({'tt_transaction_id': this.state.action_id}),
             success: () => {
-                 this.props.deleteAction(this.state.action_id);
+                this.props.deleteAction(this.state.action_id);
+                this.setState({
+                    update: true,
+                })
             },
             error: () => {
                  console.log("Error: Could not submit");
@@ -151,6 +157,7 @@ export default class EditEntry extends React.Component{
             xhrFields: { withCredentials:true },
             data: JSON.stringify({'tt_transaction_id': this.props.id}),
             success: (receivedData) => {
+                console.log(receivedData);
                 this.setState({
                     data: receivedData
                 })
@@ -171,6 +178,37 @@ export default class EditEntry extends React.Component{
     }
 
     render(){
+        if(this.state.update === true){
+            $.ajax({
+                url: "http://localhost:4000/transactions/get_details",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType:"json",
+                xhrFields: { withCredentials:true },
+                data: JSON.stringify({'tt_transaction_id': this.props.id}),
+                success: (receivedData) => {
+                    this.setState({
+                        data: receivedData,
+                        update: false,
+                    })
+                    for(let i = 0; i < receivedData.length; i++){
+                        this.state.myAccounts.push(receivedData[i].dt_accountID);
+                    }
+                    if(this.props.id){
+                        this.setState({
+                            action_id: this.props.id,
+                        })
+                    } 
+                    this.forceUpdate();
+                },
+                error: () => {
+                    console.log("Error: Could not submit");
+                }
+            })
+        }
+
+
         return(
             <div width='400'>
                 <table id='editTable' width='400'>
