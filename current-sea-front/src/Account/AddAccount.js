@@ -17,11 +17,11 @@ export default class AddAccount extends React.Component{
 
         this.state = {
             newData : {
-                accountId: 'Account Number',
-                accountName: 'Description',
+                accountId: '',
+                accountName: '',
                 
                 
-                accountType : 'Balancetest',
+                accountType : '',
                 internalEntries : [],
             },
             enteringData : false,
@@ -68,7 +68,12 @@ export default class AddAccount extends React.Component{
 
    
     submitData(){
+        if(this.state.newData.accountType == '' && this.state.newData.accountId != '' &&
+            this.state.newData.accountName != ''){
+                alert("Please fill in all fields ")
+            }
         let newData = Object.assign({}, this.state.newData);
+
         this.setState({newData});
         this.props.action(false);
         
