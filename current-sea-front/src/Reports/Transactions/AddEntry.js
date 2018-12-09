@@ -15,7 +15,7 @@ export default class AddEntry extends React.Component{
             newData : {
                 startDate : moment().format('YYYY-MM-DD'),
                 currencyId: '',
-                description: 'Description',
+                description: '',
                 balance : 0.00,
                 internalEntries : [],
                 startBalance: false,
