@@ -34,7 +34,16 @@ div.transaction-table{
     height: auto;
 }
 
-div.conversion, div.summary {
+div.conversion {
+    background-color: white;
+    color: black;
+    margin-block-end: 8px;
+    padding: 16px;
+    min-width: 200px;
+    min-height: 280px;
+}
+
+div.summary {
     background-color: white;
     color: black;
     margin-block-end: 8px;
@@ -106,22 +115,58 @@ Styling to make the table readable
     border: #00ADA2;
 }
 
-div.conversion p, div.conversion h2, div.conversion h3{
+div.conversion p, div.conversion h3{
     margin-top: 8px;
     margin-bottom: 8px;
 }
 
-div.conversion input {
+div.conversion h2 {
     margin-top: 8px;
     margin-bottom: 8px;
+    margin-left: 5px;
+}
+
+div.conversion input {
+    margin-top: 10px;
+    margin-bottom: 8px;
+    margin-left: 10px;
     color: black;
+    font-size: 15px;
+    max-width: 160px;
+}
+
+#currency-number-in {
+    margin-bottom: 8px;
+    margin-left: 10px;
+    padding-left: 1px;
+    color: black;
+    font-size: 15px;
+    max-width: 120px;
+    text-align: center;
+    float: left;
+    overflow: scroll;
+}
+
+#currency-number-out {
+    margin-bottom: 8px;
+    margin-left: 10px;
+    padding-left: 1px;
+    color: black;
+    font-size: 15px;
+    max-width: 120px;
+    text-align: center;
+    float: left;
+    overflow: scroll;
+    width: 88px;
 }
 
 #start-currency, #end-currency {
     color: black;
-    padding: 8px;
-    width: 200px;
+    /*padding: 15px;*/
+    width: 100px;
+    margin-left: 25px;
     height: auto;
+    float: right;
 }
 
 button:focus {outline:0;}
@@ -130,5 +175,15 @@ button {
     cursor: pointer;
 }
 
+.currency-out {
+    /*display:inline-block;*/
+    margin-left: 10px;
+    text-align: center;
+    /*max-width: 100px;*/
+}
 
-
+#currency-equal {
+    font-size: 40px;
+    margin-top: 70px;
+    margin-bottom: 20px;
+}
