@@ -99,14 +99,27 @@ module.exports = function router() {
                 res.status(500).json({ message: 'Error occurred editing a transaction' });
               } else {
                   _.each(data, (datum) => {
-                      db.query('UPDATE details_table SET dt_eventID = ?, dt_accountID = ?, dt_debit = ?, dt_credit = ? WHERE dt_id = ?',
-                          [datum.dt_eventID, datum.dt_accountID, datum.dt_debit, datum.dt_credit, datum.dt_id],
-                          (err) => {
-                              if (err) {
-                                  debug('An Error occurred while editing a transaction_detail in the details table', err);
-                                  return res.status(500).json({ message: 'Error occurred editing a transaction_detail' });
-                              }
-                          });
+                      // if(datum.dt_eventID == undefined || datum.dt_eventID == '')
+                      //     datum.eventId = 42;
+                      if(datum.dt_id) {
+                          db.query('UPDATE details_table SET dt_eventID = ?, dt_accountID = ?, dt_debit = ?, dt_credit = ? WHERE dt_id = ?',
+                              [datum.dt_eventID, datum.dt_accountID, datum.dt_debit, datum.dt_credit, datum.dt_id],
+                              (err) => {
+                                  if (err) {
+                                      debug('An Error occurred while editing a transaction_detail in the details table', err);
+                                      return res.status(500).json({ message: 'Error occurred editing a transaction_detail' });
+                                  }
+                              });
+                      } else {
+                          db.query('INSERT INTO details_table (dt_transactionID, dt_userID, dt_accountID, dt_eventID, dt_debit, dt_credit) VALUES (?,?,?,?,?,?);',
+                              [tt_transaction_id, req.user.username, datum.dt_accountID, datum.dt_eventID, datum.dt_debit, datum.dt_credit],
+                              (err2) => {
+                                  if (err2) {
+                                      debug('Error occurred in edit_transactions', err2);
+                                      return res.status(500).json({ message: 'Error occurred details while editing a transaction' });
+                                  }
+                              });
+                      }
                   });
                   res.status(201).json({ message: 'Transaction detail edited successfully' });
               }
