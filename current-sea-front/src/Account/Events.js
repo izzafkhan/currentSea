@@ -120,14 +120,12 @@ export default class Events extends React.Component {
             dataType: "json",
             xhrFields: {withCredentials: true},
             success: (data) => {
-                console.log(data);
+                console.log("what is this ", data);
                 this.setState({
 
                     currentData: data
 
                 });
-
-
             },
             error: () => {
                 console.log("Error: Could not update.");

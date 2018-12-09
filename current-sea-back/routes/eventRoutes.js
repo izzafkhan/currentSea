@@ -108,8 +108,9 @@ module.exports = function router() {
     .get((req, res) => {
       if (req.user) {
         db.query('SELECT * from event_table where et_user_id = ?', [req.user.username], (err, result) => {
-          if (result === 'undefined' || result == null || result.length === 0) {
-            res.status(400).json({ message: 'User id does not exist.' });
+          if (err) {
+            debug(err);
+            res.status(400).json({ message: 'Some error occurred.' });
           } else {
             res.status(200).json(result);
           }

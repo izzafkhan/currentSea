@@ -14,11 +14,9 @@ export default class AddEvent extends React.Component{
 
         this.state = {
             newData : {
-                eventAbv: '',
-                eventName: '',
-                eventColor: ''
-                
-               
+                // eventAbv: '',
+                // eventName: '',
+                // eventColor: ''
             },
             enteringData : false,
 
