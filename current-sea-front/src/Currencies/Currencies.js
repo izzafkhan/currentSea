@@ -129,13 +129,13 @@ export default class Currencies extends React.Component {
                 <div class="body">
 
 
-                    <h1 align="center" id="currenciesTitle" style={{paddingTop: "40px", paddingBottom: "40px"}}>Currencies</h1>
-                    <div className="settingSubHead">Here you can observe exchange rates of other currencies</div>
+                    <h1 align="center" id="currenciesTitle" style={{paddingTop: "40px", paddingBottom: "10px"}}>Currencies</h1>
+                    <div className="settingSubHead" style={{paddingBottom: "30px"}} >Here you can observe exchange rates of other currencies</div>
 
                     <div>
 
                         <div class="bottomBody">
-                            <div className="gridContainer" style={{paddingTop: "40px"}}>
+                            <div className="gridContainer" style={{paddingTop: "28px"}}>
 
                                 <div className="tableTop" >
                                     <Select options={this.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.defaultCurrencyCode}

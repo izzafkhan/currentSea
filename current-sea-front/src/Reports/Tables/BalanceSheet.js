@@ -170,7 +170,7 @@ class BalanceSheet extends Component{
             })
         }
         return(
-            <div className="gridContainer" style={{paddingTop: "50px"}}>
+            <div className="gridContainer" style={{paddingTop: "28px"}}>
 
                 <div className="isgTop">
 
