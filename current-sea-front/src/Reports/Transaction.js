@@ -125,7 +125,7 @@ export default class Transaction extends React.Component {
         let label2 = '';
         let max3 = 0;
         let label3 = '';
-        let total = 1;
+        let total = 0;
         let other = 'Other';
         for(let i = 0; i < this.state.currentData.length; i++){
             console.log(max1);
