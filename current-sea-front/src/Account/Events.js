@@ -80,8 +80,6 @@ export default class Events extends React.Component {
 
     deleteRowE(e, et_event_id){
         let index = this.state.currentData.findIndex(x=>x.et_event_id ==et_event_id);
-        console.log("index:" + index);
-        console.log("passed in id:" + et_event_id);
         let rowDataVar = {eventId:et_event_id}
         confirmAlert({
             title: 'Confirm Deletion',
@@ -98,7 +96,6 @@ export default class Events extends React.Component {
                         xhrFields: { withCredentials:true },
                         data: JSON.stringify(rowDataVar),
                         success: (data) => {
-                            console.log("success inside");
                              this.setState({
                                  update:true
                              });
@@ -238,9 +235,9 @@ export default class Events extends React.Component {
                                             <table>
                                                 <tbody>
                                                     <tr id='nested'>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_abv}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_name}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_color}</button></td>
+                                                        <td><button>{row.et_event_abv}</button></td>
+                                                        <td><button>{row.et_event_name}</button></td>
+                                                        <td><button>{row.et_event_color}</button></td>
 
                                                         <button id='deleteButton' onClick={e => this.deleteRowE(e,row.et_event_id)}> x </button>
 

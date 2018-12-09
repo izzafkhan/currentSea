@@ -13,7 +13,7 @@ class Settings extends Component{
         return(
             <div >
                <Header/>
-               <Accounts/>
+                <Accounts/>
                <Events/>
 
             </div>
