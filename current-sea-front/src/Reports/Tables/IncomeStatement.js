@@ -133,11 +133,23 @@ export default class IncomeStatement extends Component {
             },
             {
                 Header: 'Account',
-                accessor: 'account', width: 300
+                accessor: 'account', width: 300,
+                Cell: row => (
+                    <span
+                        style={{
+                            color: row.value >= 0 ? 'green'
+                                : 'red'
+                        }}>{row.value + "%"}</span>)
             },
             {
                 Header: 'End',
-                accessor: 'change'
+                accessor: 'change',
+                Cell: row => (
+                    <span
+                        style={{
+                            color: row.value >= 0 ? 'green'
+                                : 'red'
+                        }}>{row.value + "%"}</span>)
             }];
 
         return (
