@@ -111,7 +111,6 @@ export default class EditEntry extends React.Component{
                                             'tt_currency' : this.state.transactionInfo.tt_currency, 
                                             'tt_description' : this.state.transactionInfo.tt_description}),
                     success: () => {
-                        console.log(this.state.data);
                         this.setState({
                             update: true,
                         })
@@ -236,14 +235,15 @@ export default class EditEntry extends React.Component{
                     <tbody>
                         <tr></tr>   
                         {this.state.data.map( (row, index) => {
-                            var eventIndex = this.state.myEvents.events.findIndex(ev => ev.dt_transactionID==row.dt_transactionID);
-                            console.log("Event" + eventIndex);
+                            //var eventIndex = this.state.myEvents.events.findIndex(ev => ev.dt_transactionID==row.dt_transactionID);
+                            console.log(this.state.myEvents[224].et_event_abv);
+                            console.log(row);
                             return (
                                 <tr key={`row-${index}`}>
                                     <td><Select options={this.state.accounts} placeholder={row.dt_accountID} onChange={(e) => this.handleChange(row, 'dt_accountID', e)}/></td>
                                     <td><input type="number"  defaultValue={row.dt_debit} onChange={(e) => this.handleChange(row, 'dt_debit', e)}/></td>
                                     <td><input type="number" defaultValue={row.dt_credit} onChange={(e) => this.handleChange(row, 'dt_credit', e)}/></td>
-                                    <td><Select options={this.state.events} placeholder={1} onChange={(e) => this.handleChange(row, 'dt_eventID', e)}/></td>
+                                    <td><Select options={this.state.events} placeholder={row.dt_eventID} onChange={(e) => this.handleChange(row, 'dt_eventID', e)}/></td>
                                     <td><button onClick={() => this.cancel(row)}>X</button></td>
                                 </tr>
                             )
