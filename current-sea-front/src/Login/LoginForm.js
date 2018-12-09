@@ -20,9 +20,7 @@ export default class LoginForm extends React.Component {
             loginForDemo: false,
             redirectRef : false,
         };
-
     }
-
     onChange = e => {
         this.setState({
             [e.target.id]: e.target.value
@@ -84,9 +82,7 @@ export default class LoginForm extends React.Component {
                 error: (data) => {
                     alert('Invalid credentials');
                 }
-            }
-
-        );
+            });
             /*
         log.authenticate( () => {
             this.setState({redirectRef: true})
@@ -99,10 +95,28 @@ export default class LoginForm extends React.Component {
           this.onSubmit(event);
         }
       }
+    
+    componentDidMount() {
+        $.ajax({
+            url:'http://localhost:4000/profile/loggedin',
+            type:'GET',
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: 'json',
+            xhrFields: { withCredentials: true },
+            success: (data) => {
+                if (data.message === 'OK'){
+                    this.setState({redirectRef: true});
+                } else {
+                    this.setState({redirectRef: false});
+                }
+            }
+        });
+    }
     render() {
         if(this.state.redirectRef){
             return(
-                <Redirect to={this.props.location.state || {from: {pathname: "/"}}} />
+                <Redirect to='/Transactions' />
             );       
         }
 
