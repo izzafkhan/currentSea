@@ -13,7 +13,7 @@ class Settings extends Component {
 
     render() {
         return (
-            <div className="settingsRoot">
+            <div className="settingsRoot" style={{height: "800px"}}>
                 <Header/>
 
                 <div className="settingsBothTitlesDiv" style={{paddingBottom: "30px"}}>
