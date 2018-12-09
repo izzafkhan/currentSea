@@ -55,8 +55,9 @@ module.exports = function router() {
               db.query('SELECT dt_eventID from details_table where dt_eventID = ?', [eventId], (err2) => {
                 if (err2) {
                   debug('Error occurred while querying details_table', err2);
-                  return res.status(401).json({ message: 'Deleting this event is not allowed' });
+                  return res.status(500).json({ message: 'Some error occurred' });
                 }
+                return res.status(401).json({ message: 'Deleting this event is not allowed' });
               });
 
 
