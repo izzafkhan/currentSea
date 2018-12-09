@@ -153,7 +153,7 @@ export default class Events extends React.Component {
         }
         return (
             <div>
-                <table className="eventsTable">
+                <table className="eventsTable" style={{width: "500px"}}>
 
                     <col width={170}/>
                     <col width={190}/>
