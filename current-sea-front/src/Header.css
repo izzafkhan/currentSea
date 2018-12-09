@@ -2,8 +2,6 @@
   background-color: white;
   overflow: hidden;
   height: 60px;
-
-
 }
 
 .linkContainer {
@@ -45,7 +43,7 @@
   display: inline-block;
   vertical-align: top;
   margin-left: 15px;
-  margin-top: 4px;
+  margin-top: -3px;
     height:auto;
     width:200px;
 

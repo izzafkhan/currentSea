@@ -1,6 +1,18 @@
 .settingsRoot {
     background-color: #051642;
 }
+
+#h1titleSettings{
+
+    color: white !important;
+    text-align: center !important;
+    background-color: #051642 !important;
+}
+
+.settingsBothTitlesDiv {
+    padding: 40px;
+}
+
 .settingSubHead {
     background-color: #051642;
     text-align: center;
@@ -9,7 +21,6 @@
 }
 
 .settingsTableDiv {
-    margin-top: 30px;
     display: flex;
     flex-direction: row;
     padding-bottom: 100px;

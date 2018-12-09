@@ -114,7 +114,7 @@ export default class LoginForm extends React.Component {
 
                     <div className="navbarLogin">
                         <Link to="/">
-                            <img className="logo" src={require('../Assets/CSLogo.png')}></img>
+                            <img className="logo" src={require('../Assets/CurrentSeaLogo2.png')}></img>
                         </Link>
                         
                         <Link to="/Register">
