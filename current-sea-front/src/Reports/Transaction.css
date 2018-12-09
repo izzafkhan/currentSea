@@ -27,6 +27,7 @@ div.bookkeepingTitleDiv {
     color: white !important;
     text-align: center !important;
     background-color: #051642 !important;
+    padding: 4px;
     /*padding: 16px;*/
 }
 
@@ -65,7 +66,6 @@ Styling to make the table readable
 #dataTable td{
     background-color: #ffffff;
     color: black;
-    width: 100px;
     
     text-align: left;
 }
@@ -80,11 +80,9 @@ Styling to make the table readable
     
     background-color: #ffffff;
     color: black;
-    width: 100px;
 }
 
 #nested td {
-    width: 100px;
     background-color: white;
     border-color: white;
     border-style: solid;
@@ -92,7 +90,6 @@ Styling to make the table readable
 }
 
 #nested button {
-    width: 100px;
     background-color: white;
     border-color: white;
     border-style: solid;

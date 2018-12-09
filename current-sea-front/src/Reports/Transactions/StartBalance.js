@@ -101,22 +101,22 @@ export default class StartBalance extends React.Component{
 
     render(){
         return(
-            <div width='300'>
+            <div>
                 <table id='startTable'>
-                    <thead id='headEntry'>
+                    <thead id='startHeadEntry'>
                         <tr>
                             <th>Account</th>
                             <th>Balance</th>
                             <th>DF</th>
                         </tr>
                     </thead>
-                    <tbody id='bodyEntry'>
+                    <tbody id='startBodyEntry'>
                         {this.state.data.map( (row, index) => {
                             return (
                                 <tr key={`row-${index}`}>
-                                    <td><Select options={this.state.accounts} placeholder={row.bt_account_id} onChange={(e) => this.handleChange(row, 'bt_account_id', e)}/></td>
-                                    <td><input type="number"  defaultValue={row.bt_initialBalance} onChange={(e) => this.handleChange(row, 'bt_initialBalance', e)}/></td>
-                                    <td><Select options={this.state.currencies} placeholder={row.bt_currency_abv} onChange={(e) => this.handleCurrency(row, 'bt_currency_abv', e)}/></td>
+                                    <td style={{width : "100px"}}><Select options={this.state.accounts} placeholder={row.bt_account_id} onChange={(e) => this.handleChange(row, 'bt_account_id', e)}/></td>
+                                    <td><input type="number" style={{width : "100px"}} defaultValue={row.bt_initialBalance} onChange={(e) => this.handleChange(row, 'bt_initialBalance', e)}/></td>
+                                    <td style={{width : "100px"}}><Select options={this.state.currencies} placeholder={row.bt_currency_abv} onChange={(e) => this.handleCurrency(row, 'bt_currency_abv', e)}/></td>
                                 </tr>
                             )
                         })}

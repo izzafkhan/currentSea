@@ -150,11 +150,11 @@ export default class Transaction extends React.Component {
         }
 
         dataCopy1[0] = (max1/total).toFixed(2)*100;
-        labelCopy1 = (label1);
+        labelCopy1 = (label1).length > 14 ? label1.substr(0, 7) + "..." : label1;
         dataCopy2[0] = (max2/total).toFixed(2)*100;
-        labelCopy2 = (label2);
+        labelCopy2 = (label2).length > 14 ? label2.substr(0, 7) + "..." : label2;
         dataCopy3[0] = (max3/total).toFixed(2)*100 ;
-        labelCopy3 = (label3);
+        labelCopy3 = (label3).length > 14 ? label3.substr(0, 7) + "..." : label3;
         dataCopy4[0] = ((total - (max1 + max2 + max3))/total).toFixed(2)*100;
         labelCopy4 = (other);
 
@@ -470,11 +470,11 @@ export default class Transaction extends React.Component {
                         <table id='dataTable' width="600">
                             <thead>
                                 <tr>
-                                    <th>No.</th>
+                                    <th width='20px'>No.</th>
                                     <th>Date</th>
                                     <th>Description</th>
                                     <th>Balance</th>
-                                    <th>DF</th>
+                                    <th>Currency</th>
                                     <th>Event</th>
                                 </tr>
                                 <tr>
@@ -505,7 +505,7 @@ export default class Transaction extends React.Component {
                                                 <table>
                                                     <tbody>
                                                         <tr id='nested'>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{display}</button></td>
+                                                            <td width='20px'><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{display}</button></td>
                                                             <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{(moment(row.tt_date)).format('YYYY-MM-DD')}</button></td>
                                                             <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
                                                             <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_balance}</button></td>
@@ -549,7 +549,7 @@ export default class Transaction extends React.Component {
                                                 </tr>
                                                 <tr>
                                                     {this.state.startBalance ?
-                                                        <td><StartBalance currencies={this.state.convertCurrencies} closeAction={this.closeStart}/></td> : (null) }
+                                                        <td colSpan='3'><StartBalance currencies={this.state.convertCurrencies} closeAction={this.closeStart}/></td> : (null) }
                                                 </tr>
                                             </tbody>
                                         </table>
