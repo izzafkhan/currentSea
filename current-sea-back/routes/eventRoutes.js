@@ -41,32 +41,32 @@ module.exports = function router() {
   eventRouter.route('/delete_event')
     .post((req, res) => {
 
-        if (req.user) {
-            const { eventId } = req.body;
-            debug(req.body);
-            db.query('SELECT * from details_table where dt_userID = ? AND dt_eventID = ?',
-                [req.user.username, eventId], (err, results) => {
-                    if (err) {
-                        debug(err);
-                        res.status(500).json({ message: 'Some error occurred' });
-                    }
-                    if (results.length !== 0) {
-                        res.status(401).json({ message: 'Event already used, please transfer your transactions from this event to another one' });
-                    } else {
-                        db.query('DELETE FROM event_table WHERE et_user_id = ? AND et_event_id = ?',
-                            [req.user.username, eventId], (err1, results) => {
-                                if (err1) {
-                                    debug(err1);
-                                    res.status(500).json({ message: 'Some error occurred' });
-                                } else {
-                                    res.status(200).json({ message: 'Account deleted successfully' });
-                                }
-                            });
-                    }
+      if (req.user) {
+        const { eventId } = req.body;
+        debug(req.body);
+        db.query('SELECT * from details_table where dt_userID = ? AND dt_eventID = ?',
+          [req.user.username, eventId], (err, results) => {
+            if (err) {
+              debug(err);
+              res.status(500).json({ message: 'Some error occurred' });
+            }
+            if (results.length !== 0) {
+              res.status(401).json({ message: 'Event already used, please transfer your transactions from this event to another one' });
+            } else {
+              db.query('DELETE FROM event_table WHERE et_user_id = ? AND et_event_id = ?',
+                [req.user.username, eventId], (err1, results) => {
+                  if (err1) {
+                    debug(err1);
+                    res.status(500).json({ message: 'Some error occurred' });
+                  } else {
+                    res.status(200).json({ message: 'Account deleted successfully' });
+                  }
                 });
-        } else {
-            res.status(401).json({ message: 'User is not logged in' });
-        }
+            }
+          });
+      } else {
+        res.status(401).json({ message: 'User is not logged in' });
+      }
     });
 
   eventRouter.route('/archive_event')
