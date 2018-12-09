@@ -72,7 +72,7 @@ export default class IncomeStatement extends Component {
                 success: (receivedData) => {
                     this.setState({exchangeRate: receivedData.rate, currencyCode: currencyCode});
                     let data = this.state.data;
-                    for (let i = 0; i < data.length; i++){
+                    for (let i = 0; i < data.length; i++) {
                         let {start, change, end} = data[i];
                         start = (start * this.state.exchangeRate).toFixed(4);
                         change = (change * this.state.exchangeRate).toFixed(4);
@@ -105,17 +105,17 @@ export default class IncomeStatement extends Component {
     componentDidMount = () => {
         $.ajax({
             url: "http://localhost:4000/statement/statement",
-                type: "GET",
-                contentType: "application/json; charset=utf-8",
-                crossDomain: true,
-                dataType: 'json',
-                xhrFields: {withCredentials: true},
-                success: (data) => {
-                    this.setState({data: data});
-                },
-                error: (data) => {
-                    console.log(data);
-                }
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: 'json',
+            xhrFields: {withCredentials: true},
+            success: (data) => {
+                this.setState({data: data});
+            },
+            error: (data) => {
+                console.log(data);
+            }
         })
     }
 
@@ -138,32 +138,30 @@ export default class IncomeStatement extends Component {
             {
                 Header: 'End',
                 accessor: 'change'
-            }];        
+            }];
 
         return (
 
 
-            <div className="gridContainer">
+            <div className="gridContainer" style={{paddingTop: "50px"}}>
 
                 <div className="isgTop">
 
-                    <div>
-                        <Dropdown className="incomeStatementsDropDownReports" isOpen={this.state.reportDropdownOpen}
-                                  toggle={this.toggleReport}>
-                            <DropdownToggle caret>
-                                Income Statement
-                            </DropdownToggle>
-                            <DropdownMenu className="isDropDownReportsMenu">
-                                <DropdownItem onClick={this.props.action}>Balance Sheet</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                    </div>
 
-                    <div>
-                        <Select options={this.props.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.currencyCode}
-                                className='dropdownContainer'/>
+                    <Dropdown className="incomeStatementsDropDownReports" isOpen={this.state.reportDropdownOpen}
+                              toggle={this.toggleReport}>
+                        <DropdownToggle caret>
+                            Income Statement
+                        </DropdownToggle>
+                        <DropdownMenu className="isDropDownReportsMenu">
+                            <DropdownItem onClick={this.props.action}>Balance Sheet</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
 
-                    </div>
+                    <Select options={this.props.currencies} onChange={(e) => this.currencyChanged(e)}
+                            placeholder={this.state.currencyCode}
+                            className='dropdownContainer'/>
+
 
                 </div>
 

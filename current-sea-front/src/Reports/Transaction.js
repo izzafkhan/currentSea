@@ -463,7 +463,9 @@ export default class Transaction extends React.Component {
         return (
             <div class="bigContainer">
                 <h1 id='h1title'>Bookkeeping</h1>
-                <div class="myContainer">
+                <div className="settingSubHead">Here you can record your transactions</div>
+
+                <div class="myContainer" style={{marginTop: "30px"}}>
                     <div className="transaction-table">
                         <table id='dataTable' width="600">
                             <thead>

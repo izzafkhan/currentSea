@@ -1,0 +1,30 @@
+.settingsRoot {
+    background-color: #051642;
+}
+.settingSubHead {
+    background-color: #051642;
+    text-align: center;
+    color: white;
+    margin: -10px;
+}
+
+.settingsTableDiv {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 100px;
+    justify-content: center;
+
+}
+
+.accountsDiv {
+    margin-right: 10px;
+}
+
+.settingsTableTitle {
+    background-color: #E5E5E5;
+    text-align: center;
+    font-family: apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: x-large;
+    color: #00ADA2;
+}

@@ -27,7 +27,7 @@ div.bookkeepingTitleDiv {
     color: white !important;
     text-align: center !important;
     background-color: #051642 !important;
-    padding: 16px;
+    /*padding: 16px;*/
 }
 
 div.transaction-table{
