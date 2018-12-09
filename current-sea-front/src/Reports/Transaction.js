@@ -470,12 +470,12 @@ export default class Transaction extends React.Component {
                         <table id='dataTable' width="600">
                             <thead>
                                 <tr>
-                                    <th>No.</th>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Balance</th>
-                                    <th>DF</th>
-                                    <th>Event</th>
+                                    <th style={{width: "60px"}}>No.</th>
+                                    <th style={{width: "110px"}}>Date</th>
+                                    <th style={{width: "230px"}}>Description</th>
+                                    <th style={{width: "80px"}}>Balance</th>
+                                    <th style={{width: "80px"}}>DF</th>
+                                    <th style={{width: "80px"}}>Event</th>
                                 </tr>
                                 <tr>
                                     <th colSpan='6'>
@@ -505,12 +505,12 @@ export default class Transaction extends React.Component {
                                                 <table>
                                                     <tbody>
                                                         <tr id='nested'>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{display}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{(moment(row.tt_date)).format('YYYY-MM-DD')}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_balance}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_currency}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>
+                                                            <td><button style={{width: "50px"}}onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{display}</button></td>
+                                                            <td><button style={{width: "120px"}} onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{(moment(row.tt_date)).format('YYYY-MM-DD')}</button></td>
+                                                            <td><button style={{width: "240px"}} onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
+                                                            <td><button style={{width: "80px"}}onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_balance}</button></td>
+                                                            <td><button style={{width: "80px"}}onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_currency}</button></td>
+                                                            <td><button style={{width: "80px"}}onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>
                                                             <Circle r={10} fill={{color:this.state.myEvents[row.tt_transaction_id].et_event_color}} 
                                                             stroke={{color:this.state.myEvents[row.tt_transaction_id].et_event_color}} strokeWidth={3} /></button></td>
                                                         </tr>
