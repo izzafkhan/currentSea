@@ -1,18 +1,18 @@
 import React from 'react';
 import Header from '../Header';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 //import SplitPane from 'react-split-pane'
 import Linechart from 'react-linechart';
 import $ from 'jquery'
-import { monthlyData } from 'react-linechart/example/constants/points'
+import {monthlyData} from 'react-linechart/example/constants/points'
 import 'react-linechart/dist/styles.css';
 import currencyMenu from './CurrencyMenu';
 import Select from 'react-select';
 import './currencies.css';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import DatePicker from "react-datepicker/es";
 import AddAccount from '../Account/AddAccount';
 import RateRow from './RateRow.js';
@@ -69,6 +69,7 @@ function onInsert(row) {
     let newRow = '';
 
 }
+
 export default class Currencies extends React.Component {
     constructor(props) {
         super(props);
@@ -100,55 +101,55 @@ export default class Currencies extends React.Component {
 
         //////need to change
         $.ajax({
-                url: "http://localhost:4000/currencies/getrate",
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                crossDomain: true,
-                dataType: 'json',
-                xhrFields: {withCredentials: true},
-                data: JSON.stringify({from: this.state.defaultCurrencyCode, to: currencyCode}),
-                success:  (receivedData) => {
-                    console.log('what is this '+ receivedData);
-                    this.setState({exchangeRate: receivedData.rate, defaultCurrencyCode: currencyCode});
-                    console.log("defaultCode changed to ", this.state.defaultCurrencyCode)
-                    this.alreadyRan = false;
-                    this.call_getrate();
-                    // let rates = [
-                    //     // toCurrency: {rate}
-                    // ];
-                    // if(rates[currencyCode] === undefined){
-                    //     rates[currencyCode] = receivedData.rate.toFixed(4);
-                    // }
-                    //this.state.fav_currencies.push({ currency: currencyCode, conversion: receivedData.rate, change: '0.23%' })
-                    // console.log('steve, what is this', receivedData.rate);
-                    // let { rate } = data[i];
-                    //     // start = (start * this.state.exchangeRate).toFixed(4);
-                    //     // change = (change * this.state.exchangeRate).toFixed(4);
-                    //     // end = (end * this.state.exchangeRate).toFixed(4);
-                    //     // data[i].start = start;
-                    //     // data[i].change = change;
-                    //     // data[i].end = end;
-                    // };
-                    // this.setState({data: data});
-                },
-                error: (receivedData) => {
-                    alert('error occurred')
+            url: "http://localhost:4000/currencies/getrate",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: 'json',
+            xhrFields: {withCredentials: true},
+            data: JSON.stringify({from: this.state.defaultCurrencyCode, to: currencyCode}),
+            success: (receivedData) => {
+                console.log('what is this ' + receivedData);
+                this.setState({exchangeRate: receivedData.rate, defaultCurrencyCode: currencyCode});
+                console.log("defaultCode changed to ", this.state.defaultCurrencyCode)
+                this.alreadyRan = false;
+                this.call_getrate();
+                // let rates = [
+                //     // toCurrency: {rate}
+                // ];
+                // if(rates[currencyCode] === undefined){
+                //     rates[currencyCode] = receivedData.rate.toFixed(4);
+                // }
+                //this.state.fav_currencies.push({ currency: currencyCode, conversion: receivedData.rate, change: '0.23%' })
+                // console.log('steve, what is this', receivedData.rate);
+                // let { rate } = data[i];
+                //     // start = (start * this.state.exchangeRate).toFixed(4);
+                //     // change = (change * this.state.exchangeRate).toFixed(4);
+                //     // end = (end * this.state.exchangeRate).toFixed(4);
+                //     // data[i].start = start;
+                //     // data[i].change = change;
+                //     // data[i].end = end;
+                // };
+                // this.setState({data: data});
+            },
+            error: (receivedData) => {
+                alert('error occurred')
 
-                }
-            });
+            }
+        });
     }
-    
+
 
     showMenu(event) {
         event.preventDefault();
 
-        this.setState({ showMenu: true }, () => {
+        this.setState({showMenu: true}, () => {
             // document.addEventListener('click', this.closeMenu);
         });
     }
 
     closeMenu() {
-        this.setState({ showMenu: false }, () => {
+        this.setState({showMenu: false}, () => {
             document.removeEventListener('click', this.closeMenu);
         });
 
@@ -181,39 +182,39 @@ export default class Currencies extends React.Component {
     //                 }
     //             })
     //     }
-        // fav_currencies.push(newRow);
+    // fav_currencies.push(newRow);
     //}
     //getting all the different currencies
     call_me_first() {
-        if(!this.alreadyRan){
-        console.log("1");
-        $.ajax({
-            url: "http://localhost:4000/currencies/currencies",
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            dataType: "json",
-            xhrFields: { withCredentials: true },
-            success: (data) => {
-                console.log("success into currencies", data);
-                let currencies = []
-                for (let i = 0; i < data.currencies.length; i++) {
-                    const newRow = { value: '', label: '' };
-                    newRow.value = data.currencies[i];
-                    newRow.label = data.currencies[i];
-                    currencies[i] = newRow;
+        if (!this.alreadyRan) {
+            console.log("1");
+            $.ajax({
+                url: "http://localhost:4000/currencies/currencies",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                xhrFields: {withCredentials: true},
+                success: (data) => {
+                    console.log("success into currencies", data);
+                    let currencies = []
+                    for (let i = 0; i < data.currencies.length; i++) {
+                        const newRow = {value: '', label: ''};
+                        newRow.value = data.currencies[i];
+                        newRow.label = data.currencies[i];
+                        currencies[i] = newRow;
+                    }
+                    this.setState({currencies: currencies})
+                    this.call_getrate();
+                },
+                error: () => {
+                    console.log("Error: Could not submit");
+                    // this.props.action(false);
                 }
-                this.setState({ currencies: currencies })
-                this.call_getrate();
-            },
-            error: () => {
-                console.log("Error: Could not submit");
-                // this.props.action(false);
-            }
-        });
-    this.alreadyRan = true;
-    }
-        
+            });
+            this.alreadyRan = true;
+        }
+
         // $.ajax({
         //     url: "http://localhost:4000/currencies/get_fav_cur",
         //     type: "GET",
@@ -237,7 +238,7 @@ export default class Currencies extends React.Component {
 
     }
 
-    call_getrate(){
+    call_getrate() {
         console.log("call_getrate...so what is data");
         let tempCurs = [];
         for (let i = 0; i < this.state.currencies.length; i++) {
@@ -248,15 +249,18 @@ export default class Currencies extends React.Component {
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,
                 dataType: "json",
-                xhrFields: { withCredentials: true },
+                xhrFields: {withCredentials: true},
                 data: JSON.stringify({from: this.state.defaultCurrencyCode}),
                 success: (data) => {
-                    if(data.length === 0){
+                    if (data.length === 0) {
                         console.log("THERE IS NOTHING MEANINGFUL IN THIS WORLD");
                     }
                     console.log("returned data: ", data.results[i]);
-                    tempCurs.push({currency: this.state.currencies[i].label, conversion: data.results[i].ct_rate.toFixed(4), change: (100*(data.results[i].ct_rate-data.results[i+33].ct_rate)/data.results[i+33].ct_rate).toFixed(4)
-                    }); 
+                    tempCurs.push({
+                        currency: this.state.currencies[i].label,
+                        conversion: data.results[i].ct_rate.toFixed(4),
+                        change: (100 * (data.results[i].ct_rate - data.results[i + 33].ct_rate) / data.results[i + 33].ct_rate).toFixed(4)
+                    });
                     this.forceUpdate();
                     console.log(data);
                     console.log("Work in progress");
@@ -265,20 +269,20 @@ export default class Currencies extends React.Component {
                     console.log("Error: Could not submit");
                 }
             });
-            this.setState({fav_currencies : tempCurs});
+            this.setState({fav_currencies: tempCurs});
         }
         console.log("after getrate: ", this.state.fav_currencies);
     }
 
-componentDidUpdate(prevProps, prevState){
-    console.log("UPDATED!!!")
-    this.call_me_first();
-}
+    componentDidUpdate(prevProps, prevState) {
+        console.log("UPDATED!!!")
+        this.call_me_first();
+    }
 
     render() {
         console.log("RENDERING");
         this.call_me_first();
-        console.log("What is in here, "+this.state.fav_currencies);
+        console.log("What is in here, " + this.state.fav_currencies);
         var columns = [{
             Header: 'Currency',
             accessor: 'currency'
@@ -289,11 +293,11 @@ componentDidUpdate(prevProps, prevState){
             Header: 'Change(day)',
             accessor: 'change',
             Cell: row => (
-                  <span
+                <span
                     style={{
-                      color: row.value >= 0 ? 'green'
-                        : 'red',
-                    }}>{row.value+"%"}</span>)
+                        color: row.value >= 0 ? 'green'
+                            : 'red',
+                    }}>{row.value + "%"}</span>)
             // Cell: rowInfo => (<div 
             // style={{
             //     color:
@@ -304,38 +308,38 @@ componentDidUpdate(prevProps, prevState){
         }]
         return (
             <div className="currencyreportsContainer">
-                <Header />
+                <Header/>
 
                 <div class="body">
 
 
-                    <h1 align="center">Currencies</h1>
+                    <h1 id="h1title" align="center">Currencies</h1>
 
-                    <div>
 
-                        <div class="bottomBody">
-                            <div className="gridContainer">
+                    <div class="bottomBody">
+                        <div className="gridContainer">
 
-                                <div className="tableTop" >
-                                    <h6 class = "word" style = {{color: "white"}}>Change Currency</h6>
-                                    <Select options={this.state.currencies} onChange={(e) => this.currencyChanged(e)} placeholder={this.state.defaultCurrencyCode}
-                                                        className="dropdown" />
-                                    <div class = "clickButton">
-                                    </div>
-
-                                </div>
-
-                                <div className="tableBottom">
-                                    <ReactTable 
-                                        className="currencyDataTable"
-                                        data={this.state.fav_currencies}
-                                        noDataText="Your favorite currencies will appear here"
-                                        columns={columns}
-                                    />
+                            <div className="tableTop">
+                                <h6 class="word" style={{color: "white"}}>Change Currency</h6>
+                                <Select options={this.state.currencies} onChange={(e) => this.currencyChanged(e)}
+                                        placeholder={this.state.defaultCurrencyCode}
+                                        className="dropdown"/>
+                                <div class="clickButton">
                                 </div>
 
                             </div>
-                            {/* <div class="linechart">
+
+                            <div className="tableBottom">
+                                <ReactTable
+                                    className="currencyDataTable"
+                                    data={this.state.fav_currencies}
+                                    noDataText="Your favorite currencies will appear here"
+                                    columns={columns}
+                                />
+                            </div>
+
+                        </div>
+                        {/* <div class="linechart">
                                 <h2 align="center" style={{ color: "black" }}>My Exchange Rates</h2>
                                 <Linechart
                                     width={600}
@@ -347,9 +351,8 @@ componentDidUpdate(prevProps, prevState){
                             </div> */}
 
 
-                        </div>
-
                     </div>
+
                 </div>
             </div>
 

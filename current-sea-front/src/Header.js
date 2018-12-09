@@ -61,7 +61,7 @@ class Header extends Component {
                 <div className="linkContainer">
 
                     <Link to="/Transactions">
-                        <img className="logo" src={require('./Assets/CSLogo.png')}></img>
+                        <img className="logo" src={require('./Assets/CurrentSeaLogo2.png')}></img>
                     </Link>
                     
                     <Link to="/" className="l">
