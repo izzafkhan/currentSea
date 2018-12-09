@@ -176,7 +176,6 @@ export default class AddEntry extends React.Component{
                                 <th><DatePicker id='date' selected={this.state.dateSetter} onChange={this.setDate} popperPlacement='right-start'/></th>
                                 <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
                                 <th></th>
-                                {/*<th><input type="text" placeholder="Currency"  onChange={this.handleCurrency} /></th> */}
                                 <th><Select options={this.state.currencies} onChange={this.handleCurrency}/></th>
                             </tr>
                         </thead>

@@ -458,6 +458,21 @@ export default class Transaction extends React.Component {
                 }
             }); 
 
+            $.ajax({
+                url: "http://localhost:4000/transactions/get_transaction_event",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType:"json",
+                xhrFields: { withCredentials:true },
+                success: (receivedData) => {
+                    console.log(receivedData);
+                    this.setState({
+                        myEvents : receivedData,
+                    })
+                }
+            })
+
             
         }
         return (
