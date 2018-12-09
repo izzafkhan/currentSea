@@ -107,7 +107,7 @@ export default class StartBalance extends React.Component{
                         <tr>
                             <th>Account</th>
                             <th>Balance</th>
-                            <th>DF</th>
+                            <th>Currency</th>
                         </tr>
                     </thead>
                     <tbody id='startBodyEntry'>
