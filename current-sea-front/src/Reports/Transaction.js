@@ -477,20 +477,20 @@ export default class Transaction extends React.Component {
         }
         return (
             <div class="bigContainer">
-                <h1 id='h1title'>Bookkeeping</h1>
-                <div className="settingSubHead">Here you can record your transactions</div>
+                <h1 id='h1title' style={{paddingBottom: "10px"}}>Bookkeeping</h1>
+                <div className="settingSubHead" style={{paddingBottom: "30px"}}>Here you can record your transactions</div>
 
                 <div class="myContainer" style={{marginTop: "30px"}}>
                     <div className="transaction-table">
                         <table id='dataTable' width="600">
                             <thead>
                                 <tr>
-                                    <th width='20px'>No.</th>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Balance</th>
-                                    <th>Currency</th>
-                                    <th>Event</th>
+                                    <th style={{width: "60px"}}>No.</th>
+                                    <th style={{width: "110px"}}>Date</th>
+                                    <th style={{width: "230px"}}>Description</th>
+                                    <th style={{width: "80px"}}>Balance</th>
+                                    <th style={{width: "80px"}}>DF</th>
+                                    <th style={{width: "80px"}}>Event</th>
                                 </tr>
                                 <tr>
                                     <th colSpan='6'>
@@ -520,12 +520,12 @@ export default class Transaction extends React.Component {
                                                 <table>
                                                     <tbody>
                                                         <tr id='nested'>
-                                                            <td width='20px'><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{display}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{(moment(row.tt_date)).format('YYYY-MM-DD')}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_balance}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_currency}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>
+                                                            <td><button style={{width: "50px"}}onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{display}</button></td>
+                                                            <td><button style={{width: "120px"}} onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{(moment(row.tt_date)).format('YYYY-MM-DD')}</button></td>
+                                                            <td><button style={{width: "240px"}} onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
+                                                            <td><button style={{width: "80px"}}onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_balance}</button></td>
+                                                            <td><button style={{width: "80px"}}onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_currency}</button></td>
+                                                            <td><button style={{width: "80px"}}onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>
                                                             <Circle r={10} fill={{color:this.state.myEvents[row.tt_transaction_id].et_event_color}} 
                                                             stroke={{color:this.state.myEvents[row.tt_transaction_id].et_event_color}} strokeWidth={3} /></button></td>
                                                         </tr>
@@ -580,12 +580,17 @@ export default class Transaction extends React.Component {
                             <HorizontalBar id="myChart" data={this.state.chartData} options={options}/>
                         </div>
                         <div class="conversion">
-                            <h2>Currency Conversion</h2>
-                            <input type="number" defaultValue={this.state.original} onChange={this.convert} />
-                            <Select id='start-currency' options={this.state.convertCurrencies} placeholder={this.state.startCurrency.value} onChange={this.handleStartCurrency}/>
-                            <h3>=</h3>
-                            <p>{this.state.conversion}</p>
-                            <Select id='end-currency' options={this.state.convertCurrencies} placeholder={this.state.endCurrency.value} onChange={this.handleEndCurrency}/>
+                            <h2>    Currency Conversion</h2>
+                            <div>
+                                <input type="number" id='currency-number-in' defaultValue={this.state.original} onChange={this.convert} />
+                                <Select id='start-currency' options={this.state.convertCurrencies} placeholder={this.state.startCurrency.value} onChange={this.handleStartCurrency}/>
+                            </div>
+
+                            <h3 id='currency-equal'>=</h3>
+                            <div class='currency-out'>
+                                <p id='currency-number-out'>{this.state.conversion}</p>
+                                <Select id='end-currency' options={this.state.convertCurrencies} placeholder={this.state.endCurrency.value} onChange={this.handleEndCurrency}/>
+                            </div>
                         </div>
                     </div>
                 </div>
