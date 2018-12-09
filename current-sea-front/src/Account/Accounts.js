@@ -109,8 +109,8 @@ export default class Accounts extends React.Component {
 
 
                         },
-                        error: () => {
-                            console.log("Error: Could not submit");
+                        error: (data) => {
+                            alert(data.responseJSON.message);
                         }
                     })
 
