@@ -1,5 +1,6 @@
 .settingsRoot {
     background-color: #051642;
+    min-height: 800px;
 }
 
 #h1titleSettings{
@@ -25,7 +26,6 @@
     flex-direction: row;
     padding-bottom: 100px;
     justify-content: center;
-
 }
 
 .accountsDiv {
