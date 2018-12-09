@@ -1,16 +1,9 @@
 import React from 'react';
 import './Events.css';
-import CurrencyMenu from '../Currencies/CurrencyMenu';
 import AddEvent from './AddEvent';
 import $ from 'jquery'
-import moment from "moment"
-import Header from '../Header'
-import ChromePicker from 'react-color'
-import update from 'react-addons-update';
 import {confirmAlert} from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'
-import AddAccount from "./AddAccount"; // Import css
-import {Circle} from  'react-shapes';
 
 
 export default class Events extends React.Component {
@@ -25,9 +18,9 @@ export default class Events extends React.Component {
             editUpdate: false,
 
             currentData: [{
-                et_event_abv: '',
-                et_event_name: '',
-                et_event_id: '',
+                et_event_abv: 'NE',
+                et_event_name: 'No Event',
+                et_event_id: 42,
                 et_event_color: '',
 
             },]
@@ -160,7 +153,7 @@ export default class Events extends React.Component {
         }
         return (
             <div>
-                <table className="accountsTable">
+                <table className="eventsTable">
 
                     <col width={100}/>
                     <col width={200}/>
@@ -168,24 +161,22 @@ export default class Events extends React.Component {
                     <col width={100}/>
 
                     <thead>
-                    <tr>
-                        <th>Abbr.</th>
-                        <th>Name</th>
-                        <th>Color</th>
-                        <th></th>
+                        <tr>
+                            <th>Abbr.</th>
+                            <th>Name</th>
+                            <th>Color</th>
+                            <th></th>
 
-                    </tr>
+                        </tr>
+                        <tr>
+                            <th colSpan='4'>
+                                <button id='addEventButton' onClick={e => this.addRow()}>+</button>
+                                {this.state.showAddEntry ?
+                                    <div><AddEvent addEntry={this.state.showAddEntry} add={this.addToTable}
+                                                action={this.closeRow}/></div> : <span></span>}
+                            </th>
+                        </tr>
                     </thead>
-
-                    <tr>
-                        <th colSpan='4'>
-                            <button id='addAccountButton' onClick={e => this.addRow()}>+</button>
-                            {this.state.showAddEntry ?
-                                <div><AddEvent addEntry={this.state.showAddEntry} add={this.addToTable}
-                                               action={this.closeRow}/></div> : <span></span>}
-                        </th>
-                    </tr>
-
                     <tbody>
 
                     {this.state.currentData.map(row => {

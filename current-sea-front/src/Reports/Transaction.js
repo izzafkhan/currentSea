@@ -24,10 +24,10 @@ const options = {
      legend: {
         display : true,
         position: 'bottom',
+        fullWidth : true,
         labels: {
-            fontColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(0,0,0)'
-        }
+            fontColor: 'rgb(0, 0, 0)',
+        },
     },
     responsive: true,
     maintainAspectRatio: true
@@ -89,7 +89,7 @@ export default class Transaction extends React.Component {
                      data:  [2]   
                    }
                  ],
-                labels:['label']
+                labels:['Top 3 Events']
               }
         }
         this.convert = this.convert.bind(this);
@@ -402,7 +402,6 @@ export default class Transaction extends React.Component {
             dataType:"json",
             xhrFields: {withCredentials:true},
             success: (data) => {
-                console.log(data);
                 const events = []; 
                 for (let i = 0; i < data.length; i++) {
                     const newRow = {value: '', label: ''};
@@ -425,7 +424,6 @@ export default class Transaction extends React.Component {
             dataType:"json",
             xhrFields: { withCredentials:true },
             success: (receivedData) => {
-                console.log(receivedData);
                 this.setState({
                     myEvents : receivedData,
                 })
@@ -466,7 +464,6 @@ export default class Transaction extends React.Component {
                 dataType:"json",
                 xhrFields: { withCredentials:true },
                 success: (receivedData) => {
-                    console.log(receivedData);
                     this.setState({
                         myEvents : receivedData,
                     })
@@ -511,7 +508,6 @@ export default class Transaction extends React.Component {
                                     if(!this.state.myEvents[row.tt_transaction_id]){ 
                                         const data = this.state.myEvents;
                                         data[row.tt_transaction_id] = {et_event_abv: " "};
-                                        console.log(data);
                                         this.setState({myEvents: data});
                                     }
                                     return (    
