@@ -1,18 +1,8 @@
-.incomeStatementRoot {
-    height: 100%;
-    width: 100%;
-
-    background-color: #051642;
-}
-
 .gridContainer {
     display: grid;
-    grid-template-rows: 10%;
-    grid-auto-rows: 90%;
-    height: 795px;
+    grid-template-rows: 75px;
+    grid-auto-rows: auto;
     width: 795px;
-
-    margin-bottom: 100px;
 
     margin-right: auto;
     margin-left: auto;
@@ -23,6 +13,7 @@
     display: flex;
     background-color: #00ADA2;
     align-items: center;
+
 }
 
 .isgBottom {
@@ -34,17 +25,11 @@
 
 }
 
-.isDropDownReports {
-    width: 200px;
+.incomeStatementsDropDownReports {
     margin-right: 465px;
 }
 
-.isDropDownReportsMenu {
-
-    background-color: white;
-}
-
-.isDropDownCurrency {
+.incomeStatementDropDownCurrency {
     float: right;
     padding: 0px;
 
@@ -57,10 +42,11 @@
 .isDataTable {
     width: 795px;
 }
+
 .dropdownContainer {
     width: 100px;
-    margin-left: 10px;
-    margin-right: 10px;
+    /*margin-left: 10px;*/
+    /*margin-right: 10px;*/
 }
 
 

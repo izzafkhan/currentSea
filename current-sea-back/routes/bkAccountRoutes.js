@@ -44,7 +44,7 @@ module.exports = function router() {
                       debug(err2);
                       res.status(500).json({ message: 'Some error occurred' });
                     } else if (accountType === 'Balance') {
-                      db.query('INSERT INTO initial_balance_table(bt_account_id, bt_user_id, bt_initialBalance) VALUES (?,?,?)',
+                      db.query('INSERT INTO initial_balance_table(bt_account_id, bt_user_id, bt_initialBalance, bt_currency_abv) VALUES (?,?,?, "USD")',
                         [accountId, req.user.username, 0], (err3, results) => {
                           if (err3) {
                             debug(err3);
@@ -109,9 +109,9 @@ module.exports = function router() {
   bkAccountRouter.route('/delete_account')
     .post((req, res) => {
       if (req.user) {
-
         const { accountId } = req.body;
-        db.query('SELECT account_name from details_table where dt_userID = ? AND dt_accountID = ?',
+        debug(req.body);
+        db.query('SELECT * from details_table where dt_userID = ? AND dt_accountID = ?',
           [req.user.username, accountId], (err, results) => {
             if (err) {
               debug(err);
@@ -120,8 +120,8 @@ module.exports = function router() {
             if (results.length !== 0) {
               res.status(401).json({ message: 'Account already used, please transfer your transactions from this account to another one' });
             } else {
-              db.query('DELETE FROM account_table WHERE at_user_id = ? at_account_id = ?',
-                [req.user.username, accountId], () => {
+              db.query('DELETE FROM account_table WHERE at_user_id = ? AND at_account_id = ?',
+                [req.user.username, accountId], (err, results) => {
                   if (err) {
                     debug(err);
                     res.status(500).json({ message: 'Some error occurred' });
@@ -129,24 +129,6 @@ module.exports = function router() {
                     res.status(200).json({ message: 'Account deleted successfully' });
                   }
                 });
-            }
-          });
-      } else {
-        res.status(401).json({ message: 'User is not logged in' });
-      }
-    });
-
-  bkAccountRouter.route('/get_balance_accounts')
-    .get((req, res) => {
-      if (req.user) {
-        db.query('SELECT * FROM account_table WHERE account_type="Balance" AND at_user_id = ?', [req.user.username],
-          (err, results) => {
-            if (err) {
-              debug(err);
-              res.status(500).json({ message: 'Some error occurred' });
-            } else {
-              debug(results);
-              res.status(200).json({ results });
             }
           });
       } else {

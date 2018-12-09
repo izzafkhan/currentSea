@@ -32,8 +32,6 @@ class Report extends Component {
         })
     }
 
-    //getting all the different currencies
-
     componentDidMount() {
         $.ajax({
             url: "http://localhost:4000/currencies/currencies",
