@@ -148,14 +148,13 @@ export default class Transaction extends React.Component {
             }
             total += this.state.currentData[i].tt_balance;
         }
-
-        dataCopy1[0] = (max1/total).toFixed(2)*100;
+        dataCopy1[0] = ((max1/total)*100).toFixed(2);
         labelCopy1 = (label1).length > 14 ? label1.substr(0, 7) + "..." : label1;
-        dataCopy2[0] = (max2/total).toFixed(2)*100;
+        dataCopy2[0] = ((max2/total)*100).toFixed(2);
         labelCopy2 = (label2).length > 14 ? label2.substr(0, 7) + "..." : label2;
-        dataCopy3[0] = (max3/total).toFixed(2)*100 ;
+        dataCopy3[0] = ((max3/total)*100).toFixed(2);
         labelCopy3 = (label3).length > 14 ? label3.substr(0, 7) + "..." : label3;
-        dataCopy4[0] = ((total - (max1 + max2 + max3))/total).toFixed(2)*100;
+        dataCopy4[0] = ((1 - (max1 + max2 + max3)/total)*100).toFixed(2);
         labelCopy4 = (other);
 
         dataSetCopy[0].data = dataCopy1;
