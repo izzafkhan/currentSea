@@ -26,12 +26,8 @@ export default class Accounts extends React.Component {
             },]
 
         }
-        this.get = this.get.bind(this);
         this.addRow = this.addRow.bind(this);
-        this.editRow = this.editRow.bind(this);
         this.closeRow = this.closeRow.bind(this);
-        this.closeEdit = this.closeEdit.bind(this);
-        this.deleteEdit = this.deleteEdit.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.addToTable = this.addToTable.bind(this);
         this.deleteRow = this.deleteRow.bind(this);
@@ -51,39 +47,30 @@ export default class Accounts extends React.Component {
         }
     }
 
-    addToTable(data) {
-
+    addToTable(data){
+       
         this.setState({
             update: true
         })
 
     }
 
-    closeRow(id) {
+    
+    closeRow(id){
         this.state.showAddEntry = id;
         this.state.update = true;
         this.forceUpdate();
     }
 
-    closeEdit(accountId) {
-        let index = this.state.currentData.findIndex(x => x.accountId == accountId);
-        let editData = this.state.currentData;
-        editData[index].edit = false;
-        this.setState({
-            currentData: editData,
-            update: true,
-        });
-        {/*Line 80 (was: editUpdate: true, which does nothing) is probably singlehandedly responsible for the problems we had today. Pitfall?*/
-        }
-    }
-
-    deleteRow(e, at_account_id) {
-        let index = this.state.currentData.findIndex(x => x.at_account_id == at_account_id);
+    
+    deleteRow(e,at_account_id){
+        let index = this.state.currentData.findIndex(x=>x.at_account_id ==at_account_id);
         let rowData = this.state.currentData[index];
-        let rowDataVar = {accountId: rowData.at_account_id};
+        let rowDataVar = {accountId:rowData.at_account_id};
+
         confirmAlert({
-            title: 'Deleting account',
-            message: 'Are you sure you would like to proceed?',
+            title: 'Confirm Deletion',
+            message: 'Are you sure you want to delete this account permanently?',
             buttons: [
                 {
                     label: 'Ok',
@@ -96,18 +83,18 @@ export default class Accounts extends React.Component {
                         xhrFields: {withCredentials: true},
                         data: JSON.stringify(rowDataVar),
                         success: (data) => {
-                            console.log("success inside");
-                            this.setState({
-                                update: true
-                            });
-
-
+                             this.setState({
+                                 update:true
+                             });
+                           
+            
                         },
-                        error: () => {
-                            console.log("Error: Could not submit");
+                        error: (data) => {
+                             console.log("Error: Could not submit");
+                             alert(data.responseJSON.message);
+
                         }
                     })
-
                 },
                 {
                     label: 'Cancel',
@@ -115,55 +102,13 @@ export default class Accounts extends React.Component {
                 }
             ]
         })
-
-
+       
+          
     }
 
-    deleteEdit(e, accountId) {
-        let index = this.state.currentData.findIndex(x => x.accountId == accountId);
-        let editData = this.state.currentData;
-        var editIndex = editData.indexOf(index);
-        editData.splice(editIndex, 1);
-        this.setState({
-            currentData: editData,
-            update: true,
-        });
-        this.forceUpdate();
-    }
-
-    editRow = (e, at_account_id) => {
-        let index = this.state.currentData.findIndex(x => x.at_account_id == at_account_id);
-        let editData = this.state.currentData;
-        if (editData[index].edit === false) {
-            editData[index].edit = true;
-            this.setState({
-                currentData: editData,
-                editUpdate: true
-            });
-        } else {
-            editData[index].edit = false;
-            this.setState({
-                currentData: editData,
-                editUpdate: true
-            });
-        }
-    }
-
-    get(event) {
-        {/*
-            We'll need to figure out how to use the API before we can convert
-            things. We will use the currency chosen in CurrencyMenu for this.
-        */
-        }
-        this.setState({
-            original: event.target.value,
-            conversion: event.target.value
-        })
-    }
-
-
-    componentDidMount() {
-        $.ajax({
+    
+    componentDidMount(){
+       $.ajax({
             url: "http://localhost:4000/accounts/get_accounts",
             type: "GET",
             contentType: "application/json; charset=utf-8",

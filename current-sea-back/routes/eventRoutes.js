@@ -4,7 +4,6 @@ const debug = require('debug')('app:eventRoutes');
 const db = require('./db');
 
 module.exports = function router() {
-
   eventRouter.route('/create_event')
     .post((req, res) => {
       if (req.user) {
@@ -57,7 +56,7 @@ module.exports = function router() {
                   debug('Error occurred while querying details_table', err2);
                   return res.status(500).json({ message: 'Some error occurred' });
                 }
-                return res.status(401).json({ message: 'Deleting this event is not allowed' });
+                return res.status(401).json({ message: 'This event is being used by transactions, please delete those transactions before you delete this event' });
               });
 
 
@@ -109,8 +108,9 @@ module.exports = function router() {
     .get((req, res) => {
       if (req.user) {
         db.query('SELECT * from event_table where et_user_id = ?', [req.user.username], (err, result) => {
-          if (result === 'undefined' || result == null || result.length === 0) {
-            res.status(400).json({ message: 'User id does not exist.' });
+          if (err) {
+            debug(err);
+            res.status(400).json({ message: 'Some error occurred.' });
           } else {
             res.status(200).json(result);
           }

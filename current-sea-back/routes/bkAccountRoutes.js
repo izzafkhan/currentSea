@@ -118,7 +118,7 @@ module.exports = function router() {
               res.status(500).json({ message: 'Some error occurred' });
             }
             if (results.length !== 0) {
-              res.status(401).json({ message: 'Account already used, please transfer your transactions from this account to another one' });
+              res.status(401).json({ message: 'This account is being used by transactions, please delete those transactions before you delete this account' });
             } else {
               db.query('DELETE FROM account_table WHERE at_user_id = ? AND at_account_id = ?',
                 [req.user.username, accountId], (err, results) => {

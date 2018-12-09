@@ -26,16 +26,11 @@ export default class Events extends React.Component {
             },]
 
         }
-        this.get = this.get.bind(this);
         this.addRow = this.addRow.bind(this);
-        this.editRow = this.editRow.bind(this);
         this.closeRow = this.closeRow.bind(this);
-        this.closeEdit = this.closeEdit.bind(this);
-        this.deleteEdit = this.deleteEdit.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.addToTable = this.addToTable.bind(this);
         this.deleteRowE = this.deleteRowE.bind(this);
-        this.makeCircle = this.makeCircle.bind(this);
     }
 
     addRow = () => {
@@ -64,24 +59,14 @@ export default class Events extends React.Component {
         this.forceUpdate();
     }
 
-    closeEdit(accountId) {
-        let index = this.state.currentData.findIndex(x => x.accountId == accountId);
-        let editData = this.state.currentData;
-        editData[index].edit = false;
-        this.setState({
-            currentData: editData,
-            update: true,
-        });
-        {/*Line 80 (was: editUpdate: true, which does nothing) is probably singlehandedly responsible for the problems we had today. Pitfall?*/
-        }
-    }
+  
 
     deleteRowE(e, et_event_id) {
         let index = this.state.currentData.findIndex(x => x.et_event_id == et_event_id);
         let rowDataVar = {eventId: et_event_id}
         confirmAlert({
-            title: 'Deleting event',
-            message: 'Are you sure you would like to proceed?',
+            title: 'Confirm Deletion',
+            message: 'Are you sure you want to delete this event permanently?',
             buttons: [
                 {
                     label: 'Ok',
@@ -97,13 +82,10 @@ export default class Events extends React.Component {
                             this.setState({
                                 update: true
                             });
-
-
                         },
-                        error: () => {
-                            console.log("Error: Could not submit");
-
-
+                        error: (data) => {
+                             console.log("Error: Could not submit");
+                             alert(data.responseJSON.message);
                         }
                     })
                 },
@@ -116,50 +98,10 @@ export default class Events extends React.Component {
 
 
     }
+    
 
-    deleteEdit(accountId) {
-        let index = this.state.currentData.findIndex(x => x.accountId == accountId);
-        let editData = this.state.currentData;
-        var editIndex = editData.indexOf(index);
-        editData.splice(editIndex, 1);
-        this.setState({
-            currentData: editData,
-            update: true,
-        });
-        this.forceUpdate();
-    }
-
-    editRow = (e, accountId) => {
-        let index = this.state.currentData.findIndex(x => x.accountId == accountId);
-        let editData = this.state.currentData;
-        if (editData[index].edit === false) {
-            editData[index].edit = true;
-            this.setState({
-                currentData: editData,
-                editUpdate: true
-            });
-        } else {
-            editData[index].edit = false;
-            this.setState({
-                currentData: editData,
-                editUpdate: true
-            });
-        }
-    }
-
-    makeCircle = (e, accountColor) => {
-    }
-    get(event) {
-        {/*
-            We'll need to figure out how to use the API before we can convert
-            things. We will use the currency chosen in CurrencyMenu for this.
-        */
-        }
-        this.setState({
-            original: event.target.value,
-            conversion: event.target.value
-        })
-    }
+   
+    
 
 
     componentDidMount() {
@@ -171,14 +113,12 @@ export default class Events extends React.Component {
             dataType: "json",
             xhrFields: {withCredentials: true},
             success: (data) => {
-                console.log(data);
+                console.log("what is this ", data);
                 this.setState({
 
                     currentData: data
 
                 });
-
-
             },
             error: () => {
                 console.log("Error: Could not update.");
@@ -238,22 +178,23 @@ export default class Events extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.currentData.map(row => {
-                            return (
-                                <tr key={`row-${row.at_account_id}`}>
-                                    <td scope="row">{row.et_event_abv}</td>
-                                    <td>{row.et_event_name}</td>
-                                    <td>{<svg height="25" width="25">
-                                        <circle cx="12.5" cy="12.5" r="10" stroke={row.et_event_color} stroke-width="3" fill= {row.et_event_color} />
-                                    </svg>}</td>
-                                    <td>
-                                        <button className="eventDeleteButton"
-                                                onClick={e => this.deleteRowE(e, row.et_event_id)}> x
-                                        </button>
-                                    </td>
-                                </tr>
-                            )
-                        })}
+
+                    {this.state.currentData.map(row => {
+                        return (
+                            <tr key={`row-${row.et_event_id}`}>
+                                <td scope="row">{row.et_event_abv}</td>
+                                <td>{row.et_event_name}</td>
+                                <td>{<svg height="25" width="25">
+                                    <circle cx="12.5" cy="12.5" r="10" stroke={row.et_event_color} stroke-width="1" fill= {row.et_event_color} />
+                                </svg>}</td>
+                                <td>
+                                    <button className="accountDeleteButton"
+                                            onClick={e => this.deleteRowE(e, row.et_event_id)}> x
+                                    </button>
+                                </td>
+                            </tr>
+                        )
+                    })}
                     </tbody>
                 </table>
             </div>

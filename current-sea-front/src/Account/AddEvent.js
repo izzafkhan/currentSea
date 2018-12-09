@@ -2,7 +2,7 @@ import React from 'react';
 import DatePicker from 'react-datepicker'
 import moment from "moment"
 import "react-datepicker/dist/react-datepicker.css";
-import './AddAccount.css'
+
 import $ from 'jquery'
 import Select from 'react-select';
 import SketchPicker, { CirclePicker } from 'react-color'
@@ -14,11 +14,9 @@ export default class AddEvent extends React.Component{
 
         this.state = {
             newData : {
-                eventAbv: 'Event Abbreviation',
-                eventName: 'Event Name',
-                eventColor: 'Event Color'
-                
-               
+                // eventAbv: '',
+                // eventName: '',
+                // eventColor: ''
             },
             enteringData : false,
 
@@ -43,7 +41,7 @@ export default class AddEvent extends React.Component{
    
     handleName(e){
         let newData = Object.assign({}, this.state.newData);
-   
+       // console.log(accountType.value);
         newData.eventName = e.target.value;
         this.setState({newData});
     }
@@ -73,13 +71,15 @@ export default class AddEvent extends React.Component{
 
    
     submitData(){
-        console.log(this.state.newData)
+        if(this.state.newData.eventAbv == '' || this.state.newData.eventName == ''){
+            alert("Please fill both the event abbreviation and the event name")
+        }
         let newData = Object.assign({}, this.state.newData);
       
         this.setState({newData});
   
         this.props.action(false);
-        console.log(this.state.newData)
+     
         
         
         /*
