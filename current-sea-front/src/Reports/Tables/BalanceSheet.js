@@ -49,7 +49,7 @@ class BalanceSheet extends Component{
         console.log(currencyCode);
 
         $.ajax({
-                url: "http://localhost:4000/currencies/getrate",
+                url: "http://34.220.102.40:4000/currencies/getrate",
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,
@@ -117,7 +117,7 @@ class BalanceSheet extends Component{
     }
     componentDidMount = () => {
         $.ajax({
-            url: "http://localhost:4000/statement/balance",
+            url: "http://34.220.102.40:4000/statement/balance",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,

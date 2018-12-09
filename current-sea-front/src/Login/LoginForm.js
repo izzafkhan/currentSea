@@ -69,7 +69,7 @@ export default class LoginForm extends React.Component {
             password: this.state.password
         }
         $.ajax({
-                url: "http://localhost:4000/profile/login",
+                url: "http://34.220.102.40:4000/profile/login",
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,

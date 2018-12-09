@@ -20,7 +20,7 @@ export default class StartBalance extends React.Component{
     componentDidMount(){
         console.log("GET");
         $.ajax({
-            url: "http://localhost:4000/startBalance/get_balance",
+            url: "http://34.220.102.40:4000/startBalance/get_balance",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
@@ -38,7 +38,7 @@ export default class StartBalance extends React.Component{
         });
 
         $.ajax({
-            url: "http://localhost:4000/accounts/get_balance_accounts",
+            url: "http://34.220.102.40:4000/accounts/get_balance_accounts",
            type: "GET",
            contentType: "application/json; charset=utf-8",
            crossDomain: true,
@@ -81,7 +81,7 @@ export default class StartBalance extends React.Component{
     save(){
         console.log('SAVE');
         $.ajax({
-            url: "http://localhost:4000/startBalance/set_balance",
+            url: "http://34.220.102.40:4000/startBalance/set_balance",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,

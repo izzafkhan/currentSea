@@ -62,7 +62,7 @@ export default class IncomeStatement extends Component {
         let currencyCode = event.value;
 
         $.ajax({
-                url: "http://localhost:4000/currencies/getrate",
+                url: "http://34.220.102.40:4000/currencies/getrate",
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,
@@ -104,7 +104,7 @@ export default class IncomeStatement extends Component {
     }
     componentDidMount = () => {
         $.ajax({
-            url: "http://localhost:4000/statement/statement",
+            url: "http://34.220.102.40:4000/statement/statement",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,

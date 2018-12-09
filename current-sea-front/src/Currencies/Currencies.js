@@ -30,7 +30,7 @@ export default class Currencies extends React.Component {
         let currencyCode = event.value;
         this.setState({ defaultCurrencyCode: currencyCode });
         $.ajax({
-            url: "http://localhost:4000/currencies/getrate",
+            url: "http://34.220.102.40:4000/currencies/getrate",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
@@ -51,7 +51,7 @@ export default class Currencies extends React.Component {
     call_me_first() {
         if (!this.alreadyRan) {
             $.ajax({
-                url: "http://localhost:4000/currencies/currencies",
+                url: "http://34.220.102.40:4000/currencies/currencies",
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,
@@ -80,7 +80,7 @@ export default class Currencies extends React.Component {
         let tempCurs = [];
         for (let i = 0; i < this.currencies.length; i++) {
             $.ajax({
-                url: "http://localhost:4000/currencies/get_all_rates",
+                url: "http://34.220.102.40:4000/currencies/get_all_rates",
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,

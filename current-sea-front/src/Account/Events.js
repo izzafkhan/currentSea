@@ -93,7 +93,7 @@ export default class Events extends React.Component {
                 {
                     label: 'Ok',
                     onClick: () => $.ajax({
-                        url: "http://localhost:4000/event/delete_event",
+                        url: "http://34.220.102.40:4000/event/delete_event",
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
                         crossDomain: true,
@@ -171,7 +171,7 @@ export default class Events extends React.Component {
 
     componentDidMount() {
         $.ajax({
-            url: "http://localhost:4000/event/get_all_events/",
+            url: "http://34.220.102.40:4000/event/get_all_events/",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
@@ -197,7 +197,7 @@ export default class Events extends React.Component {
     render() {
         if (this.state.update === true) {
             $.ajax({
-                url: "http://localhost:4000/event/get_all_events/",
+                url: "http://34.220.102.40:4000/event/get_all_events/",
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,

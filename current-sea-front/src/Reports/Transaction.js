@@ -280,7 +280,7 @@ export default class Transaction extends React.Component {
             original : parseFloat(event.target.value),
         })
         $.ajax({
-            url: "http://localhost:4000/currencies/getrate",
+            url: "http://34.220.102.40:4000/currencies/getrate",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
@@ -304,7 +304,7 @@ export default class Transaction extends React.Component {
 
     updateConvert(original, start, end){
         $.ajax({
-            url: "http://localhost:4000/currencies/getrate",
+            url: "http://34.220.102.40:4000/currencies/getrate",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
@@ -327,7 +327,7 @@ export default class Transaction extends React.Component {
 
     componentDidMount(){
         $.ajax({
-            url: "http://localhost:4000/transactions/get_transactions",
+            url: "http://34.220.102.40:4000/transactions/get_transactions",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
@@ -345,7 +345,7 @@ export default class Transaction extends React.Component {
         });
 
         $.ajax({
-            url: "http://localhost:4000/currencies/currencies",
+            url: "http://34.220.102.40:4000/currencies/currencies",
            type: "GET",
            contentType: "application/json; charset=utf-8",
            crossDomain: true,
@@ -371,7 +371,7 @@ export default class Transaction extends React.Component {
         });
 
         $.ajax({
-            url: "http://localhost:4000/accounts/get_accounts",
+            url: "http://34.220.102.40:4000/accounts/get_accounts",
            type: "GET",
            contentType: "application/json; charset=utf-8",
            crossDomain: true,
@@ -395,7 +395,7 @@ export default class Transaction extends React.Component {
         });
 
         $.ajax({
-            url: "http://localhost:4000/event/get_all_events",
+            url: "http://34.220.102.40:4000/event/get_all_events",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
@@ -418,7 +418,7 @@ export default class Transaction extends React.Component {
         })
 
         $.ajax({
-            url: "http://localhost:4000/transactions/get_transaction_event",
+            url: "http://34.220.102.40:4000/transactions/get_transaction_event",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
@@ -437,7 +437,7 @@ export default class Transaction extends React.Component {
     render() {
         if(this.state.update === true){
             $.ajax({
-                url: "http://localhost:4000/transactions/get_transactions",
+                url: "http://34.220.102.40:4000/transactions/get_transactions",
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,

@@ -53,7 +53,7 @@ export default class EditAccount extends React.Component{
 
     remove(){
         $.ajax({
-            url: "http://localhost:4000/accounts/delete_event",
+            url: "http://34.220.102.40:4000/accounts/delete_event",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,

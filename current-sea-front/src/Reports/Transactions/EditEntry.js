@@ -99,7 +99,7 @@ export default class EditEntry extends React.Component{
         if(checkCredit != 0 && checkCredit == sum){
             if(validEntry){
                 $.ajax({
-                    url: "http://localhost:4000/transactions/edit_transactions",
+                    url: "http://34.220.102.40:4000/transactions/edit_transactions",
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     crossDomain: true,
@@ -131,7 +131,7 @@ export default class EditEntry extends React.Component{
 
     remove(){
         $.ajax({
-            url: "http://localhost:4000/transactions/delete_transactions",
+            url: "http://34.220.102.40:4000/transactions/delete_transactions",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
@@ -159,7 +159,7 @@ export default class EditEntry extends React.Component{
 
     componentDidMount(){
         $.ajax({
-            url: "http://localhost:4000/transactions/get_details",
+            url: "http://34.220.102.40:4000/transactions/get_details",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
@@ -190,7 +190,7 @@ export default class EditEntry extends React.Component{
     render(){
         if(this.state.update === true){
             $.ajax({
-                url: "http://localhost:4000/transactions/get_details",
+                url: "http://34.220.102.40:4000/transactions/get_details",
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,

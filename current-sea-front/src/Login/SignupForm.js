@@ -89,7 +89,7 @@ export default class SignupForm extends Component {
 
 
         $.ajax({
-            url: "http://localhost:4000/profile/register",
+            url: "http://34.220.102.40:4000/profile/register",
             type: "POST",
             crossDomain: true,
             data: JSON.stringify(formData),

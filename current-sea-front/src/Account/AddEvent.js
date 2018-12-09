@@ -87,7 +87,7 @@ export default class AddEvent extends React.Component{
             
         */
       $.ajax({
-           url: "http://localhost:4000/event/create_event",
+           url: "http://34.220.102.40:4000/event/create_event",
            type: "POST",
            contentType: "application/json; charset=utf-8",
            crossDomain: true,

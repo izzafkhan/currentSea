@@ -78,7 +78,7 @@ export default class AddAccount extends React.Component{
             
         */
        $.ajax({
-           url: "http://localhost:4000/accounts/add_account",
+           url: "http://34.220.102.40:4000/accounts/add_account",
            type: "POST",
            contentType: "application/json; charset=utf-8",
            crossDomain: true,

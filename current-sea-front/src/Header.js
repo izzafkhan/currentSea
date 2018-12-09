@@ -17,7 +17,7 @@ class Header extends Component {
 
     componentDidMount() {
         $.ajax({
-            url: 'http://localhost:4000/profile/loggedin',
+            url: 'http://34.220.102.40:4000/profile/loggedin',
             type: 'GET',
             crossDomain: true,
             xhrFields: {withCredentials: true},
@@ -39,7 +39,7 @@ class Header extends Component {
 
     logout = () => {
         $.ajax({
-            url: 'http://localhost:4000/profile/logout',
+            url: 'http://34.220.102.40:4000/profile/logout',
             type: 'GET',
             crossDomain: true,
             xhrFields: {withCredentials: true},

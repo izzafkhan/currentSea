@@ -94,7 +94,7 @@ export default class Accounts extends React.Component {
                 {
                     label: 'Ok',
                     onClick: () => $.ajax({
-                        url: "http://localhost:4000/accounts/delete_account",
+                        url: "http://34.220.102.40:4000/accounts/delete_account",
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
                         crossDomain: true,
@@ -170,7 +170,7 @@ export default class Accounts extends React.Component {
 
     componentDidMount() {
         $.ajax({
-            url: "http://localhost:4000/accounts/get_accounts",
+            url: "http://34.220.102.40:4000/accounts/get_accounts",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
@@ -196,7 +196,7 @@ export default class Accounts extends React.Component {
     render() {
         if (this.state.update === true) {
             $.ajax({
-                url: "http://localhost:4000/accounts/get_accounts",
+                url: "http://34.220.102.40:4000/accounts/get_accounts",
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,

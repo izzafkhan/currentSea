@@ -121,7 +121,7 @@ export default class AddEntry extends React.Component{
                             Maybe we should send the internal entries back home instead of newData? We need to avoid losing information one way or another.
                         */
                         $.ajax({
-                            url: "http://localhost:4000/transactions/add_transactions",
+                            url: "http://34.220.102.40:4000/transactions/add_transactions",
                             type: "POST",
                             contentType: "application/json; charset=utf-8",
                             crossDomain: true,
