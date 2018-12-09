@@ -1,77 +1,19 @@
 
-div.tableContainer{
-    height: 100vh; /* Magic here */
-    display: flex;    
-    justify-content: center;
-    background: #051642;
-    padding-left:450px;
-    padding-right:450px;
-    padding-top:50px;
-   
-  
-  
-}
-
-div.bigContainer h1 {
-    font-family: 'Roboto',sans-serif;
-    color: white;
-    text-align: center; 
-    padding-bottom: 5px; 
-    padding-top: 40px; 
-
-
-}
-
-div.bigContainer h6 {
-    font-family: 'Roboto',sans-serif;
-    font:bold;
-    text-align: center; 
-    color:white;
-    margin-bottom: 40px; 
-}
-
-div.accounts-table, div.quick { float: left; width:100px;}
-
-
-div.tableContainer {overflow:hidden;width:200px;}
-
 
 /* 
 Styling to make the table readable
 */
 
-#dataTableA td, #dataTableA th {
-    background-color: #ffffff;
-}
-
-#dataTableA tr:nth-child(even){background-color: #f2f2f2;}
-
-#dataTableA th{
-    padding-top: 12px;
-    padding-bottom: 12px;
-    
-    padding: 8px;
-    text-align: left;
-    background-color:white;
-    color: black;
-    width: 210px;
-}
-
-#nested td {
-    text-align: left;
-    width: 200px;
-}
-
-#nested button {
-    width: 200px;
+.accountsTable {
     background-color: white;
-    border-color: white;
-    border-style: solid;
-    text-align: left;
+}
+
+.accountsTableRow {
+    width: 400px;
 }
 
 #addAccountButton {
-    width: 700px;
+    width: 500px;
     text-align: center;
     color: white;
     background-color: #00ADA2;
@@ -79,5 +21,34 @@ Styling to make the table readable
     border-style: solid;
 }
 
+.accountDeleteButton {
+    background: none;
+    border: none;
+}
 
+/*#dataTableA tr:nth-child(even){background-color: #f2f2f2;}*/
+
+/*#dataTableA th{*/
+/*!*padding-top: 12px;*!*/
+/*!*padding-bottom: 12px;*!*/
+
+/*!*padding: 8px;*!*/
+/*text-align: left;*/
+/*background-color:white;*/
+/*color: black;*/
+/*!*width: 210px;*!*/
+/*}*/
+
+/*#nested td {*/
+/*!*text-align: left;*!*/
+/*!*width: 200px;*!*/
+/*}*/
+
+/*#nested button {*/
+/*!*width: 200px;*!*/
+/*!*background-color: white;*!*/
+/*!*border-color: white;*!*/
+/*!*border-style: solid;*!*/
+/*!*text-align: left;*!*/
+/*}*/
 

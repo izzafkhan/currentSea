@@ -3,9 +3,13 @@
 }
 
 #addTableA{
-    margin: 12px;
+    margin: 5px;
 }
 
 #newAccount td{
     width: 120px;
+}
+
+.selectAccountDropDown {
+    width: 200px;
 }
