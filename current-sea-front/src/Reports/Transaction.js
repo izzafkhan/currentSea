@@ -474,7 +474,7 @@ export default class Transaction extends React.Component {
                                     <th style={{width: "110px"}}>Date</th>
                                     <th style={{width: "230px"}}>Description</th>
                                     <th style={{width: "80px"}}>Balance</th>
-                                    <th style={{width: "80px"}}>DF</th>
+                                    <th style={{width: "80px"}}>Currency</th>
                                     <th style={{width: "80px"}}>Event</th>
                                 </tr>
                                 <tr>
