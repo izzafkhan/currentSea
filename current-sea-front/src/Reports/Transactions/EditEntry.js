@@ -224,15 +224,26 @@ export default class EditEntry extends React.Component{
 
         return(
             <div width='400'>
+                <div>
+                    <div>
+                        <span id='tr-desc-label'><b>Description:</b></span>
+                        <input type="text" id='tr-desc' defaultValue={this.state.transactionInfo.tt_description} onChange={(e) => this.handleDescription(e)}></input>
+                    </div>
+
+                    <div>
+                        <span id='tr-curr-label'><b>Currency:</b></span>
+                        <Select options={this.state.currencies} id='tr-curr' placeholder={this.state.transactionInfo.tt_currency} onChange={(e) => this.handleCurrency(e)} />
+                    </div>
+
+                </div>
                 <table id='editTable' width='400'>
                     <thead id='headEntry'>
+
                         <tr>
                             <th>Account</th>
                             <th>Debit</th>
                             <th>Credit</th>
                             <th>Event</th>
-                            <th><input type="text" defaultValue={this.state.transactionInfo.tt_description} onChange={(e) => this.handleDescription(e)}></input></th>
-                            <th><Select options={this.state.currencies} placeholder={this.state.transactionInfo.tt_currency} onChange={(e) => this.handleCurrency(e)} /></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -240,19 +251,21 @@ export default class EditEntry extends React.Component{
                         {this.state.data.map( (row, index) => {
                             return (
                                 <tr key={`row-${index}`}>
-                                    <td><Select options={this.state.accounts} placeholder={row.dt_accountID} onChange={(e) => this.handleChange(row, 'dt_accountID', e)}/></td>
+                                    <td><Select options={this.state.accounts} placeholder={row.dt_accountID} onChange={(e) => this.handleChange(row, 'dt_accountID', e)} className = "dropdownA"/></td>
                                     <td><input type="number"  defaultValue={row.dt_debit} onChange={(e) => this.handleChange(row, 'dt_debit', e)}/></td>
                                     <td><input type="number" defaultValue={row.dt_credit} onChange={(e) => this.handleChange(row, 'dt_credit', e)}/></td>
-                                    <td><Select options={this.state.events} placeholder={row.dt_eventID} onChange={(e) => this.handleChange(row, 'dt_eventID', e)}/></td>
+                                    <td><Select options={this.state.events} placeholder={row.dt_eventID} onChange={(e) => this.handleChange(row, 'dt_eventID', e)} className = "dropdownA"/></td>
                                     <td><button onClick={() => this.cancel(row)}>X</button></td>
                                 </tr>
                             )
                         })}
                     </tbody>
                 </table>
-                <button onClick={this.addinfo}>Add +</button>
-                <button onClick={this.save}>Save</button>
-                <button id='entryButton' onClick={this.submitDelete}>Delete</button>
+                <div style={{ paddingLeft: "40%"}}>
+                <button style = {{float: "left"}} onClick={this.addinfo}>Add +</button>
+                <button style = {{float: "left"}} onClick={this.save}>Save</button>
+                <button style = {{float: "left"}} id='entryButton' onClick={this.submitDelete}>Delete</button>
+                </div>
             </div>
             
         );

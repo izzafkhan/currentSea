@@ -19,3 +19,49 @@ h1{
     background-color: white !important;
     color: black !important;
 }
+
+#tr-desc-label {
+    margin-top: 16px;
+    margin-left: 8px;
+    text-align: center;
+    float: left;
+    padding-top: 6px;
+    alignment: left;
+    height: 40px;
+}
+
+#tr-desc {
+    margin-top: 16px;
+    margin-left: 10px;
+    text-align: center;
+    float: left;
+    alignment: center;
+    width: 200px;
+    height: 40px;
+    overflow: scroll;
+}
+
+#tr-curr-label {
+    margin-top: 16px;
+    margin-left: 60px;
+    text-align: center;
+    float: left;
+    padding-top: 6px;
+    alignment: left;
+    height: 40px;
+}
+
+#tr-curr {
+    margin-top: 16px;
+    margin-left: 12px;
+    text-align: center;
+    float: left;
+    alignment: center;
+    width: 100px;
+}
+.dropdownA{
+    width: 100px;
+}
+#acc-cancel-btn {
+
+}

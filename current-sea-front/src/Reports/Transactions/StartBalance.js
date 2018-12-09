@@ -114,9 +114,9 @@ export default class StartBalance extends React.Component{
                         {this.state.data.map( (row, index) => {
                             return (
                                 <tr key={`row-${index}`}>
-                                    <td style={{width : "100px"}}><Select options={this.state.accounts} placeholder={row.bt_account_id} onChange={(e) => this.handleChange(row, 'bt_account_id', e)}/></td>
+                                    <td style={{width : "100px"}}><Select options={this.state.accounts} placeholder={row.bt_account_id} onChange={(e) => this.handleChange(row, 'bt_account_id', e)} className = "dropdownA"/></td>
                                     <td><input type="number" style={{width : "100px"}} defaultValue={row.bt_initialBalance} onChange={(e) => this.handleChange(row, 'bt_initialBalance', e)}/></td>
-                                    <td style={{width : "100px"}}><Select options={this.state.currencies} placeholder={row.bt_currency_abv} onChange={(e) => this.handleCurrency(row, 'bt_currency_abv', e)}/></td>
+                                    <td style={{width : "100px"}}><Select options={this.state.currencies} placeholder={row.bt_currency_abv} onChange={(e) => this.handleCurrency(row, 'bt_currency_abv', e)} className = "dropdownA"/></td>
                                 </tr>
                             )
                         })}
