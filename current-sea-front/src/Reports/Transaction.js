@@ -60,7 +60,7 @@ export default class Transaction extends React.Component {
             startBalance: false,
             accounts: [],
             events: [],
-            categories: [],
+            myEvents: [],
 
             chartData : { 
                 datasets:[{
@@ -415,6 +415,21 @@ export default class Transaction extends React.Component {
                 })
             }
         })
+
+        $.ajax({
+            url: "http://localhost:4000/transactions/get_transaction_event",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType:"json",
+            xhrFields: { withCredentials:true },
+            success: (receivedData) => {
+                console.log(receivedData);
+                this.setState({
+                    myEvents : receivedData,
+                })
+            }
+        })
     }
 
 
@@ -498,6 +513,7 @@ export default class Transaction extends React.Component {
                                                                                accounts={this.state.accounts} 
                                                                                currencies={this.state.convertCurrencies}
                                                                                events={this.state.events} 
+                                                                               myEvents={this.state.myEvents}
                                                                                closeAction={this.closeEdit} 
                                                                                transactionInfo={row} />
                                                                 </td>
