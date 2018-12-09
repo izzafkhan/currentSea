@@ -150,11 +150,11 @@ export default class Transaction extends React.Component {
         }
 
         dataCopy1[0] = (max1/total).toFixed(2)*100;
-        labelCopy1 = (label1);
+        labelCopy1 = (label1).length > 14 ? label1.substr(0, 7) + "..." : label1;
         dataCopy2[0] = (max2/total).toFixed(2)*100;
-        labelCopy2 = (label2);
+        labelCopy2 = (label2).length > 14 ? label2.substr(0, 7) + "..." : label2;
         dataCopy3[0] = (max3/total).toFixed(2)*100 ;
-        labelCopy3 = (label3);
+        labelCopy3 = (label3).length > 14 ? label3.substr(0, 7) + "..." : label3;
         dataCopy4[0] = ((total - (max1 + max2 + max3))/total).toFixed(2)*100;
         labelCopy4 = (other);
 
@@ -458,6 +458,21 @@ export default class Transaction extends React.Component {
                 }
             }); 
 
+            $.ajax({
+                url: "http://localhost:4000/transactions/get_transaction_event",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType:"json",
+                xhrFields: { withCredentials:true },
+                success: (receivedData) => {
+                    console.log(receivedData);
+                    this.setState({
+                        myEvents : receivedData,
+                    })
+                }
+            })
+
             
         }
         return (
@@ -549,7 +564,7 @@ export default class Transaction extends React.Component {
                                                 </tr>
                                                 <tr>
                                                     {this.state.startBalance ?
-                                                        <td><StartBalance currencies={this.state.convertCurrencies} closeAction={this.closeStart}/></td> : (null) }
+                                                        <td colSpan='3'><StartBalance currencies={this.state.convertCurrencies} closeAction={this.closeStart}/></td> : (null) }
                                                 </tr>
                                             </tbody>
                                         </table>
