@@ -12,6 +12,7 @@ div.bigContainer{
     flex-direction: column;
     justify-content: center;
     background-color: #051642;
+    min-height: 800px;
     height: auto;
 }
 

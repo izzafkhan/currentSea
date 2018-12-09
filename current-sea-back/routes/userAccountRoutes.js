@@ -45,7 +45,7 @@ module.exports = function router() {
                 res.status(201).send({ userID: username });
               });
           } else {
-            res.status(401).json({ message: 'Email or username already exits' });
+            res.status(401).json({ message: 'Email or username already exists' });
           }
         });
       }

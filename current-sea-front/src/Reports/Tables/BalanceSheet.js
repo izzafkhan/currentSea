@@ -154,10 +154,22 @@ class BalanceSheet extends Component{
                 accessor: 'start'
             }, {
                 Header: 'Change',
-                accessor: 'change'
+                accessor: 'change',
+                Cell: row => (
+                    <span
+                        style={{
+                            color: row.value >= 0 ? 'green'
+                                : 'red'
+                        }}>{row.value}</span>)
             },  {
                 Header: 'End',
-                accessor: 'end'
+                accessor: 'end',
+                Cell: row => (
+                    <span
+                        style={{
+                            color: row.value >= 0 ? 'green'
+                                : 'red'
+                        }}>{row.value}</span>)
             }
             
         ]

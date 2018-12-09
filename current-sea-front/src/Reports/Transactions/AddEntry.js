@@ -128,7 +128,7 @@ export default class AddEntry extends React.Component{
         if(balanceCheck == sum && (balanceCheck != 0)){
             if(balanceCheck >= 0 && sum >= 0){
                 if(validEntry){
-                    if(this.state.newData.description != "" || this.state.newData.description.length > 25){
+                    if(this.state.newData.description != '' || this.state.newData.description.length > 25){
                         if(this.state.newData.currencyId != ""){
                             if(accountsValid){
                                 if(entriesFilled){

@@ -1,5 +1,5 @@
 import React from 'react';
-import Select from 'react-select'; 
+import Select from 'react-select';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 import './EditEntry.css';
@@ -9,7 +9,7 @@ export default class EditEntry extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            data : [{                
+            data : [{
             }],
             action_id : 0,
             update : false,
@@ -45,7 +45,7 @@ export default class EditEntry extends React.Component{
                 }
             ]
         })
-        
+
     }
 
     addinfo = () => {
@@ -90,43 +90,53 @@ export default class EditEntry extends React.Component{
         var sum = 0;
         var checkCredit = 0;
         var validEntry = true;
+        var accountsValid = true;
         for(let i = 0; i < this.state.data.length; i++){
-            
+
             sum += this.state.data[i].dt_debit;
             checkCredit += this.state.data[i].dt_credit;
 
             if(this.state.data[i].dt_debit != 0 && this.state.data[i].dt_credit != 0){
                 validEntry = false;
             }
-        }
-        if(checkCredit != 0 && checkCredit == sum){
-            if(validEntry){
-                $.ajax({
-                    url: "http://localhost:4000/transactions/edit_transactions",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    crossDomain: true,
-                    dataType:"json",
-                    xhrFields: { withCredentials:true },
-                    data: JSON.stringify({  'tt_transaction_id' : this.state.action_id,
-                                            'data': this.state.data, 
-                                            'tt_balance': sum, 
-                                            'tt_currency' : this.state.transactionInfo.tt_currency, 
-                                            'tt_description' : this.state.transactionInfo.tt_description}),
-                    success: () => {
-                        this.setState({
-                            update: true,
-                        })
-                        this.props.closeAction(this.state.action_id, sum);
-                    },
-                    error: () => {
-                        console.log("Error: Could not submit");
-                        this.props.closeAction(this.state.action_id, 0);
-                    }
-                })
-            } else {
-                alert("You cannot have a credit and debit in the same field.")
+            if (this.state.data[i].dt_accountID == '') {
+                accountsValid = false;
             }
+        }
+        if (checkCredit != 0 && checkCredit == sum){
+            if (accountsValid) {
+                if (validEntry){
+
+                    $.ajax({
+                        url: "http://localhost:4000/transactions/edit_transactions",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        crossDomain: true,
+                        dataType:"json",
+                        xhrFields: { withCredentials:true },
+                        data: JSON.stringify({  'tt_transaction_id' : this.state.action_id,
+                            'data': this.state.data,
+                            'tt_balance': sum,
+                            'tt_currency' : this.state.transactionInfo.tt_currency,
+                            'tt_description' : this.state.transactionInfo.tt_description}),
+                        success: () => {
+                            this.setState({
+                                update: true,
+                            })
+                            this.props.closeAction(this.state.action_id, sum);
+                        },
+                        error: () => {
+                            console.log("Error: Could not submit");
+                            this.props.closeAction(this.state.action_id, 0);
+                        }
+                    })
+                } else {
+                    alert("You cannot have a credit and debit in the same field.")
+                }
+            } else {
+                alert("All accounts must be filled out.")
+            }
+
         } else {
             alert("Debit and Credit fields must remain equal and filled out.")
         }
@@ -148,8 +158,8 @@ export default class EditEntry extends React.Component{
                 })
             },
             error: () => {
-                 console.log("Error: Could not submit");
-                 this.props.deleteAction(this.state.action_id);
+                console.log("Error: Could not submit");
+                this.props.deleteAction(this.state.action_id);
             }
         })
     }
@@ -181,7 +191,7 @@ export default class EditEntry extends React.Component{
                     this.setState({
                         action_id: this.props.id,
                     })
-                } 
+                }
                 this.forceUpdate();
             },
             error: () => {
@@ -212,7 +222,7 @@ export default class EditEntry extends React.Component{
                         this.setState({
                             action_id: this.props.id,
                         })
-                    } 
+                    }
                     this.forceUpdate();
                 },
                 error: () => {
@@ -247,7 +257,7 @@ export default class EditEntry extends React.Component{
                         </tr>
                     </thead>
                     <tbody>
-                        <tr></tr>   
+                        <tr></tr>
                         {this.state.data.map( (row, index) => {
                             return (
                                 <tr key={`row-${index}`}>
@@ -262,12 +272,12 @@ export default class EditEntry extends React.Component{
                     </tbody>
                 </table>
                 <div style={{ paddingLeft: "40%"}}>
-                <button id="addButton" style = {{float: "left"}} onClick={this.addinfo}>Add +</button>
-                <button id="doneButton" style = {{float: "left"}} onClick={this.save}>Save</button>
-                <button style = {{float: "left"}} id='entryButton' onClick={this.submitDelete}>Delete</button>
+                    <button id="addButton" style = {{float: "left"}} onClick={this.addinfo}>Add +</button>
+                    <button id="doneButton" style = {{float: "left"}} onClick={this.save}>Save</button>
+                    <button style = {{float: "left"}} id='entryButton' onClick={this.submitDelete}>Delete</button>
                 </div>
             </div>
-            
+
         );
     }
 }
