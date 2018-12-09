@@ -113,14 +113,16 @@ module.exports = function router() {
                                   }
                               });
                       } else {
-                          db.query('INSERT INTO details_table (dt_transactionID, dt_userID, dt_accountID, dt_eventID, dt_debit, dt_credit) VALUES (?,?,?,?,?,?);',
-                              [tt_transaction_id, req.user.username, datum.dt_accountID, datum.dt_eventID, datum.dt_debit, datum.dt_credit],
-                              (err2) => {
-                                  if (err2) {
-                                      debug('Error occurred in edit_transactions', err2);
-                                      return res.status(500).json({ message: 'Error occurred details while editing a transaction' });
-                                  }
-                              });
+                          if(datum.dt_accountID) {
+                              db.query('INSERT INTO details_table (dt_transactionID, dt_userID, dt_accountID, dt_eventID, dt_debit, dt_credit) VALUES (?,?,?,?,?,?);',
+                                  [tt_transaction_id, req.user.username, datum.dt_accountID, datum.dt_eventID, datum.dt_debit, datum.dt_credit],
+                                  (err2) => {
+                                      if (err2) {
+                                          debug('Error occurred in edit_transactions', err2);
+                                          return res.status(500).json({ message: 'Error occurred details while editing a transaction' });
+                                      }
+                                  });
+                          }
                       }
                   });
                   res.status(201).json({ message: 'Transaction detail edited successfully' });
