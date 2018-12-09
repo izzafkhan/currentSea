@@ -7,6 +7,7 @@ import $ from 'jquery'
 import moment from "moment"
 import Select from 'react-select';   
 import {HorizontalBar} from 'react-chartjs-2';
+import {Circle} from 'react-shapes';
 
 const options = {
     scales: {
@@ -60,7 +61,7 @@ export default class Transaction extends React.Component {
             startBalance: false,
             accounts: [],
             events: [],
-            categories: [],
+            myEvents: {},
 
             chartData : { 
                 datasets:[{
@@ -415,6 +416,21 @@ export default class Transaction extends React.Component {
                 })
             }
         })
+
+        $.ajax({
+            url: "http://localhost:4000/transactions/get_transaction_event",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType:"json",
+            xhrFields: { withCredentials:true },
+            success: (receivedData) => {
+                console.log(receivedData);
+                this.setState({
+                    myEvents : receivedData,
+                })
+            }
+        })
     }
 
 
@@ -477,6 +493,12 @@ export default class Transaction extends React.Component {
                                 {this.state.currentData.slice(0).reverse().map(row => {
                                     let index = this.state.currentData.indexOf(row);
                                     let display = 1 + index; 
+                                    if(!this.state.myEvents[row.tt_transaction_id]){ 
+                                        const data = this.state.myEvents;
+                                        data[row.tt_transaction_id] = {et_event_abv: " "};
+                                        console.log(data);
+                                        this.setState({myEvents: data});
+                                    }
                                     return (    
                                         <tr key={`row-${row.tt_transaction_id}`}>
                                             <td colSpan='6'>
@@ -488,7 +510,9 @@ export default class Transaction extends React.Component {
                                                             <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
                                                             <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_balance}</button></td>
                                                             <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_currency}</button></td>
-                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>{row.tt_description}</button></td>
+                                                            <td><button onClick={(e) =>{this.editRow(e, row.tt_transaction_id)}}>
+                                                            <Circle r={10} fill={{color:this.state.myEvents[row.tt_transaction_id].et_event_color}} 
+                                                            stroke={{color:this.state.myEvents[row.tt_transaction_id].et_event_color}} strokeWidth={3} /></button></td>
                                                         </tr>
                                                         {row.edit ?
                                                             <tr>
@@ -500,6 +524,7 @@ export default class Transaction extends React.Component {
                                                                                accounts={this.state.accounts} 
                                                                                currencies={this.state.convertCurrencies}
                                                                                events={this.state.events} 
+                                                                               myEvents={this.state.myEvents}
                                                                                closeAction={this.closeEdit} 
                                                                                transactionInfo={row} />
                                                                 </td>

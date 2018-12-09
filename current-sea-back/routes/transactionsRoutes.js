@@ -165,13 +165,17 @@ module.exports = function router() {
   transactionsRouter.route('/get_transaction_event')
     .get((req, res) => {
       if (req.user) {
-        db.query('SELECT dt_transactionID, et_event_abv, et_event_name, count(DISTINCT et_event_id) as num FROM event_table, details_table WHERE dt_userID = ? AND dt_eventID = et_event_id HAVING max(num)',
+        db.query('SELECT dt_transactionID, et_event_abv, et_event_name, et_event_color, count(et_event_id) as num FROM event_table, details_table WHERE dt_userID = ? AND dt_eventID = et_event_id GROUP BY dt_transactionID',
           [req.user.username], (err, results) => {
             if (err) {
               debug('Error in /get_transaction_events', err);
               res.status(500).json({ message: 'Error has occurred while getting events' });
             } else {
-              res.status(200).json({ events: results });
+              const output = {};
+              for (let i = 0; i < results.length; i++) {
+                output[results[i].dt_transactionID] = results[i];
+              }
+              res.status(200).json(output);
             }
           });
       } else {
