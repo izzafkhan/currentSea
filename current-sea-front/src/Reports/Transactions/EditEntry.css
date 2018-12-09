@@ -3,7 +3,10 @@
     background-color: red;
     border-color: red;
     border-style: solid;
+    border-radius: 7%;
     float: right;
+    width: 60px;
+    height: 30px;
 }
 
 #editTable input{
@@ -64,4 +67,24 @@ h1{
 }
 #acc-cancel-btn {
 
+}
+
+#addButton {
+    background-color: #4F4F4F;
+    border-color: #4F4F4F;
+    color: white;
+    border: solid;
+    border-radius: 7%;
+    width: 60px;
+    height: 30px;
+}
+
+#doneButton {
+    background-color: #00ADA2;
+    border-color: #00ADA2;
+    color: white;
+    border: solid;
+    border-radius: 7%;
+    width: 60px;
+    height: 30px;
 }

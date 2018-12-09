@@ -262,8 +262,8 @@ export default class EditEntry extends React.Component{
                     </tbody>
                 </table>
                 <div style={{ paddingLeft: "40%"}}>
-                <button style = {{float: "left"}} onClick={this.addinfo}>Add +</button>
-                <button style = {{float: "left"}} onClick={this.save}>Save</button>
+                <button id="addButton" style = {{float: "left"}} onClick={this.addinfo}>Add +</button>
+                <button id="doneButton" style = {{float: "left"}} onClick={this.save}>Save</button>
                 <button style = {{float: "left"}} id='entryButton' onClick={this.submitDelete}>Delete</button>
                 </div>
             </div>
