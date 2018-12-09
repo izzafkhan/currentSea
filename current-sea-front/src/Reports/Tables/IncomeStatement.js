@@ -139,7 +139,7 @@ export default class IncomeStatement extends Component {
                         style={{
                             color: row.value >= 0 ? 'green'
                                 : 'red'
-                        }}>{row.value + "%"}</span>)
+                        }}>{row.value}</span>)
             },
             {
                 Header: 'End',
@@ -149,7 +149,7 @@ export default class IncomeStatement extends Component {
                         style={{
                             color: row.value >= 0 ? 'green'
                                 : 'red'
-                        }}>{row.value + "%"}</span>)
+                        }}>{row.value}</span>)
             }];
 
         return (
