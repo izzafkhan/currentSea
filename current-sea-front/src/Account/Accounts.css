@@ -1,12 +1,7 @@
 
-<<<<<<< HEAD
-/*div.tableContainer{
-    height: 100vh; 
-=======
 div.tableContainer{
     margin-block-start: 30px;
     height: 100vh; /* Magic here */
->>>>>>> parent of ba1b7b7... Settings done except styling
     display: flex;    
     justify-content: left;
     background: #051642;
@@ -38,15 +33,9 @@ div.bigContainer h6 {
 div.accounts-table, div.quick { float: left;}
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-div.tableContainer{overflow:hidden;width:200px;}
-=======
+
 div.tableContainer {overflow: hidden;}
->>>>>>> parent of ba1b7b7... Settings done except styling
-=======
-div.tableContainer {overflow: hidden;}
->>>>>>> parent of ba1b7b7... Settings done except styling
+
 
 
 /* 

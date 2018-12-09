@@ -17,11 +17,11 @@ export default class AddAccount extends React.Component{
 
         this.state = {
             newData : {
-                accountId: 'Account Number',
-                accountName: 'Description',
+                accountId: '',
+                accountName: '',
                 
                 
-                accountType : 'Balancetest',
+                accountType : '',
                 internalEntries : [],
             },
             enteringData : false,
@@ -50,7 +50,6 @@ export default class AddAccount extends React.Component{
     }
     handleType(e){
         let newData = Object.assign({}, this.state.newData);
-       // console.log(accountType.value);
         newData.accountType = e.value;
         this.setState({newData});
     }
@@ -69,7 +68,12 @@ export default class AddAccount extends React.Component{
 
    
     submitData(){
+        if(this.state.newData.accountType == '' && this.state.newData.accountId != '' &&
+            this.state.newData.accountName != ''){
+                alert("PLease fill in all fields to submit")
+            }
         let newData = Object.assign({}, this.state.newData);
+
         this.setState({newData});
         this.props.action(false);
         
@@ -111,7 +115,6 @@ export default class AddAccount extends React.Component{
                                 
                                 <th><input type="number" placeholder="Account Number" onChange={this.handleAcctID }/></th>
                                 <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
-                                {/*<th><input type="text" placeholder="Balance or Income" onChange={this.handleType} /></th>*/}
                                 <th><Select options={options} onChange={this.handleType}/></th>
                                
                             </tr>

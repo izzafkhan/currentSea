@@ -31,16 +31,11 @@ export default class Events extends React.Component {
             },]
 
         }
-        this.get = this.get.bind(this);
         this.addRow = this.addRow.bind(this);
-        this.editRow = this.editRow.bind(this);
         this.closeRow = this.closeRow.bind(this);
-        this.closeEdit = this.closeEdit.bind(this);
-        this.deleteEdit = this.deleteEdit.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.addToTable =this.addToTable.bind(this);
         this.deleteRowE = this.deleteRowE.bind(this);
-        this.makeCircle = this.makeCircle.bind(this);
     }
 
     addRow = () => {
@@ -69,25 +64,14 @@ export default class Events extends React.Component {
         this.forceUpdate();
     } 
 
-    closeEdit(accountId){
-        let index = this.state.currentData.findIndex(x=>x.accountId==accountId);
-        let editData = this.state.currentData;
-        editData[index].edit = false;
-        this.setState({
-            currentData : editData,
-            update: true,  
-        });
-        {/*Line 80 (was: editUpdate: true, which does nothing) is probably singlehandedly responsible for the problems we had today. Pitfall?*/}
-    }
+  
 
     deleteRowE(e, et_event_id){
         let index = this.state.currentData.findIndex(x=>x.et_event_id ==et_event_id);
-        console.log("index:" + index);
-        console.log("passed in id:" + et_event_id);
         let rowDataVar = {eventId:et_event_id}
         confirmAlert({
             title: 'Confirm Deletion',
-            message: 'Deleting Event Permanently',
+            message: 'Are you sure you want to delete this event permanently?',
             buttons: [
                 {
                     label: 'Ok',
@@ -100,7 +84,6 @@ export default class Events extends React.Component {
                         xhrFields: { withCredentials:true },
                         data: JSON.stringify(rowDataVar),
                         success: (data) => {
-                            console.log("success inside");
                              this.setState({
                                  update:true
                              });
@@ -124,48 +107,9 @@ export default class Events extends React.Component {
            
     }
     
-    deleteEdit(accountId){
-        let index = this.state.currentData.findIndex(x=>x.accountId==accountId);
-        let editData = this.state.currentData;
-        var editIndex = editData.indexOf(index);
-        editData.splice(editIndex, 1);
-        this.setState({
-            currentData : editData,
-            update: true,
-        });
-        this.forceUpdate();
-    }
 
-    editRow = (e, accountId) => {
-        let index = this.state.currentData.findIndex(x=>x.accountId==accountId);
-        let editData = this.state.currentData;
-        if (editData[index].edit === false) {
-            editData[index].edit = true;
-            this.setState({
-                currentData : editData,
-                editUpdate : true
-            });
-        } else {
-            editData[index].edit = false;
-            this.setState({
-                currentData : editData,
-                editUpdate : true
-            });
-        }
-    }
-
-    makeCircle = (e, accountColor) => {
-    }
-    get(event) {
-        {/*
-            We'll need to figure out how to use the API before we can convert
-            things. We will use the currency chosen in CurrencyMenu for this.
-        */}
-        this.setState({
-            original: event.target.value,
-            conversion: event.target.value
-        })
-    }
+   
+    
 
 
     componentDidMount(){
@@ -242,32 +186,16 @@ export default class Events extends React.Component {
                                             <table>
                                                 <tbody>
                                                     <tr id='nested'>
-<<<<<<< HEAD
-<<<<<<< HEAD
                                                         <td><button>{row.et_event_abv}</button></td>
                                                         <td><button>{row.et_event_name}</button></td>
                                                         <td><button>{<svg height="25" width="25">
-                                                        <circle cx="12.5" cy="12.5" r="10" stroke={row.et_event_color} stroke-width="1" fill= {row.et_event_color} />
-                                                        </svg>}</button></td>
-=======
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_abv}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_name}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_color}</button></td>
->>>>>>> parent of ba1b7b7... Settings done except styling
-=======
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_abv}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_name}</button></td>
-                                                        <td><button onClick={(e) =>{this.editRow(e, row.et_event_id)}}>{row.et_event_color}</button></td>
->>>>>>> parent of ba1b7b7... Settings done except styling
+                                                        <circle cx="12.5" cy="12.5" r="10" stroke={row.et_event_color} stroke-width="3" fill= {row.et_event_color} />
+                                                          </svg>}</button></td>
 
                                                         <button id='deleteButton' onClick={e => this.deleteRowE(e,row.et_event_id)}> x </button>
 
                                                     </tr>
-                                                    {row.edit ?
-                                                        <tr>
-                                                            <td colSpan='6'>
-                                                            </td>
-                                                        </tr> : <tr></tr>}
+                                                   
                                                 </tbody>
                                             </table>
                                         </td>
