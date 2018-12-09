@@ -1,6 +1,6 @@
 
-div.tableContainer{
-    height: 100vh; /* Magic here */
+/*div.tableContainer{
+    height: 100vh; 
     display: flex;    
     justify-content: center;
     background: #051642;
@@ -39,7 +39,7 @@ div.tableContainer{overflow:hidden;width:200px;}
 /* 
 Styling to make the table readable
 */
-
+/*
 #dataTableA td, #dataTableA th {
     background-color: #ffffff;
 }
@@ -79,5 +79,5 @@ Styling to make the table readable
     border-style: solid;
 }
 
-
+*/
 

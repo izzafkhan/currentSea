@@ -1,6 +1,6 @@
-
+/* 
 div.tableContainerE{
-    height: 100vh; /* Magic here */
+    height: 100vh; 
     
     display: flex;    
 
@@ -29,7 +29,7 @@ div.tableContainerE {overflow: hidden; float:right; width:800px;}
 /* 
 Styling to make the table readable
 */
-
+/*
 #dataTableE td, #dataTableE th {
     width:200px;
     background-color: #ffffff;
@@ -72,3 +72,4 @@ Styling to make the table readable
 
 
 
+ */
