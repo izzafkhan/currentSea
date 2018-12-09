@@ -24,7 +24,8 @@ const options = {
         display : true,
         position: 'bottom',
         labels: {
-            fontColor: 'rgb(255, 99, 132)'
+            fontColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(0,0,0)'
         }
     },
     responsive: true,
@@ -62,26 +63,26 @@ export default class Transaction extends React.Component {
             chartData : { 
                 datasets:[{
                   label: 'event1',
-                  backgroundColor: 'rgba(0,99,132,0.2)',
-                     hoverBackgroundColor: 'rgba(0,99,132,0.4)',
+                  backgroundColor: 'rgba(196,196,196,0.6)',
+                     hoverBackgroundColor: 'rgba(196,196,196,0.8)',
                     data :[1]
                   },
                   {
                     label: 'event2',
-                    backgroundColor: 'rgba(255,0,132,0.2)',
-                     hoverBackgroundColor: 'rgba(255,0,132,0.4)',  
+                    backgroundColor: 'rgba(204,13,13,0.6)',
+                     hoverBackgroundColor: 'rgba(204,13,13,0.8)',  
                     data:  [2]   
                   },
                   {
                      label: 'event3',
-                     backgroundColor: 'rgba(255,99,0,0.2)',
-                      hoverBackgroundColor: 'rgba(255,99,0,0.4)',    
+                     backgroundColor: 'rgba(177,113,241,0.6)',
+                      hoverBackgroundColor: 'rgba(177,113,241,0.8)',    
                      data:  [2]   
                    },
                    {
                      label: 'event4',
-                     backgroundColor: 'rgba(255,99,132,0.2)',
-                      hoverBackgroundColor: 'rgba(255,99,132,0.4)',     
+                     backgroundColor: 'rgba(247,37,252,0.6)',
+                      hoverBackgroundColor: 'rgba(247,37,252,0.8)',     
                      data:  [2]   
                    }
                  ],

@@ -44,7 +44,7 @@ module.exports = function router() {
                       debug(err2);
                       res.status(500).json({ message: 'Some error occurred' });
                     } else if (accountType === 'Balance') {
-                      db.query('INSERT INTO initial_balance_table(bt_account_id, bt_user_id, bt_initialBalance) VALUES (?,?,?)',
+                      db.query('INSERT INTO initial_balance_table(bt_account_id, bt_user_id, bt_initialBalance, bt_currency_abv) VALUES (?,?,?, "USD")',
                         [accountId, req.user.username, 0], (err3, results) => {
                           if (err3) {
                             debug(err3);
