@@ -1,4 +1,5 @@
 import React from 'react';
+import './AddEvent.css'
 import DatePicker from 'react-datepicker'
 import moment from "moment"
 import "react-datepicker/dist/react-datepicker.css";
@@ -113,15 +114,15 @@ export default class AddEvent extends React.Component{
             <div>
                 {this.props.addEntry ? 
                 <div>
-                    <table width='600' id='addTableE'>
+                    <table width='500' id='addTableE'>
                         <thead>
                             <tr>
                                 
-                                <th><input type="text" placeholder="Event Abbreviation" onChange={this.handleAbv }/></th>
-                                <th><input type="text" placeholder="Name" onChange={this.handleName} /></th>
+                                <th><input type="text" placeholder="Event Abbreviation" onChange={this.handleAbv } className = "dec-event"/></th>
+                                <th><input type="text" placeholder="Name" onChange={this.handleName} className = "name-event"/></th>
                                 <th> <CirclePicker width="200px" onChange={this.handleColor} circleSize = {23}  colors= {["#f44336", "#e91e63", "#9c27b0",
                                  "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39",
-                                  "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#a07b8e", "#795548","#a3a3a3", "#607d8b"]}/> </th>
+                                  "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#a07b8e", "#795548","#a3a3a3", "#607d8b"]} className= "color-select"/> </th>
                                    {/*} <th><SketchPicker/> /></th>*/}
                                 
                                
