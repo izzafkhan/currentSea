@@ -113,14 +113,16 @@ module.exports = function router() {
                                   }
                               });
                       } else {
-                          db.query('INSERT INTO details_table (dt_transactionID, dt_userID, dt_accountID, dt_eventID, dt_debit, dt_credit) VALUES (?,?,?,?,?,?);',
-                              [tt_transaction_id, req.user.username, datum.dt_accountID, datum.dt_eventID, datum.dt_debit, datum.dt_credit],
-                              (err2) => {
-                                  if (err2) {
-                                      debug('Error occurred in edit_transactions', err2);
-                                      return res.status(500).json({ message: 'Error occurred details while editing a transaction' });
-                                  }
-                              });
+                          if(datum.dt_accountID) {
+                              db.query('INSERT INTO details_table (dt_transactionID, dt_userID, dt_accountID, dt_eventID, dt_debit, dt_credit) VALUES (?,?,?,?,?,?);',
+                                  [tt_transaction_id, req.user.username, datum.dt_accountID, datum.dt_eventID, datum.dt_debit, datum.dt_credit],
+                                  (err2) => {
+                                      if (err2) {
+                                          debug('Error occurred in edit_transactions', err2);
+                                          return res.status(500).json({ message: 'Error occurred details while editing a transaction' });
+                                      }
+                                  });
+                          }
                       }
                   });
                   res.status(201).json({ message: 'Transaction detail edited successfully' });
@@ -163,7 +165,7 @@ module.exports = function router() {
   transactionsRouter.route('/get_transaction_event')
     .get((req, res) => {
       if (req.user) {
-        db.query('SELECT dt_transactionID, et_event_abv, et_event_name, count(DISTINCT et_event_id) as num FROM event_table, details_table WHERE dt_userID = ? AND dt_eventID = et_event_id HAVING max(num)',
+        db.query('SELECT dt_transactionID, et_event_abv, et_event_name, et_event_color, count(et_event_id) as num FROM event_table, details_table WHERE dt_userID = ? AND dt_eventID = et_event_id GROUP BY dt_transactionID',
           [req.user.username], (err, results) => {
             if (err) {
               debug('Error in /get_transaction_events', err);
