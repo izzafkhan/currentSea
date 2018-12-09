@@ -46,17 +46,16 @@ div.conversion, div.summary {
     margin-inline-end: 8px;
 }
 
-.dot{
+span.dot{
     height: 24px;
     width: 24px;
-    background-color: #bbb;
     border-radius: 50%;
     display: inline-block;
     margin-inline-end: 8px;
 }
 
 div.transaction-table, div.quick { float: left;}
-span.dot, span.text {float:left;}
+span.text {float:left;}
 
 /* 
 Styling to make the table readable

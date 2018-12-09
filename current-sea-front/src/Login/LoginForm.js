@@ -94,7 +94,11 @@ export default class LoginForm extends React.Component {
 
 
     }
-
+    handleKeyPress = (event) => {
+        if(event.key === 'Enter'){
+          this.onSubmit(event);
+        }
+      }
     render() {
         if(this.state.redirectRef){
             return(
@@ -132,7 +136,7 @@ export default class LoginForm extends React.Component {
                         <div className="lcgMiddle">
 
 
-                            <div className="loginFieldsContainer">
+                            <div className="loginFieldsContainer" onKeyPress={this.handleKeyPress}>
                                 <div>
                                     <input type="text" className="loginFormField" placeholder="Username or Email"
                                            onChange={this.handleEmailChange}/>

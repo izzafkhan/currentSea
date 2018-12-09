@@ -15,7 +15,9 @@ export default class EditEntry extends React.Component{
             update : false,
             accounts : this.props.accounts,
             currencies : this.props.currencies,
+            events : this.props.events,
             myAccounts : [],
+            myEvents : this.props.myEvents,
             transactionInfo : this.props.transactionInfo,
         }
         this.addinfo = this.addinfo.bind(this);
@@ -25,12 +27,13 @@ export default class EditEntry extends React.Component{
         this.save = this.save.bind(this);
         this.remove = this.remove.bind(this);
         this.submitDelete = this.submitDelete.bind(this);
+        this.cancel = this.cancel.bind(this);
     }
 
     submitDelete = () => {
         confirmAlert({
             title: 'Confirm Deletion',
-            message: 'Deleting Entry Permanently',
+            message: 'Do you want to delete this transaction permanently?',
             buttons: [
                 {
                     label: 'Ok',
@@ -54,18 +57,20 @@ export default class EditEntry extends React.Component{
             dt_accountID : '',
             dt_debit : 0,
             dt_credit : 0,
-            dt_eventID : '',
+            dt_eventID : 0,
         };
 
         internalEntries.push(newRow);
-    
-        this.state.data = internalEntries;
-        this.forceUpdate();
+        this.setState({
+            data : internalEntries,
+        })
     }
 
     handleChange(row, entry, event) {
         if (entry == "dt_accountID") {
             row[entry] = event.value;
+        } else if( entry == "dt_eventID"){
+            row[entry] = event.label;
         } else {
             row[entry] = event.target.type === 'number' ? parseFloat(event.target.value) : event.target.value;
         }
@@ -106,7 +111,9 @@ export default class EditEntry extends React.Component{
                                             'tt_currency' : this.state.transactionInfo.tt_currency, 
                                             'tt_description' : this.state.transactionInfo.tt_description}),
                     success: () => {
-                        console.log(this.state.data);
+                        this.setState({
+                            update: true,
+                        })
                         this.props.closeAction(this.state.action_id, sum);
                     },
                     error: () => {
@@ -132,13 +139,22 @@ export default class EditEntry extends React.Component{
             xhrFields: { withCredentials:true },
             data: JSON.stringify({'tt_transaction_id': this.state.action_id}),
             success: () => {
-                 this.props.deleteAction(this.state.action_id);
+                this.props.deleteAction(this.state.action_id);
+                this.setState({
+                    update: true,
+                })
             },
             error: () => {
                  console.log("Error: Could not submit");
                  this.props.deleteAction(this.state.action_id);
             }
         })
+    }
+
+    cancel(row){
+        let index = this.state.data.indexOf(row);
+        this.state.data.splice(index, 1);
+        this.forceUpdate();
     }
 
     componentDidMount(){
@@ -151,6 +167,7 @@ export default class EditEntry extends React.Component{
             xhrFields: { withCredentials:true },
             data: JSON.stringify({'tt_transaction_id': this.props.id}),
             success: (receivedData) => {
+                console.log(receivedData);
                 this.setState({
                     data: receivedData
                 })
@@ -171,6 +188,37 @@ export default class EditEntry extends React.Component{
     }
 
     render(){
+        if(this.state.update === true){
+            $.ajax({
+                url: "http://localhost:4000/transactions/get_details",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType:"json",
+                xhrFields: { withCredentials:true },
+                data: JSON.stringify({'tt_transaction_id': this.props.id}),
+                success: (receivedData) => {
+                    this.setState({
+                        data: receivedData,
+                        update: false,
+                    })
+                    for(let i = 0; i < receivedData.length; i++){
+                        this.state.myAccounts.push(receivedData[i].dt_accountID);
+                    }
+                    if(this.props.id){
+                        this.setState({
+                            action_id: this.props.id,
+                        })
+                    } 
+                    this.forceUpdate();
+                },
+                error: () => {
+                    console.log("Error: Could not submit");
+                }
+            })
+        }
+
+
         return(
             <div width='400'>
                 <table id='editTable' width='400'>
@@ -187,13 +235,16 @@ export default class EditEntry extends React.Component{
                     <tbody>
                         <tr></tr>   
                         {this.state.data.map( (row, index) => {
-
+                            //var eventIndex = this.state.myEvents.events.findIndex(ev => ev.dt_transactionID==row.dt_transactionID);
+                            console.log(this.state.myEvents[224].et_event_abv);
+                            console.log(row);
                             return (
                                 <tr key={`row-${index}`}>
                                     <td><Select options={this.state.accounts} placeholder={row.dt_accountID} onChange={(e) => this.handleChange(row, 'dt_accountID', e)}/></td>
                                     <td><input type="number"  defaultValue={row.dt_debit} onChange={(e) => this.handleChange(row, 'dt_debit', e)}/></td>
                                     <td><input type="number" defaultValue={row.dt_credit} onChange={(e) => this.handleChange(row, 'dt_credit', e)}/></td>
-                                    <td><input type="text"  defaultValue={row.dt_eventID} onChange={(e) => this.handleChange(row, 'dt_eventID', e)}/></td>
+                                    <td><Select options={this.state.events} placeholder={row.dt_eventID} onChange={(e) => this.handleChange(row, 'dt_eventID', e)}/></td>
+                                    <td><button onClick={() => this.cancel(row)}>X</button></td>
                                 </tr>
                             )
                         })}

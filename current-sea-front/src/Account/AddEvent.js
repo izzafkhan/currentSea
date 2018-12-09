@@ -97,7 +97,6 @@ export default class AddEvent extends React.Component{
          
            success: () => {
                 this.props.action(false);
-                console.log("EVENT ADDED");
            },
            error: (data) => {
                 alert(data.responseJSON.message);

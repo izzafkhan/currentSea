@@ -88,8 +88,8 @@ export default class Accounts extends React.Component {
         let rowData = this.state.currentData[index];
         let rowDataVar = {accountId: rowData.at_account_id};
         confirmAlert({
-            title: 'Confirm Deletion',
-            message: 'Deleting Event Permanently',
+            title: 'Deleting account',
+            message: 'Are you sure you would like to proceed?',
             buttons: [
                 {
                     label: 'Ok',

@@ -84,29 +84,46 @@ module.exports = function router() {
   transactionsRouter.route('/edit_transactions')
     .post((req, res) => {
       debug(req.body);
-      const { tt_balance, data, tt_transaction_id } = req.body;
+      const {
+        tt_balance, data, tt_transaction_id, tt_currency, tt_description
+      } = req.body;
 
       db.query('SELECT * FROM transaction_table WHERE tt_transaction_id = ?', [tt_transaction_id], (err, results) => {
         if (results.length === 0) {
           res.status(401).json({ message: 'Transaction id does not exist.' });
         } else {
-          //change this to UPDATE transaction_table SET tt_currency = ?
-          db.query('UPDATE transaction_table SET tt_balance=? WHERE tt_transaction_id = ? and tt_user_id = ?;',
-            [tt_balance, tt_transaction_id, req.user.username],
+          // change this to UPDATE transaction_table SET tt_currency = ?
+          db.query('UPDATE transaction_table SET tt_balance=?, tt_currency=?, tt_description=? WHERE tt_transaction_id = ? and tt_user_id = ?;',
+            [tt_balance, tt_currency, tt_description, tt_transaction_id, req.user.username],
             (err, results, fields) => {
               if (err) {
                 debug('An Error occurred while editing a transaction from transactions table', err);
                 res.status(500).json({ message: 'Error occurred editing a transaction' });
               } else {
                   _.each(data, (datum) => {
-                      db.query('UPDATE details_table SET dt_eventID = ?, dt_accountID = ?, dt_debit = ?, dt_credit = ? WHERE dt_id = ?',
-                          [datum.dt_eventID, datum.dt_accountID, datum.dt_debit, datum.dt_credit, datum.dt_id],
-                          (err) => {
-                              if (err) {
-                                  debug('An Error occurred while editing a transaction_detail in the details table', err);
-                                  return res.status(500).json({ message: 'Error occurred editing a transaction_detail' });
-                              }
-                          });
+                      // if(datum.dt_eventID == undefined || datum.dt_eventID == '')
+                      //     datum.eventId = 42;
+                      if(datum.dt_id) {
+                          db.query('UPDATE details_table SET dt_eventID = ?, dt_accountID = ?, dt_debit = ?, dt_credit = ? WHERE dt_id = ?',
+                              [datum.dt_eventID, datum.dt_accountID, datum.dt_debit, datum.dt_credit, datum.dt_id],
+                              (err) => {
+                                  if (err) {
+                                      debug('An Error occurred while editing a transaction_detail in the details table', err);
+                                      return res.status(500).json({ message: 'Error occurred editing a transaction_detail' });
+                                  }
+                              });
+                      } else {
+                          if(datum.dt_accountID) {
+                              db.query('INSERT INTO details_table (dt_transactionID, dt_userID, dt_accountID, dt_eventID, dt_debit, dt_credit) VALUES (?,?,?,?,?,?);',
+                                  [tt_transaction_id, req.user.username, datum.dt_accountID, datum.dt_eventID, datum.dt_debit, datum.dt_credit],
+                                  (err2) => {
+                                      if (err2) {
+                                          debug('Error occurred in edit_transactions', err2);
+                                          return res.status(500).json({ message: 'Error occurred details while editing a transaction' });
+                                      }
+                                  });
+                          }
+                      }
                   });
                   res.status(201).json({ message: 'Transaction detail edited successfully' });
               }
@@ -122,7 +139,10 @@ module.exports = function router() {
         const { tt_transaction_id } = req.body;
         db.query('SELECT tt_transaction_id from transaction_table where tt_transaction_id = ?',
           [tt_transaction_id], (err, result, fields) => {
-            if (result.length === 0) {
+            if (err) {
+              debug('Error in /delete_transactions', err);
+              res.status(500).json({ message: 'Error has occurred while getting details' });
+            } else if (result.length === 0) {
               res.status(401).json({ message: 'Transaction id does not exist.' });
             } else {
               // Also deletes in details_table as foreign key and ON DELETE CASCADE is implemented
@@ -135,6 +155,27 @@ module.exports = function router() {
                     res.status(200).json({ message: 'Transaction deleted succsessfully' });
                   }
                 });
+            }
+          });
+      } else {
+        res.status(401).json({ message: 'User is not logged in' });
+      }
+    });
+
+  transactionsRouter.route('/get_transaction_event')
+    .get((req, res) => {
+      if (req.user) {
+        db.query('SELECT dt_transactionID, et_event_abv, et_event_name, et_event_color, count(et_event_id) as num FROM event_table, details_table WHERE dt_userID = ? AND dt_eventID = et_event_id GROUP BY dt_transactionID',
+          [req.user.username], (err, results) => {
+            if (err) {
+              debug('Error in /get_transaction_events', err);
+              res.status(500).json({ message: 'Error has occurred while getting events' });
+            } else {
+              const output = {};
+              for (let i = 0; i < results.length; i++) {
+                output[results[i].dt_transactionID] = results[i];
+              }
+              res.status(200).json(output);
             }
           });
       } else {

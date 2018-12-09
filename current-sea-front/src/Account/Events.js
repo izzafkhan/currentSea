@@ -10,6 +10,8 @@ import update from 'react-addons-update';
 import {confirmAlert} from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import AddAccount from "./AddAccount"; // Import css
+import {Circle} from  'react-shapes';
+
 
 export default class Events extends React.Component {
     constructor(props) {
@@ -40,6 +42,7 @@ export default class Events extends React.Component {
         this.componentDidMount = this.componentDidMount.bind(this);
         this.addToTable = this.addToTable.bind(this);
         this.deleteRowE = this.deleteRowE.bind(this);
+        this.makeCircle = this.makeCircle.bind(this);
     }
 
     addRow = () => {
@@ -84,8 +87,8 @@ export default class Events extends React.Component {
         let index = this.state.currentData.findIndex(x => x.et_event_id == et_event_id);
         let rowDataVar = {eventId: et_event_id}
         confirmAlert({
-            title: 'Confirm Deletion',
-            message: 'Deleting Event Permanently',
+            title: 'Deleting event',
+            message: 'Are you sure you would like to proceed?',
             buttons: [
                 {
                     label: 'Ok',
@@ -151,6 +154,8 @@ export default class Events extends React.Component {
         }
     }
 
+    makeCircle = (e, accountColor) => {
+    }
     get(event) {
         {/*
             We'll need to figure out how to use the API before we can convert
@@ -214,7 +219,6 @@ export default class Events extends React.Component {
             });
         }
         return (
-
             <div>
                 <table className="accountsTable">
 
@@ -262,9 +266,7 @@ export default class Events extends React.Component {
                     })}
                     </tbody>
                 </table>
-
             </div>
-
         );
     }
 }
