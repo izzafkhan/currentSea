@@ -125,7 +125,6 @@ class BalanceSheet extends Component{
             xhrFields: { withCredentials: true },
             success: (receivedData) => {
                 this.setState({data:receivedData});
-                
             },
             error: (data) => {
                 //alert('error occurred')
@@ -175,7 +174,7 @@ class BalanceSheet extends Component{
 
                 <div className="isgTop">
 
-                    <Dropdown className="isDropDownReports" isOpen={this.state.reportDropdownOpen}
+                    <Dropdown className="incomeStatementsDropDownReports" isOpen={this.state.reportDropdownOpen}
                               toggle={this.toggleReport}>
                         <DropdownToggle caret>
                             Balance Sheet
@@ -212,6 +211,10 @@ class BalanceSheet extends Component{
                         data={this.state.data}
                         noDataText="Your balances will appear here"
                         columns={columns}
+                        defaultPageSize={25}
+                        showPageSizeOptions= {false}
+                  
+
                     />
                 </div>
 

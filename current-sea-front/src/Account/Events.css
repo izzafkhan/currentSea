@@ -1,0 +1,74 @@
+
+div.tableContainerE{
+    height: 100vh; /* Magic here */
+    
+    display: flex;    
+
+    background: #051642;
+    padding-left: 100px;
+       
+   
+
+}
+
+
+
+.header-name{
+    margin-inline-start: 8px;
+    margin-inline-end: 8px;
+    background: #051642;
+}
+
+
+div.events-table, div.quick { display:inline;}
+
+
+div.tableContainerE {overflow: hidden; float:right; width:800px;}
+
+
+/* 
+Styling to make the table readable
+*/
+
+#dataTableE td, #dataTableE th {
+    width:200px;
+    background-color: #ffffff;
+}
+
+#dataTableE tr:nth-child(even){background-color: #f2f2f2; width:200px;}
+
+#dataTableE th{
+    padding-top: 12px;
+    padding-bottom: 12px;
+
+    padding: 8px;
+    text-align: left;
+    background-color:white;
+    color: black;
+    width: 200px;
+}
+
+#nested td {
+    text-align: left;
+    width: 200px;
+}
+
+#nested button {
+    width: 200px;
+    background-color: white;
+    border-color: white;
+    border-style: solid;
+    text-align: left;
+}
+
+#addEventButton {
+    width: 600px;
+    text-align: center;
+    color: white;
+    background-color: #00ADA2;
+    border-color: #00ADA2;
+    border-style: solid;
+}
+
+
+

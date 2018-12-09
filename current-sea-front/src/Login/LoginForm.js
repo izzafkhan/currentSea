@@ -95,49 +95,6 @@ export default class LoginForm extends React.Component {
 
     }
 
-    // onSubmit = e => {
-    //     e.preventDefault();
-    //
-    //     if (this.state.email.length == 0 || this.state.password.length == 0) {
-    //         alert("Missing login data")
-    //     }
-    //
-    //     const loginData = {
-    //         id: this.state.email,
-    //         password: this.state.password
-    //     }
-    //
-    //     $.ajax({
-    //             url: "http://localhost:4000/profile/login",
-    //             type: "POST",
-    //             contentType: "application/json; charset=utf-8",
-    //             crossDomain: true,
-    //             dataType: 'json',
-    //             xhrFields: {withCredentials: true},
-    //             data: JSON.stringify(loginData),
-    //             success: (recivedData) => {
-    //                 this.setState({loginSuccess: true});
-    //                 console.log('Successful Login')
-    //             },
-    //             error: (data) => {
-    //                 alert('Invalid credentials');
-    //             }
-    //         }
-    //     );
-    // }
-
-    onSubmitDemo = () => {
-        this.setState({loginForDemo: true})
-    }
-
-    redirectDemo = () => {
-
-        if (this.state.loginForDemo == true) {
-            console.log("redirect demo")
-            return <Transaction/>
-        }
-    }
-
     render() {
         if(this.state.redirectRef){
             return(

@@ -13,7 +13,6 @@
 
 .signUpBody {
     background-image: url("CurrentSea_bg.png");
-
     background-repeat: no-repeat;
     background-size: cover;
     height: 100%;
@@ -98,6 +97,7 @@
     font-family: 'Roboto', sans-serif;
     font-weight: bold;
     display:block;
+    cursor: pointer;
 }
 
 .supSignInDiv {
@@ -131,4 +131,5 @@
     display:block;
     float: right;
     margin-top: 13px;
+    cursor: pointer;
 }

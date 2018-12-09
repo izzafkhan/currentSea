@@ -9,7 +9,7 @@ import Login from './Login/Login';
 import SignUpForm from './Login/SignupForm'
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
-import Accounts from './Account/Accounts';
+import Settings from './Account/Settings';
 import $ from 'jquery';
 
 export const log = {
@@ -37,7 +37,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     )
   )}/>
 )
-
 const Auth = withRouter(({history}) => (
   log.loggedIn ? ( <Link to="/Transactions"></Link> ) : (<Redirect to={{pathname: "/"}} />)
 )) */}
@@ -49,7 +48,7 @@ export default class App extends React.Component{
       <BrowserRouter>
         <Switch>
           <Route  path="/Reports/Report"  render={() => ( localStorage.getItem('loggedIn') ? <Report/> : <Redirect to="/"/>)}/>
-          <Route  path="/Account/Accounts"  render={() => ( localStorage.getItem('loggedIn') ? <Accounts/> : <Redirect to="/"/>)}/>
+          <Route  path="/Account/Settings"  render={() => ( localStorage.getItem('loggedIn') ? <Settings/> : <Redirect to="/"/>)}/>
           <Route  path="/Currencies/Currencies"  render={() => ( localStorage.getItem('loggedIn') ? <Currencies/> : <Redirect to="/"/>)}/>
           <Route  path="/Help"  render={() => ( localStorage.getItem('loggedIn') ? <Help/> : <Redirect to="/"/>)}/>
           <Route  path="/Transactions"  render={() => ( localStorage.getItem('loggedIn') ? <Home/> : <Redirect to="/"/> )}/>

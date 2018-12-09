@@ -8,17 +8,6 @@
 .gridContaienr{
     width: 50%;
 }
-.linechart{
-    /* border-left: 10px; */
-    width: 50%;
-    height: 500px;
-    background-color: white;
-    margin-top: 100px;
-    margin-left: 20px;
-    margin-right: 30px;
-    text-align: left;
-       
-}
 
 .currencyreportsContainer {
     background-color: #051642;
@@ -27,7 +16,7 @@
 }
 
 .tableTop {
-    width: 600px;
+    width: 750px;
     display: flex;
     flex-direction: row;
     background-color: #00ADA2;
@@ -38,7 +27,7 @@
 
 
 .tableBottom {
-    width: 600px;
+    width: 750px;
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -46,16 +35,14 @@
     margin-left: 30px;
 
 }
-.clickButton {
-    width: 500px;
-    display: flex;
-    flex-direction: row;
-    margin-left: 30px;
+.word{
+    width: 600px;
+    margin-left: 350px;
 
 }
-.currencyHolder {
-    width: 400px;
-    margin-left: 10px;
-    margin-right: 10px;
-    
+.dropdown{
+    width: 200px;
+    height: 38px;
+    padding-left: 0px;
+    left:20px;
 }
