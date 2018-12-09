@@ -24,10 +24,10 @@ const options = {
      legend: {
         display : true,
         position: 'bottom',
+        fullWidth : true,
         labels: {
-            fontColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(0,0,0)'
-        }
+            fontColor: 'rgb(0, 0, 0)',
+        },
     },
     responsive: true,
     maintainAspectRatio: true
@@ -89,7 +89,7 @@ export default class Transaction extends React.Component {
                      data:  [2]   
                    }
                  ],
-                labels:['label']
+                labels:['Top 3 Events']
               }
         }
         this.convert = this.convert.bind(this);

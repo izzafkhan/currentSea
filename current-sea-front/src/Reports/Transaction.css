@@ -64,6 +64,11 @@ span.dot{
 }
 
 div.transaction-table, div.quick { float: left;}
+
+div.quick {
+    min-width: 400px;
+}
+
 span.text {float:left;}
 
 /* 
@@ -140,7 +145,7 @@ div.conversion input {
     max-width: 120px;
     text-align: center;
     float: left;
-    overflow: scroll;
+    overflow: auto;
 }
 
 #currency-number-out {
@@ -152,7 +157,7 @@ div.conversion input {
     max-width: 120px;
     text-align: center;
     float: left;
-    overflow: scroll;
+    overflow: auto;
     width: 88px;
 }
 
