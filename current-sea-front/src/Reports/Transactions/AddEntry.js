@@ -57,7 +57,7 @@ export default class AddEntry extends React.Component{
         var internalEntries = this.state.newData.internalEntries.slice(0);
 
         let newRow = {
-            account : '9000 Bank',
+            account : '',
             debit : 0,
             credit : 0,
             event : 42,
@@ -107,6 +107,7 @@ export default class AddEntry extends React.Component{
         var balanceCheck = 0;
         var validEntry = true;
         var accountsValid = true;
+        var entriesFilled = true;
         let newData = Object.assign({}, this.state.newData);
         for(let i = 0; i < newData.internalEntries.length; i++){
             
@@ -115,6 +116,13 @@ export default class AddEntry extends React.Component{
             if(newData.internalEntries[i].debit != 0 && newData.internalEntries[i].credit != 0){
                 validEntry = false;
             }
+            if(newData.internalEntries[i].account == ''){
+                accountsValid = false;
+            }
+            if(newData.internalEntries[i].debit == 0 && newData.internalEntries[i].credit == 0){
+                entriesFilled = false;
+            }
+
         }
         //console.log(sum);
         if(balanceCheck == sum && (balanceCheck != 0)){
@@ -122,28 +130,36 @@ export default class AddEntry extends React.Component{
                 if(validEntry){
                     if(this.state.newData.description != "" || this.state.newData.description.length > 25){
                         if(this.state.newData.currencyId != ""){
-                            this.state.newData.balance = sum;     
-                            this.setState({newData});
-                            /*
-                                Ajax magic 
-                                Maybe we should send the internal entries back home instead of newData? We need to avoid losing information one way or another.
-                            */
-                            $.ajax({
-                                url: "http://localhost:4000/transactions/add_transactions",
-                                type: "POST",
-                                contentType: "application/json; charset=utf-8",
-                                crossDomain: true,
-                                dataType:"json",
-                                xhrFields: { withCredentials:true },
-                                data: JSON.stringify(this.state.newData),
-                                success: () => {
-                                        this.props.action(false);
-                                },
-                                error: () => {
-                                        console.log("Error: Could not submit");
-                                        this.props.action(false);
+                            if(accountsValid){
+                                if(entriesFilled){
+                                    this.state.newData.balance = sum;     
+                                    this.setState({newData});
+                                    /*
+                                        Ajax magic 
+                                        Maybe we should send the internal entries back home instead of newData? We need to avoid losing information one way or another.
+                                    */
+                                    $.ajax({
+                                        url: "http://localhost:4000/transactions/add_transactions",
+                                        type: "POST",
+                                        contentType: "application/json; charset=utf-8",
+                                        crossDomain: true,
+                                        dataType:"json",
+                                        xhrFields: { withCredentials:true },
+                                        data: JSON.stringify(this.state.newData),
+                                        success: () => {
+                                                this.props.action(false);
+                                        },
+                                        error: () => {
+                                                console.log("Error: Could not submit");
+                                                this.props.action(false);
+                                        }
+                                    })
+                                } else {
+                                    alert("An accounts must have either a debit or credit change.")
                                 }
-                            })
+                            } else {
+                                alert("All accounts must be filled out.")
+                            }
                         } else {
                             alert("A currency must be selected.")
                         }
@@ -175,8 +191,8 @@ export default class AddEntry extends React.Component{
                                 <th>{this.props.nextEntry}</th>
                                 <th><DatePicker id='date' selected={this.state.dateSetter} onChange={this.setDate} popperPlacement='right-start'/></th>
                                 <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
-                                <th></th>
-                                <th><Select options={this.state.currencies} onChange={this.handleCurrency}/></th>
+                                <th style={{width : "100px"}}></th>
+                                <th style={{width : "100px"}}><Select options={this.state.currencies} onChange={this.handleCurrency}/></th>
                             </tr>
                         </thead>
                     
@@ -184,18 +200,18 @@ export default class AddEntry extends React.Component{
                             {this.state.newData.internalEntries.map(row => {
                                 return (
                                     <tr key={`row-${row.id}`}>
-                                        <td><Select options={this.state.accounts} onChange={(e) => this.handleChange(row, 'account', e)}/></td>
+                                        <td style={{width : "100px"}}><Select options={this.state.accounts} onChange={(e) => this.handleChange(row, 'account', e)}/></td>
                                         <td><input type="number"  placeholder="Debit" onChange={(e) => this.handleChange(row, 'debit', e)}/></td>
                                         <td><input type="number" placeholder="Credit" onChange={(e) => this.handleChange(row, 'credit', e)}/></td>
-                                        <td><Select options={this.state.events} onChange={(e) => this.handleChange(row, 'event', e)}/></td>
-                                        <td><button onClick={() => this.cancel(row)}>X</button></td>
+                                        <td style={{width : "100px"}}><Select options={this.state.events} onChange={(e) => this.handleChange(row, 'event', e)}/></td>
+                                        <td><button id="cancelButton" onClick={() => this.cancel(row)}>X</button></td>
                                     </tr>
                                 )
                             })}
                         </tbody>     
                     </table>
-                    <button onClick={this.addinfo}>Add +</button>
-                    <button onClick={this.submitData}>Done</button>
+                    <button id="addButton" onClick={this.addinfo}>Add +</button>
+                    <button id="doneButton" onClick={this.submitData}>Done</button>
                 </div>
                 : (null) }
             </div>

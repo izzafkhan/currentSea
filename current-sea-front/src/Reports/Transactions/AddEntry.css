@@ -12,3 +12,27 @@
 #newEntry td{
     width: 100px;
 }
+
+#addButton {
+    background-color: #4F4F4F;
+    border-color: #4F4F4F;
+    color: white;
+    border: solid;
+    border-radius: 7%;
+}
+
+#doneButton {
+    background-color: #00ADA2;
+    border-color: #00ADA2;
+    color: white;
+    border: solid;
+    border-radius: 7%;
+}
+
+#cancelButton{
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    border: hidden;
+    border-radius: 7%;
+}

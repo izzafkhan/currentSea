@@ -254,7 +254,7 @@ export default class EditEntry extends React.Component{
                                     <td><Select options={this.state.accounts} placeholder={row.dt_accountID} onChange={(e) => this.handleChange(row, 'dt_accountID', e)} className = "dropdownA"/></td>
                                     <td><input type="number"  defaultValue={row.dt_debit} onChange={(e) => this.handleChange(row, 'dt_debit', e)}/></td>
                                     <td><input type="number" defaultValue={row.dt_credit} onChange={(e) => this.handleChange(row, 'dt_credit', e)}/></td>
-                                    <td><Select options={this.state.events} placeholder={row.dt_eventID} onChange={(e) => this.handleChange(row, 'dt_eventID', e)} className = "dropdownA"/></td>
+                                    <td><Select options={this.state.events} placeholder={' '} onChange={(e) => this.handleChange(row, 'dt_eventID', e)} className = "dropdownA"/></td>
                                     <td><button onClick={() => this.cancel(row)}>X</button></td>
                                 </tr>
                             )

@@ -1,13 +1,8 @@
 import React from 'react';
 import './Accounts.css';
-import CurrencyMenu from '../Currencies/CurrencyMenu';
 import AddAccount from './AddAccount';
 import $ from 'jquery'
-import moment from "moment"
-import Header from '../Header'
-import Events from './Events';
-import update from 'react-addons-update';
-import { confirmAlert } from 'react-confirm-alert'; // Import
+import {confirmAlert} from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 
 export default class Accounts extends React.Component {
