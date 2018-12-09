@@ -50,7 +50,6 @@ export default class AddAccount extends React.Component{
     }
     handleType(e){
         let newData = Object.assign({}, this.state.newData);
-       // console.log(accountType.value);
         newData.accountType = e.value;
         this.setState({newData});
     }
@@ -105,26 +104,24 @@ export default class AddAccount extends React.Component{
             <div>
                 {this.props.addEntry ? 
                 <div>
-                    <table width='600' id='addTableA'>
+                    <table width='450' id='addTableA'>
                         <thead>
                             <tr>
                                 
-                                <th><input type="number" placeholder="Account Number" onChange={this.handleAcctID }/></th>
-                                <th><input type="text" placeholder="Description" onChange={this.handleDescription} /></th>
+                                <td><input type="number" placeholder="Account No." onChange={this.handleAcctID }/></td>
+                                <td><input type="text" placeholder="Description" onChange={this.handleDescription} /></td>
                                 {/*<th><input type="text" placeholder="Balance or Income" onChange={this.handleType} /></th>*/}
-                                <th><Select options={options} onChange={this.handleType}/></th>
-                               
+                                <td className="selectAccountDropDown"><Select  options={options} onChange={this.handleType}/></td>
                             </tr>
+
+                            <td><button onClick={()=>{
+                                this.props.add(this.state.newData);
+                                this.submitData();}}>Done</button></td>
                            
                         </thead>
-                    
-                        <tbody>
-                           
-                        </tbody>     
+
                     </table>
-                    <button onClick={()=>{
-                            this.props.add(this.state.newData);
-                             this.submitData();}}>Done</button>
+
                 </div>
                 : (null) }
             </div>
